@@ -21,7 +21,7 @@ class CreateUserVerifiesTable extends Migration
             $table->dateTime('created_at')->nullable();
 
             $table->unique(['key', 'token'], 'key_token');
-            $table->unique(['user_id'], 'user');
+            $table->index(['user_id'], 'user');
         });
     }
 

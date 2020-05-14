@@ -31,8 +31,8 @@ class AdminMenuService
      */
     public function withQueryOptions(Builder $query, array $options)
     {
-        if ($options['whereEnable'] ?? true) { // 默认查询启用状态的币种
-            $query->enabled();
+        if ($options['whereEnable'] ?? true) { // 默认查询启用状态的菜单
+            $query->whereEnabled();
         }
 
         return $this->queryWithQueryOptions($query, $options);

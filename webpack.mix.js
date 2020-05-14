@@ -3,7 +3,7 @@ require("laravel-mix-merge-manifest");
 
 let publicPath = "../public";
 
-if (__dirname.indexOf("/composer/tokeniocn/") >= 0) {
+if (__dirname.indexOf("/vendor/tokeniocn/") >= 0) {
   publicPath = "../../../public";
 } else if (__dirname.indexOf("/modules/") >= 0) {
   publicPath = "../../public";

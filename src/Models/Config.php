@@ -21,6 +21,6 @@ class Config extends Model
         'key',
         'value',
         'module',
-        'title'
+        'remark'
     ];
 }

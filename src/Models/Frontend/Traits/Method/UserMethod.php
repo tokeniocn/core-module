@@ -5,6 +5,11 @@ namespace Modules\Core\Models\Frontend\Traits\Method;
 use Hash;
 use Carbon\Carbon;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Modules\Core\Exceptions\Frontend\Auth\UserAuthVerifyException;
+use Modules\Core\Exceptions\Frontend\Auth\UserEmailVerifyException;
+use Modules\Core\Exceptions\Frontend\Auth\UserMobileVerifyException;
+use Modules\Core\Exceptions\Frontend\Auth\UserPayPasswordEmptyException;
+
 //use Modules\Core\Models\Frontend\UserVerify;
 
 /**
@@ -45,27 +50,70 @@ trait UserMethod
     }
 
     /**
+     * 是否实名认证
+     *
      * @return mixed
      */
-    public function isAuthVerified()
+    public function isAuthVerified($exception = true)
     {
-        return $this->auth_verified_at != null;
+        $verified = $this->auth_verified_at != null;
+
+        if (!$verified && $exception) {
+            throw new UserAuthVerifyException(trans('未实名认证'));
+        }
+
+        return $verified;
     }
 
     /**
+     * 是否验证邮箱
+     *
      * @return bool 是否验证邮箱
      */
-    public function isEmailVerified()
+    public function isEmailVerified($exception = true)
     {
-        return $this->email_verified_at != null;
+        $verified = $this->email_verified_at != null;
+
+        if (!$verified && $exception) {
+            throw new UserEmailVerifyException(trans('邮箱未验证'));
+        }
+
+        return $verified;
     }
 
     /**
+     * 是否验证手机号
+     *
      * @return bool 是否验证手机号
      */
-    public function isMobileVerified()
+    public function isMobileVerified($exception = true)
     {
-        return $this->mobile_verified_at != null;
+        $verified = $this->mobile_verified_at != null;
+
+        if (!$verified && $exception) {
+            throw new UserMobileVerifyException(trans('手机号未验证'));
+        }
+
+        return $verified;
+    }
+
+    /**
+     * 是否设置的支付密码
+     *
+     * @param bool $exception
+     *
+     * @return bool
+     * @throws UserPayPasswordEmptyException
+     */
+    public function isPayPasswordSet($exception = true)
+    {
+        $set = !empty($this->pay_password);
+
+        if (!$set && $exception) {
+            throw new UserPayPasswordEmptyException(trans('未设置支付密码'));
+        }
+
+        return $set;
     }
 
     /**

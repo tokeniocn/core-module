@@ -3,8 +3,10 @@
 namespace Modules\Core\Http\Requests\Frontend\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use LangleyFoxall\LaravelNISTPasswordRules\PasswordRules;
+use Modules\Core\Rules\Auth\UnusedPassword;
 
-class ResetMobileRequest extends FormRequest
+class ResetPayPasswordByOldPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,16 +26,8 @@ class ResetMobileRequest extends FormRequest
     public function rules()
     {
         return [
-            'mobile' => ['required','regex:/^1[3456789]\d{9}$/'],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function messages()
-    {
-        return [
+            'old_password' => ['required', 'regex:/^\d{6}$/'],
+            'password' => ['required', 'regex:/^\d{6}$/', 'confirmed']
         ];
     }
 }

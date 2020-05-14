@@ -24,6 +24,13 @@ use Modules\Core\Exceptions\ModelSaveException;
 trait HasQuery
 {
     /**
+     * 类使用需在__construct()中定义model
+     *
+     * @var Illuminate\Database\Eloquent\Model
+     */
+//    protected $model;
+
+    /**
      * @return Builder
      */
     public function query(array $options = []): Builder

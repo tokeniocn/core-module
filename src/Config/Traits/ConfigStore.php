@@ -2,9 +2,10 @@
 
 namespace Modules\Core\Config\Traits;
 
+use Illuminate\Support\Str;
+use Illuminate\Filesystem\Filesystem;
 use InvalidArgumentException;
 use Modules\Core\Models\Config;
-use Illuminate\Filesystem\Filesystem;
 
 trait ConfigStore
 {
@@ -36,13 +37,10 @@ trait ConfigStore
 
         $items = [];
         foreach ($modelClass::all() as $setting) {
-            if (! empty($setting->module)) {
-                $items[$setting->module . '::'] = array_merge($items[$setting->module . '::'] ?? [], [
-                    $setting->key => $setting->value
-                ]);
-            } else {
-                $items[$setting->key] = $setting->value;
-            }
+            $key = $setting->module == '*' ? $setting->key : $setting->module . '::';
+            $items[$key] =  array_merge($items[$key] ?? [], [
+                $key => $setting->value
+            ]);
         }
 
         $path = $this->getSettingsCachedPath();
@@ -68,6 +66,9 @@ trait ConfigStore
         foreach ($keys as $key => $value) {
             if (strpos($key, '.') !== false) {
                 throw new InvalidArgumentException('Config only support store one-level settings(key without ".").');
+            }
+            if (!Str::has($key, '::')) {
+                $key = '*::' . $key;
             }
             list($module, $key) = explode('::', $key);
 

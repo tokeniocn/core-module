@@ -2,27 +2,36 @@
 
 namespace Modules\Core\Services\Frontend;
 
-use Modules\Core\Models\Frontend\Label;
-use Modules\Core\Services\Traits\HasListConfig;
+use Modules\Core\Models\ListData;
+use Modules\Core\Services\Traits\HasListData;
 
 class LabelService
 {
-    use HasListConfig;
+    use HasListData;
+
+    /**
+     * @var ListData
+     */
+    protected $model;
 
     /**
      * @var string
      */
-    protected $key = 'core::label';
+    protected $type = 'label';
+
+    public function __construct(ListData $model)
+    {
+        $this->model = $model;
+    }
     
     /**
      * @param $label
      * @param array $options
-     * @return Label
      */
     public function getLabelInfoByLabel($label, array $options = [])
     {
         $label = $this->getByKey($label, $options);
 
-        return $label['value'] ?? null;
+        return $label['value'];
     }
 }

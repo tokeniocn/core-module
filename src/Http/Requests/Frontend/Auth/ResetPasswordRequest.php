@@ -29,14 +29,8 @@ class ResetPasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'token' => ['required'],
-            'email' => ['required', 'email'],
-            'password' => array_merge(
-                [
-                    new UnusedPassword($this->get('token')),
-                ],
-                PasswordRules::changePassword($this->email)
-            ),
+            'sms' => ['required'],
+            'password' => ['string', 'min:8', 'max:30', 'confirmed']
         ];
     }
 }

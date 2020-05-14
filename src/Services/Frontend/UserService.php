@@ -4,10 +4,9 @@ namespace Modules\Core\Services\Frontend;
 
 use Cache;
 use App\Models\User;
+use Illuminate\Validation\ValidationException;
 use Modules\Core\Services\Traits\HasQuery;
 use Modules\Core\Exceptions\Frontend\Auth\UserNotFoundException;
-use Modules\Core\Exceptions\Frontend\Auth\UserPasswordCheckException;
-use Modules\Core\Exceptions\Frontend\Auth\UserPayPasswordCheckException;
 
 class UserService
 {
@@ -35,7 +34,7 @@ class UserService
     public function one($where = null, array $options = [])
     {
         return $this->queryOne($where, array_merge([
-            'exception' => function() {
+            'exception' => function () {
                 return new UserNotFoundException(trans('用户数据未找到'));
             }
         ], $options));
@@ -78,28 +77,33 @@ class UserService
         }
 
         return [
-            'isEmail'  => $isEmail,
+            'isEmail' => $isEmail,
             'isMobile' => $isMobile,
-            'user'     => $this->one($where, $options),
+            'user' => $this->one($where, $options),
         ];
     }
 
 
     /**
-     * @param $userId
-     * @param $payPassword
+     * @param $user
+     * @param $password
      * @param array $options
      *
      * @return bool
-     * @throws UserPasswordCheckException
      */
-    public function checkPassword($user, $payPassword, array $options = [])
+
+    public function checkPassword($user, $password, array $options = [])
     {
         $user = with_user($user);
 
-        if ( ! $user || ! $user->checkPassword($payPassword)) {
-            if ($options['exception'] ?? true) {
-                throw new UserPasswordCheckException('User auth failed.');
+        if (!$user || !$user->checkPassword($password)) {
+
+            $exception = $options['exception'] ?? true;
+
+            if ($exception) {
+                throw is_callable($exception) ? $exception() : ValidationException::withMessages([
+                    trans('密码验证失败')
+                ]);
             }
 
             return false;
@@ -114,15 +118,18 @@ class UserService
      * @param array $options
      *
      * @return bool
-     * @throws UserPayPasswordCheckException
      */
     public function checkPayPassword($user, $payPassword, array $options = [])
     {
         $user = with_user($user);
 
-        if ( ! $user || ! $user->checkPayPassword($payPassword)) {
-            if ($options['exception'] ?? true) {
-                throw new UserPayPasswordCheckException();
+        if (!$user || !$user->checkPayPassword($payPassword)) {
+            $exception = $options['exception'] ?? true;
+
+            if ($exception) {
+                throw is_callable($exception) ? $exception() : ValidationException::withMessages([
+                    trans('支付密码验证失败')
+                ]);;
             }
 
             return false;
@@ -130,4 +137,6 @@ class UserService
 
         return true;
     }
+
+
 }
