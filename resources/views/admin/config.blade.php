@@ -119,22 +119,6 @@
     </script>
 @endpush
 <style>
-    .layui-form-label {
-        box-sizing: initial;
-    }
-
-    .layui-form-item .layui-input-inline {
-        width: 400px !important;
-    }
-
-    .layui-upload-img {
-        width: 100px;
-        height: 100px;
-        margin:10px;
-    }
-    .layui-upload-list{
-        overflow: hidden;
-    }
     .image-preview-box{
         float: left;
         overflow: hidden;

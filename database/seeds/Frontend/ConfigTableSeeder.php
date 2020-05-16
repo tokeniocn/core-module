@@ -91,7 +91,7 @@ class ConfigTableSeeder extends Seeder
                     'key' => 'ios_version_beta_download',
                     'type' => 'text',
                     'title' => '预览版版本号',
-                    'value' => '/storage/5fe6b1e361530a28c7c942e1e41a1a51-12.jpg',
+                    'value' => '1.0.1',
                     'description' => '预览版下载地址',
                 ],
                 [
@@ -119,7 +119,7 @@ class ConfigTableSeeder extends Seeder
                     'key' => 'android_version_beta_download',
                     'type' => 'text',
                     'title' => '预览版版本号',
-                    'value' => '/storage/5fe6b1e361530a28c7c942e1e41a1a51-12.jpg',
+                    'value' => '1.0.1',
                     'description' => '预览版下载地址',
                 ]
             ],

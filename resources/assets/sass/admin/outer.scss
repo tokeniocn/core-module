@@ -9,7 +9,31 @@
   display: none;
 }
 
+
+.layui-form-label {
+  box-sizing: initial;
+}
+
+.layui-form-item .layui-input-inline {
+  width: 400px !important;
+}
+
+.layui-upload-img {
+  width: 100px;
+  height: 100px;
+  margin:10px;
+}
+.layui-upload-list{
+  overflow: hidden;
+}
+.layui-form-label{
+  width:200px;
+}
+
+
 /* 全局样式 */
 body {
   background-color: #f8f8f8;
 }
+
+
