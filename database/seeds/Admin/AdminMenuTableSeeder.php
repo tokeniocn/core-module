@@ -48,6 +48,7 @@ class AdminMenuTableSeeder extends Seeder
         $config = AdminMenu::create([
             'title' => '系统配置',
             'parent_id' => $system->id,
+            'icon' => 'toc',
             'url' => route('admin.config.index', [], false),
             'status' => 1,
         ]);
