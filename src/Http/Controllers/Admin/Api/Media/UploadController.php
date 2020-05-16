@@ -31,7 +31,6 @@ class UploadController extends Controller
             ->upload();
 
         $request->user()->attachMedia($media, ['author']);
-
         return $media;
     }
 }

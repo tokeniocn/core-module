@@ -14,12 +14,13 @@
 </head>
 <body class="layui-layout-body">
 <div id="LAY_app">
+
     <layout-main>
         <template v-slot:toolbar-right>
             <q-btn-dropdown stretch flat label="{{ $logged_in_user->username }}">
                 <q-list>
                     <q-item clickable v-ripple>
-                        <q-item-section lay-event="logout">退出</q-item-section>
+                        <q-item-section lay-event="logout">退出1</q-item-section>
                     </q-item>
                 </q-list>
             </q-btn-dropdown>

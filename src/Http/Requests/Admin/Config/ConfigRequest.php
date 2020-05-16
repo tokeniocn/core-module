@@ -1,11 +1,14 @@
 <?php
 
-namespace Modules\Core\Http\Requests\Frontend\Auth;
+namespace Modules\Core\Http\Requests\Admin\Config;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
-class ResetEmailNotificationRequest extends FormRequest
+class ConfigRequest extends FormRequest
 {
+
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,7 +16,7 @@ class ResetEmailNotificationRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->isAdmin();
     }
 
     /**
@@ -24,16 +27,7 @@ class ResetEmailNotificationRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => ['email'],
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-        ];
-    }
 }

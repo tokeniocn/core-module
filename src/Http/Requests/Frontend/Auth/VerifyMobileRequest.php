@@ -24,6 +24,7 @@ class VerifyMobileRequest extends FormRequest
     public function rules()
     {
         return [
+            'mobile' => ['required', 'regex:/^1[3456789]\d{9}$/'],
             'code' => ['required'],
         ];
     }

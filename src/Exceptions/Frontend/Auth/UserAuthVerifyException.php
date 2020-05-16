@@ -11,5 +11,4 @@ use Exception;
  */
 class UserAuthVerifyException extends Exception
 {
-
 }

@@ -130,7 +130,7 @@ trait UserMethod
     }
 
     /**
-     * @param $email
+     * @param $mobile
      *
      * @return $this
      */

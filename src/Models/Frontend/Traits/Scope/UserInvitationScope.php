@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Models\Frontend\Traits\Scope;
 
+use Carbon\Carbon;
+
 trait UserInvitationScope
 {
     /**
@@ -9,7 +11,7 @@ trait UserInvitationScope
      *
      * @return mixed
      */
-    public function scopeNotExpired($query)
+    public function scopeWhereNotExpired($query)
     {
         return $query->where('expired_at', '>=', Carbon::now());
     }

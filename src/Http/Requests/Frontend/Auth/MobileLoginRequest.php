@@ -3,10 +3,14 @@
 namespace Modules\Core\Http\Requests\Frontend\Auth;
 
 use App\Models\User;
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use LangleyFoxall\LaravelNISTPasswordRules\PasswordRules;
 
-class MobileRegisterNotificationRequest extends FormRequest
+/**
+ * Class MobileLoginRequest
+ */
+class MobileLoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,20 +30,17 @@ class MobileRegisterNotificationRequest extends FormRequest
     public function rules()
     {
         return [
-            'mobile' => [
+            'username' => [
                 'nullable',
-                Rule::phone()->country(config('core::register.mobile.countries', ['CN'])),
+                'string',
                 Rule::unique(User::table())
             ],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function messages()
-    {
-        return [
+            'mobile' => [
+                'required',
+                Rule::phone()->country(config('core::register.mobile.countries', ['CN'])),
+            ],
+            'code' => 'required',
+            'device' => 'string'
         ];
     }
 }

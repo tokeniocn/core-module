@@ -25,7 +25,7 @@ class ResetPayPasswordRequest extends FormRequest
     {
         return [
             'password' => ['required', 'regex:/^\d{6}$/', 'confirmed'],
-            'sms' => ['required'],
+            'code' => ['required'],
         ];
     }
 

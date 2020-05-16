@@ -2,14 +2,10 @@
 
 namespace Modules\Core\Http\Requests\Frontend\Auth;
 
-use Modules\Core\Rules\Auth\UnusedPassword;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
-use LangleyFoxall\LaravelNISTPasswordRules\PasswordRules;
 
-/**
- * Class ResetPasswordRequest.
- */
-class ResetPasswordRequest extends FormRequest
+class NotifyMobileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,8 +25,23 @@ class ResetPasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => ['required'],
-            'password' => ['string', 'min:8', 'max:30', 'confirmed']
+            'mobile' => [
+                'required',
+                Rule::phone()->country(config('core::register.mobile.countries', ['CN']))
+            ],
+            'type' => [
+                'required',
+                'string',
+            ]
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
         ];
     }
 }
