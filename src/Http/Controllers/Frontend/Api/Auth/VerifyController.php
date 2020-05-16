@@ -6,13 +6,13 @@ use App\Models\User;
 use Modules\Core\Models\Frontend\UserVerify;
 use Modules\Core\Http\Controllers\Controller;
 use Modules\Core\Events\Frontend\UserMobileVerified;
-use Modules\Core\Http\Requests\Frontend\Auth\ResetMobileRequest;
+use Modules\Core\Http\Requests\Frontend\Auth\ResetMobileNotificationRequest;
 use Modules\Core\Services\Frontend\UserVerifyService;
 
 class VerifyController extends Controller
 {
 
-    public function verifyMobile(ResetMobileRequest $request, UserVerifyService $userVerifyService)
+    public function verifyMobile(ResetMobileNotificationRequest $request, UserVerifyService $userVerifyService)
     {
         /** @var User $user */
         $user = $request->user();

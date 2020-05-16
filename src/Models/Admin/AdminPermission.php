@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Models\Admin;
 
+use Modules\Core\Models\Traits\HasFail;
 use Spatie\Permission\Models\Permission;
 use Modules\Core\Models\Traits\HasTableName;
 use Modules\Core\Models\Admin\Traits\Method\PermissionMethod;
@@ -9,7 +10,8 @@ use Modules\Core\Models\Admin\Traits\Method\RolePermission;
 
 class AdminPermission extends Permission
 {
-    use HasTableName,
+    use HasFail,
+        HasTableName,
         RolePermission,
         PermissionMethod;
 

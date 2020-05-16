@@ -37,7 +37,7 @@ trait HasQuery
     {
         $query = $this->model->newQuery();
 
-        if (empty($query)) {
+        if (empty($options)) {
             return $query;
         }
 
@@ -232,6 +232,12 @@ trait HasQuery
     public function create(array $data, array $options = [])
     {
         $model = $this->query()->newModelInstance($data);
+
+        $beforeSave = $options['beforeSave'] ?? false;
+
+        if (is_callable($beforeSave)) {
+            $beforeSave($model);
+        }
 
         if (!$model->save()) {
             // @param \Closure|bool $exception 自定义异常设置

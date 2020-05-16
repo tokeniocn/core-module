@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Models\Frontend;
 
+use Modules\Core\Models\Traits\HasFail;
 use Modules\Core\Models\Traits\HasTableName;
 use Modules\Core\Models\Frontend\Traits\Method\RoleMethod;
 use Spatie\Permission\Models\Role as BaseRole;
@@ -11,7 +12,8 @@ use Spatie\Permission\Models\Role as BaseRole;
  */
 class Role extends BaseRole
 {
-    use HasTableName,
+    use HasFail,
+        HasTableName,
         RoleMethod;
 
 

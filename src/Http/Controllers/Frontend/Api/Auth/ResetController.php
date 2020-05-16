@@ -4,27 +4,27 @@ namespace Modules\Core\Http\Controllers\Frontend\Api\Auth;
 
 use Illuminate\Http\Request;
 use Modules\Core\Http\Controllers\Controller;
+use Modules\Core\Http\Requests\Frontend\Auth\ResetPasswordRequest;
+use Modules\Core\Http\Requests\Frontend\Auth\ResetPayPasswordRequest;
+use Modules\Core\Http\Requests\Frontend\Auth\ResetEmailNotificationRequest;
+use Modules\Core\Http\Requests\Frontend\Auth\ResetMobileNotificationRequest;
 use Modules\Core\Http\Requests\Frontend\Auth\ResetPasswordByOldPasswordRequest;
 use Modules\Core\Http\Requests\Frontend\Auth\ResetPayPasswordByOldPasswordRequest;
-use Modules\Core\Http\Requests\Frontend\Auth\ResetEmailRequest;
-use Modules\Core\Http\Requests\Frontend\Auth\ResetMobileRequest;
-use Modules\Core\Http\Requests\Frontend\Auth\ResetPasswordRequest;
-use Modules\Core\Services\Frontend\UserVerifyService;
-use Modules\Core\Http\Requests\Frontend\Auth\ResetPayPasswordRequest;
+use Modules\Core\Services\Frontend\UserResetService;
 
 class ResetController extends Controller
 {
     /**
      * 请求修改邮箱(通过邮件)
      *
-     * @param ResetEmailRequest $request
-     * @param UserVerifyService $userVerifyService
+     * @param ResetEmailNotificationRequest $request
+     * @param UserResetService $userResetService
      *
      * @return array
      */
-    public function requestResetEmail(ResetEmailRequest $request, UserVerifyService $userVerifyService)
+    public function requestResetEmail(ResetEmailNotificationRequest $request, UserResetService $userResetService)
     {
-        $userVerifyService->resetEmailNotification($request->user(), $request->email);
+        $userResetService->resetEmailNotification($request->user(), $request->email);
 
         return [];
     }
@@ -32,14 +32,14 @@ class ResetController extends Controller
     /**
      * 请求修改手机号(通过短信验证码)
      *
-     * @param ResetMobileRequest $request
-     * @param UserVerifyService $userVerifyService
+     * @param ResetMobileNotificationRequest $request
+     * @param UserResetService $userResetService
      *
      * @return array
      */
-    public function requestResetMobile(ResetMobileRequest $request, UserVerifyService $userVerifyService)
+    public function requestResetMobile(ResetMobileNotificationRequest $request, UserResetService $userResetService)
     {
-        $userVerifyService->resetMobileNotification($request->user(), $request->mobile);
+        $userResetService->resetMobileNotification($request->user(), $request->mobile);
 
         return [];
     }
@@ -47,14 +47,15 @@ class ResetController extends Controller
     /**
      * 请求修改密码(通过短信验证码)
      *
-     * @param ResetMobileRequest $request
-     * @param UserVerifyService $userVerifyService
+     * @param ResetMobileNotificationRequest $request
+     * @param UserResetService $userResetService
+     *
      * @return array
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function requestResetPassword(ResetMobileRequest $request, UserVerifyService $userVerifyService)
+    public function requestResetPassword(ResetMobileNotificationRequest $request, UserResetService $userResetService)
     {
-        $userVerifyService->resetPasswordNotification($request->mobile);
+        $userResetService->resetPasswordNotification($request->mobile);
 
         return [];
     }
@@ -63,13 +64,13 @@ class ResetController extends Controller
      * 修改密码(通过短信验证码)
      *
      * @param ResetPasswordRequest $request
-     * @param UserVerifyService $userVerifyService
-     * @return bool
-     * @throws \Modules\Core\Exceptions\ModelSaveException
+     * @param UserResetService $userResetService
+     *
+     * @return array
      */
-    public function resetPassword(ResetPasswordRequest $request, UserVerifyService $userVerifyService)
+    public function resetPassword(ResetPasswordRequest $request, UserResetService $userResetService)
     {
-        $userVerifyService->resetPassword($request->sms, $request->mobile, $request->password);
+        $userResetService->resetPassword($request->mobile, $request->sms, $request->password);
 
         return [];
     }
@@ -78,31 +79,29 @@ class ResetController extends Controller
      * 修改密码(通过旧密码)
      *
      * @param ResetPasswordByOldPasswordRequest $request
-     * @param UserVerifyService $userVerifyService
+     * @param UserResetService $userResetService
      *
      * @return array
-     * @throws \Modules\Core\Exceptions\ModelSaveException
      */
-    public function resetPasswordByOldPassword(ResetPasswordByOldPasswordRequest $request, UserVerifyService $userVerifyService)
+    public function resetPasswordByOldPassword(ResetPasswordByOldPasswordRequest $request, UserResetService $userResetService)
     {
-        $userVerifyService->resetPasswordByOldPassword($request->user(), $request->old_password, $request->password);
+        $userResetService->resetPasswordByOldPassword($request->user(), $request->old_password, $request->password);
 
         return [];
     }
-
 
     /**
      * 修改交易密码请求(发送短信验证码)
      *
      * @param Request $request
-     * @param UserVerifyService $userVerifyService
+     * @param UserResetService $userResetService
      * @return array
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function requestResetPayPassword(Request $request, UserVerifyService $userVerifyService)
+    public function requestResetPayPassword(Request $request, UserResetService $userResetService)
     {
         $user = $request->user();
-        $userVerifyService->resetPayPasswordNotification($user, $user->mobile);
+        $userResetService->resetPayPasswordNotification($user, $user->mobile);
 
         return [];
     }
@@ -111,13 +110,13 @@ class ResetController extends Controller
      * 修改交易密码(通过短信验证码)
      *
      * @param ResetPayPasswordRequest $request
-     * @param UserVerifyService $userVerifyService
+     * @param UserResetService $userResetService
+     *
      * @return array
-     * @throws \Modules\Core\Exceptions\ModelSaveException
      */
-    public function resetPayPassword(ResetPayPasswordRequest $request, UserVerifyService $userVerifyService)
+    public function resetPayPassword(ResetPayPasswordRequest $request, UserResetService $userResetService)
     {
-        $userVerifyService->resetPayPassword($request->user(), $request->sms, $request->password);
+        $userResetService->resetPayPassword($request->user(), $request->sms, $request->password);
 
         return [];
     }
@@ -126,13 +125,13 @@ class ResetController extends Controller
      * 修改交易密码(通过旧交易密码)
      *
      * @param ResetPayPasswordByOldPasswordRequest $request
-     * @param UserVerifyService $userVerifyService
+     * @param UserResetService $userResetService
      *
      * @return array
      */
-    public function resetPayPasswordByOldPassword(ResetPayPasswordByOldPasswordRequest $request, UserVerifyService $userVerifyService)
+    public function resetPayPasswordByOldPassword(ResetPayPasswordByOldPasswordRequest $request, UserResetService $userResetService)
     {
-        $userVerifyService->resetPayPasswordByOldPassword($request->user(), $request->old_password, $request->password);
+        $userResetService->resetPayPasswordByOldPassword($request->user(), $request->old_password, $request->password);
 
         return [];
     }

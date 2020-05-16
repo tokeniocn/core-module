@@ -2,7 +2,8 @@
 
 namespace Modules\Core\Models\Frontend;
 
-use Modules\Core\Models\Traits\Uuid;
+use Modules\Core\Models\Traits\HasFail;
+use Modules\Core\Models\Traits\HasUuid;
 use Modules\Core\Models\Traits\HasTableName;
 use Modules\Core\Models\Traits\DynamicRelationship;
 use Modules\Core\Models\Frontend\Traits\Scope\UserScope;
@@ -22,7 +23,8 @@ use Spatie\Permission\Traits\HasRoles;
  */
 abstract class BaseUser extends Authenticatable
 {
-    use Uuid,
+    use HasUuid,
+        HasFail,
         HasTableName,
         Mediable,
         HasRoles,

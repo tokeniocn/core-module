@@ -21,9 +21,11 @@ trait ConfigStore
     {
         $path = $this->getSettingsCachedPath();
 
-        if (file_exists($path)) {
-            $this->set(require $path);
+        if (!file_exists($path)) {
+            $this->cacheSettingsToFile();
         }
+
+        $this->set(require $path);
     }
 
     public function getSettingsCachedPath()
@@ -39,7 +41,7 @@ trait ConfigStore
         foreach ($modelClass::all() as $setting) {
             $key = $setting->module == '*' ? $setting->key : $setting->module . '::';
             $items[$key] =  array_merge($items[$key] ?? [], [
-                $key => $setting->value
+                $setting->key => $setting->value
             ]);
         }
 

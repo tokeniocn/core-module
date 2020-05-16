@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid as PackageUuid;
 /**
  * Trait Uuid.
  */
-trait Uuid
+trait HasUuid
 {
     /**
      * @param $query

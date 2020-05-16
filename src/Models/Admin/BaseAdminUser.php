@@ -2,7 +2,8 @@
 
 namespace Modules\Core\Models\Admin;
 
-use Modules\Core\Models\Traits\Uuid;
+use Modules\Core\Models\Traits\HasFail;
+use Modules\Core\Models\Traits\HasUuid;
 use Modules\Core\Models\Traits\HasTableName;
 use Modules\Core\Models\Admin\AdminPermission;
 use Modules\Core\Models\Traits\DynamicRelationship;
@@ -16,7 +17,8 @@ use Spatie\Permission\Traits\HasRoles;
 
 abstract class BaseAdminUser extends Authenticatable
 {
-    use Uuid,
+    use HasUuid,
+        HasFail,
         HasTableName,
         HasRoles,
         HasApiTokens,

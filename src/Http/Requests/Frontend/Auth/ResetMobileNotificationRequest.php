@@ -4,7 +4,7 @@ namespace Modules\Core\Http\Requests\Frontend\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ResetMobileRequest extends FormRequest
+class ResetMobileNotificationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

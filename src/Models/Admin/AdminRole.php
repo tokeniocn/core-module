@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Models\Admin;
 
+use Modules\Core\Models\Traits\HasFail;
 use Spatie\Permission\Models\Role;
 use Modules\Core\Models\Traits\HasTableName;
 use Modules\Core\Models\Admin\Traits\Method\RoleMethod;
@@ -9,7 +10,8 @@ use Modules\Core\Models\Admin\Traits\Method\RolePermission;
 
 class AdminRole extends Role
 {
-    use HasTableName,
+    use HasFail,
+        HasTableName,
         RolePermission,
         RoleMethod;
 

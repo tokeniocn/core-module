@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Models\Frontend;
 
+use Modules\Core\Models\Traits\HasFail;
 use Modules\Core\Models\Traits\HasTableName;
 use Modules\Core\Models\Frontend\Traits\Method\PermissionMethod;
 use Spatie\Permission\Models\Permission as BasePermission;
@@ -11,6 +12,7 @@ use Spatie\Permission\Models\Permission as BasePermission;
  */
 class Permission extends BasePermission
 {
-    use HasTableName,
+    use HasFail,
+        HasTableName,
         PermissionMethod;
 }

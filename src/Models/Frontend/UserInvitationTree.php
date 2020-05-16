@@ -4,12 +4,14 @@ namespace Modules\Core\Models\Frontend;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Models\Traits\HasFail;
 use Modules\Core\Models\Traits\HasTableName;
 use Modules\Core\Models\Traits\DynamicRelationship;
 
 class UserInvitationTree extends Model
 {
-    use HasTableName,
+    use HasFail,
+        HasTableName,
         DynamicRelationship;
 
     /**

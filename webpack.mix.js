@@ -1,11 +1,9 @@
 const mix = require("laravel-mix");
 require("laravel-mix-merge-manifest");
 
-let publicPath = "../public";
+let publicPath = "../../../public"; // 默认在vendor包中
 
-if (__dirname.indexOf("/vendor/tokeniocn/") >= 0) {
-  publicPath = "../../../public";
-} else if (__dirname.indexOf("/modules/") >= 0) {
+if (__dirname.indexOf("/modules/") >= 0) {
   publicPath = "../../public";
 }
 

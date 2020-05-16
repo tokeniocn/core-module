@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Notifications\Frontend;
 
+use Illuminate\Notifications\AnonymousNotifiable;
 use Modules\Core\Models\Frontend\UserVerify;
 use Modules\Core\Messages\Frontend\UserVerifyMobileMessage;
 use Modules\Core\Notifications\Middleware\BeforeSend;
@@ -13,8 +14,6 @@ use Leonis\Notifications\EasySms\Channels\EasySmsChannel;
 class UserMobileVerify extends Notification implements ShouldQueue
 {
     use Queueable;
-
-
 
     /**
      * @var UserVerify
@@ -42,7 +41,13 @@ class UserMobileVerify extends Notification implements ShouldQueue
     public function beforeSend($job)
     {
         foreach ($job->notifiables as $notifiable) {
-            $notifiable->withNotificationMobile($this->userVerify->key);
+            if (method_exists($notifiable, 'withNotificationMobile')) {
+                $notifiable->withNotificationMobile($this->userVerify->key);
+            } elseif ($notifiable instanceof AnonymousNotifiable) {
+                foreach ($job->channels as $channel) {
+                    $notifiable->route($channel, $this->userVerify->key);
+                }
+            }
         }
     }
 
@@ -55,8 +60,6 @@ class UserMobileVerify extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        $notifiable->withNotificationMobile($this->userVerify->key);
-
         return [EasySmsChannel::class];
     }
 
