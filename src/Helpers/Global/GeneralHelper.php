@@ -1,6 +1,7 @@
 <?php
-use App\Models\User;
+
 use App\Models\AdminUser;
+use App\Models\User;
 use Modules\Core\Services\Frontend\UserService;
 
 if (! function_exists('with_admin_user')) {
@@ -63,7 +64,9 @@ if (! function_exists('store_config')) {
      *
      * @return mixed
      */
-    function store_config($key, $value, array $options = []) {
+    function store_config($key, $value, array $options = [])
+    {
         return config()->store($key, $value, $options);
     }
 }
+

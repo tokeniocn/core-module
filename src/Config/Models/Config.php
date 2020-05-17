@@ -16,23 +16,12 @@ class Config extends Model
      */
     protected $casts = [
         'value' => 'json',
-        'schema' => 'json'
     ];
 
     protected $fillable = [
         'key',
         'value',
-        'schema',
         'module',
         'description',
     ];
-
-    public function setValueAttribute($value)
-    {
-        $schema = $this->schema;
-        if (!empty($schema)) {
-
-        }
-        $this->attributes['value'] = $value;
-    }
 }

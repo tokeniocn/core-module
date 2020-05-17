@@ -2,7 +2,6 @@
 
 use Modules\Core\Http\Controllers\Admin\Module\ModuleController;
 
-// Module Management
 Route::group([
     'namespace'  => 'Module',
     'as'         => 'module.',

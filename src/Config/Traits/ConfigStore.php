@@ -2,10 +2,10 @@
 
 namespace Modules\Core\Config\Traits;
 
-use Illuminate\Support\Arr;
-use UnexpectedValueException;
-use Illuminate\Filesystem\Filesystem;
 use InvalidArgumentException;
+use UnexpectedValueException;
+use Illuminate\Support\Arr;
+use Illuminate\Filesystem\Filesystem;
 use Modules\Core\Config\Models\Config;
 
 trait ConfigStore
@@ -52,45 +52,6 @@ trait ConfigStore
             ->put($path, '<?php return ' . var_export($items, true) . ';' . PHP_EOL);
     }
 
-    protected function normalizeSchema(array $value)
-    {
-        if (!Arr::isAssoc($value)) {
-            throw new UnexpectedValueException('The config value type must be assoc array.');
-        }
-
-        $schema = [];
-        $newValue = [];
-        foreach ($value as $key => $item) {
-            if (is_string($item)) {
-                $item = [
-                    'value' => $item,
-                    'type' => 'text',
-                ];
-            } elseif (is_array($item) && !array_key_exists('value', $item)) {
-                $item = [
-                    'value' => $item,
-                    'type' => 'json'
-                ];
-            }
-            $item = array_merge([
-                'key' => $key,
-                'type' => is_string($item['value']) ? 'text' : 'json',
-                'value' => '',
-                'title' => $key,
-                'description' => ''
-            ], $item);
-
-            $schema[$key] = $item;
-            $newValue[$key] = $item['value'];
-        }
-
-        return [
-            'value' => $newValue,
-            'schema' => $schema
-        ];
-
-    }
-
     /**
      * @param string $key
      * @param mixed $value
@@ -115,13 +76,6 @@ trait ConfigStore
                 'key' => $key,
                 'module' => $module,
             ]);
-            if ($options['schema'] ?? false) {
-                [
-                    'value' => $value,
-                    'schema' => $schema
-                ] = $this->normalizeSchema($value);
-                $model->schema = $schema;
-            }
 
             $model->value = $value;
             $model->description = $options['description'] ?? '';
@@ -134,6 +88,4 @@ trait ConfigStore
             $this->cacheSettingsToFile();
         }
     }
-
-
 }
