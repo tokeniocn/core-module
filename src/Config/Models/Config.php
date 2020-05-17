@@ -1,13 +1,11 @@
 <?php
 
-namespace Modules\Core\Models;
+namespace Modules\Core\Config\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Modules\Core\Models\Admin\Traits\Method\ConfigMethod;
 
 class Config extends Model
 {
-    use ConfigMethod;
 
     /**
      * @var string
@@ -18,12 +16,23 @@ class Config extends Model
      */
     protected $casts = [
         'value' => 'json',
+        'schema' => 'json'
     ];
 
     protected $fillable = [
         'key',
         'value',
+        'schema',
         'module',
-        'remark'
+        'description',
     ];
+
+    public function setValueAttribute($value)
+    {
+        $schema = $this->schema;
+        if (!empty($schema)) {
+
+        }
+        $this->attributes['value'] = $value;
+    }
 }

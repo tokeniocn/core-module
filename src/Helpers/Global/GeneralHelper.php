@@ -57,10 +57,13 @@ if (! function_exists('with_user_id')) {
 
 if (! function_exists('store_config')) {
     /**
-     * @param string|array $key
+     * @param string $key
      * @param mixed $value
+     * @param array $options
+     *
+     * @return mixed
      */
-    function store_config($key, $value = null) {
-        return config()->store($key, $value);
+    function store_config($key, $value, array $options = []) {
+        return config()->store($key, $value, $options);
     }
 }

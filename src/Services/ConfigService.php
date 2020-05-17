@@ -1,46 +1,25 @@
 <?php
 
-
-namespace Modules\Core\Services\Admin;
-
+namespace Modules\Core\Services;
 
 use Modules\Core\Config\Repository;
 use Modules\Core\Models\Config;
 use Modules\Core\Services\Traits\HasListConfig;
-use Modules\Core\Services\Traits\HasQuery;
 
 class ConfigService
 {
-    use HasQuery;
+    use HasListConfig;
 
-    public $key = 'config';
+    protected $key = 'core::config';
 
-    public function __construct(Config $model)
+    public function __construct($key, Config $model)
     {
         $this->model = $model;
     }
 
-
-    /**
-     * @param $where
-     * @param array $options
-     * @return array
-     */
-    public function listForAdminEdit($where, $options = [])
-    {
-        $data = $this->all($where, $options);
-        $configList = [];
-        foreach ($data as $config) {
-            foreach ($config->value as $item) {
-                $configList[] = $item;
-            }
-        }
-        return $configList;
-    }
-
-
     /**
      * @param array $data
+     *
      * @return bool
      */
     public function setConfig(array $data)
