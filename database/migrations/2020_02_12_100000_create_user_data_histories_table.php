@@ -16,8 +16,8 @@ class CreateUserDataHistoriesTable extends Migration
             $table->unsignedBigInteger('user_id')->default(0)->comment('关联用户');
             $table->string('data')->default('')->comment('历史记录值');
             $table->string('type', '30')->default('')->comment('数据类型');
-            $table->dateTime('created_at')->nullable();
-            $table->dateTime('updated_at')->nullable();
+            $table->dateTimeTz('created_at')->nullable();
+            $table->dateTimeTz('updated_at')->nullable();
 
             $table->index(['user_id', 'type'], 'user_data_type');
         });

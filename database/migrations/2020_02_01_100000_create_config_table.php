@@ -19,8 +19,8 @@ class CreateConfigTable extends Migration
             $table->string('module', 100)->nullable()->default('*')->comment('专属模块名,默认*表示全局');
             $table->json('value')->comment('设置内容');
             $table->text('description')->comment('描述');
-            $table->dateTime('created_at')->nullable();
-            $table->dateTime('updated_at')->nullable();
+            $table->dateTimeTz('created_at')->nullable();
+            $table->dateTimeTz('updated_at')->nullable();
         });
     }
 

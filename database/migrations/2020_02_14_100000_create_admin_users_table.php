@@ -19,13 +19,13 @@ class CreateAdminUsersTable extends Migration
             $table->string('username')->comment('用户名');
             $table->string('avatar')->nullable()->comment('用户头像');
             $table->string('password')->comment('密码');
-            $table->dateTime('password_changed_at')->nullable();
+            $table->dateTimeTz('password_changed_at')->nullable();
             $table->unsignedTinyInteger('active')->default(1)->comment('是否启用');
-            $table->timestamp('last_login_at')->nullable();
+            $table->dateTimeTz('last_login_at')->nullable();
             $table->string('last_login_ip')->nullable();
-            $table->dateTime('created_at')->nullable();
-            $table->dateTime('updated_at')->nullable();
-            $table->softDeletes();
+            $table->dateTimeTz('created_at')->nullable();
+            $table->dateTimeTz('updated_at')->nullable();
+            $table->dateTimeTz('deleted_at')->nullable();
         });
     }
 
