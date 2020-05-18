@@ -176,8 +176,8 @@
 <body>
 <div class="register">
     <div class="register-title">
-        <div class="title ml">Creat New Account</div>
-        <div class="content ml">致富，从成为IPW用户开始</div>
+        <div class="title ml">用户注册</div>
+        <div class="content ml">Cloud Wallet.</div>
     </div>
 
     <div class="form">
@@ -219,17 +219,17 @@
 
 <div class="advertisement" id="advertisements">
     <div class="advertisement-img">
-        <img style="width:100%" src="./ipw_download.png" alt="">
+        <img style="width:100%" src="./images/logo.png" alt="">
     </div>
     <div class="advertisement-content">
-        <div style="font-size:15px">IPW官方APP</div>
-        <div style="font-size:12px;margin-top:5px;">致富，从IPW开始</div>
+        <div style="font-size:15px">Cloud Wallet</div>
+        <div style="font-size:12px;margin-top:5px;">Cloud Wallet Description</div>
     </div>
     <div class="advertisement-btn">
         <a style="text-decoration:none;color:#474747" href="{$ios}">下载</a>
     </div>
     <div class="close" onclick="closeAd()">
-        <img style="width:100%" src="./close.png" alt="">
+        <img style="width:100%" src="./images/close.png" alt="">
     </div>
 </div>
 </body>
@@ -237,7 +237,7 @@
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/layer/1.8.5/layer.min.js"></script>
 <script>
-    var host = 'http://tianyuan.test'
+    var host = window.location.origin;
     $('#btn-submit').click(function () {
         var mobile = $("input[name='mobile']").val();
         var password = $("input[name='password']").val();
