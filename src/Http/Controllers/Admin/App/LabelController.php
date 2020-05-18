@@ -22,6 +22,10 @@ class LabelController extends Controller
         ]);
     }
 
+    /**
+     * @param $data
+     * @return mixed
+     */
     protected function normalizeLabel($data)
     {
         return $data;

@@ -24,6 +24,10 @@ class LabelService
         $this->model = $model;
     }
 
+    /**
+     * @param array $data
+     * @param array $options
+     */
     public function update(array $data, array $options = [])
     {
 
