@@ -7,6 +7,8 @@ use Modules\Core\Seeds\Admin\AdminUserTableSeeder;
 use Modules\Core\Seeds\Admin\AdminMenuTableSeeder;
 use Modules\Core\Seeds\Admin\AdminRolePermissionTableSeeder;
 use Modules\Core\Seeds\Frontend\Auth\UserTableSeeder;
+use Modules\Core\Seeds\Frontend\ConfigTableSeeder;
+use Modules\Core\Seeds\Frontend\LabelDataSeeder;
 
 
 class CoreDatabaseSeeder extends Seeder
@@ -25,7 +27,7 @@ class CoreDatabaseSeeder extends Seeder
         $this->call(AdminRolePermissionTableSeeder::class);
         $this->call(AdminUserTableSeeder::class);
         $this->call(AdminMenuTableSeeder::class);
-
+        $this->call(LabelDataSeeder::class);
         // Frontend
         $this->call(UserTableSeeder::class);
     }

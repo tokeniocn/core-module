@@ -62,6 +62,14 @@ class AdminMenuTableSeeder extends Seeder
             'status' => 1,
         ]);
 
+        $label_setting = AdminMenu::create([
+            'title' => 'Label设置',
+            'parent_id' => $app->id,
+            'icon' => 'phonelink_setup',
+            'url' => route('admin.label.index', [], false),
+            'status' => 1,
+        ]);
+
 //        $queue = AdminMenu::create([
 //            'title' => '队列监控',
 //            'parent_id' => $system->id,

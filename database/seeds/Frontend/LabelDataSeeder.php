@@ -4,9 +4,10 @@
 namespace Modules\Core\Seeds\Frontend;
 
 
+use Illuminate\Database\Seeder;
 use Modules\Core\Models\ListData;
 
-class LabelDataSeeder
+class LabelDataSeeder extends Seeder
 {
     /**
      * Run the database seed.
@@ -55,8 +56,8 @@ class LabelDataSeeder
 
         ];
         foreach ($labelList as $label) {
-            $label['key'] = $key;
-            $labelList['value'] = $value;
+            $label['type'] = $key;
+            $label['value'] = $value;
             ListData::create($label);
         }
 
