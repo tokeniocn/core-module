@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Notifications\Frontend;
 
+use Illuminate\Notifications\AnonymousNotifiable;
 use Modules\Core\Models\Frontend\UserVerify;
 use Modules\Core\Messages\Frontend\UserVerifyEmailMessage;
 use Modules\Core\Notifications\Middleware\BeforeSend;
@@ -29,6 +30,26 @@ class UserEmailVerify extends Notification implements ShouldQueue
         $this->userVerify = $userVerify;
     }
 
+    public function middleware()
+    {
+        return [
+            BeforeSend::class
+        ];
+    }
+
+    public function beforeSend($job)
+    {
+        foreach ($job->notifiables as $notifiable) {
+            if (method_exists($notifiable, 'withNotificationEmail')) {
+                $notifiable->withNotificationEmail($this->userVerify->key);
+            } elseif ($notifiable instanceof AnonymousNotifiable) {
+                foreach ($job->channels as $channel) {
+                    $notifiable->route($channel, $this->userVerify->key);
+                }
+            }
+        }
+    }
+
     /**
      * Get the notification's delivery channels.
      *
@@ -50,7 +71,6 @@ class UserEmailVerify extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $notifiable->withNotificationEmail($this->userVerify->key);
         return new UserVerifyEmailMessage($this->userVerify);
     }
 }

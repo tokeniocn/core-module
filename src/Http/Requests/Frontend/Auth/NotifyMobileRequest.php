@@ -2,9 +2,10 @@
 
 namespace Modules\Core\Http\Requests\Frontend\Auth;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ResetEmailNotificationRequest extends FormRequest
+class NotifyMobileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +25,14 @@ class ResetEmailNotificationRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => ['email'],
+            'mobile' => [
+                'required',
+                Rule::phone()->country(config('core::register.mobile.countries', ['CN']))
+            ],
+            'type' => [
+                'required',
+                'string',
+            ]
         ];
     }
 

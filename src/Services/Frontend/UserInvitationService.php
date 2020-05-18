@@ -2,19 +2,18 @@
 
 namespace Modules\Core\Services\Frontend;
 
-use App\Models\User;
-use Carbon\Carbon;
 use Closure;
+use UnexpectedValueException;
+use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Modules\Core\Events\Frontend\UserInvited;
-use Modules\Core\Exceptions\ModelSaveException;
 use Modules\Core\Models\Frontend\UserInvitation;
 use Modules\Core\Models\Frontend\UserInvitationTree;
 use Modules\Core\Services\Traits\HasQuery;
-use PascalDeVink\ShortUuid\ShortUuid;
-use UnexpectedValueException;
+
 
 class UserInvitationService
 {
@@ -240,11 +239,8 @@ class UserInvitationService
 
         $invitation = $this->getByToken($token, ['available' => true]);
 
-        $invitation->setUsed($usedUser);
-
-        if (!$invitation->save()) {
-            throw ModelSaveException::withModel($invitation);
-        }
+        $invitation->setUsed($usedUser)
+            ->saveIfFail();
 
         event(new UserInvited($invitation));
 
@@ -264,11 +260,8 @@ class UserInvitationService
         $invitation = $this->getByToken($token, ['available' => true]);
 
         $usedInvitation = $invitation->replicate();
-        $usedInvitation->setUsed($usedUser);
-
-        if (!$usedInvitation->save()) {
-            throw ModelSaveException::withModel($usedInvitation);
-        }
+        $usedInvitation->setUsed($usedUser)
+            ->saveIfFail();
 
         event(new UserInvited($usedInvitation));
 

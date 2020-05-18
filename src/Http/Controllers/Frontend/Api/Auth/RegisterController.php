@@ -7,7 +7,6 @@ use Modules\Core\Http\Controllers\Controller;
 use Modules\Core\Services\Frontend\UserRegisterService;
 use Modules\Core\Http\Requests\Frontend\Auth\RegisterRequest;
 use Modules\Core\Http\Requests\Frontend\Auth\MobileRegisterRequest;
-use Modules\Core\Http\Requests\Frontend\Auth\MobileRegisterNotificationRequest;
 
 /**
  * Class RegisterController.
@@ -25,13 +24,6 @@ class RegisterController extends Controller
         $user = $userRegisterService->register($request->validationData());
 
         return $user->refresh();
-    }
-
-    public function requestRegisterByMobile(MobileRegisterNotificationRequest $request, UserRegisterService $userRegisterService)
-    {
-        $userRegisterService->registerByMobileNotification($request->mobile);
-
-        return [];
     }
 
     public function registerByMobile(MobileRegisterRequest $request, UserRegisterService $userRegisterService)

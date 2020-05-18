@@ -14,39 +14,51 @@ class AdminMenuTableSeeder extends Seeder
      */
     public function run()
     {
+        // 用户管理
         $user = AdminMenu::create([
             'title' => '用户管理',
-            'icon' => 'layui-icon-user',
+            'icon' => 'perm_identity',
             'url' => '',
             'status' => 1,
         ]);
 
+        // 系统管理
         $system = AdminMenu::create([
             'title' => '系统管理',
-            'icon' => 'icon-set',
+            'icon' => 'settings',
             'url' => '',
             'status' => 1,
         ]);
 
-        $role = AdminMenu::create([
+        $system_role = AdminMenu::create([
             'title' => '角色权限',
             'parent_id' => $system->id,
+            'icon' => 'verified_user',
             'url' => route('admin.auth.roles', [], false),
             'status' => 1,
         ]);
 
-        $module = AdminMenu::create([
+        $system_module = AdminMenu::create([
             'title' => '模块管理',
             'parent_id' => $system->id,
+            'icon' => 'extension',
             'url' => route('admin.module.modules', [], false),
             'status' => 1,
         ]);
 
+        // APP设置
+        $app = AdminMenu::create([
+            'title' => 'App配置',
+            'icon' => 'stay_primary_portrait',
+            'url' => '',
+            'status' => 1,
+        ]);
 
-        $config = AdminMenu::create([
-            'title' => '系统配置',
-            'parent_id' => $system->id,
-            'url' => route('admin.config.index', [], false),
+        $app_settings = AdminMenu::create([
+            'title' => '基本设置',
+            'parent_id' => $app->id,
+            'icon' => 'phonelink_setup',
+            'url' => route('admin.app.settings.index', [], false),
             'status' => 1,
         ]);
 

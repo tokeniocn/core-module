@@ -16,9 +16,9 @@ class CreateConfigTable extends Migration
         Schema::create('config', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('key', 100)->default('')->unique()->comment('设置名称');
-            $table->json('value')->comment('设置内容');
             $table->string('module', 100)->nullable()->default('*')->comment('专属模块名,默认*表示全局');
-            $table->string('remark')->nullable()->default('')->comment('描述');
+            $table->json('value')->comment('设置内容');
+            $table->text('description')->comment('描述');
             $table->dateTime('created_at')->nullable();
             $table->dateTime('updated_at')->nullable();
         });

@@ -16,9 +16,11 @@ Route::group([
     'namespace' => 'Auth',
     'as' => 'auth.'
 ], function () {
+
     Route::group(['middleware' => 'guest'], function () {
 
         Route::post('v1/login', [LoginController::class, 'loginByGuessString'])->name('login'); // 密码登录
+        Route::post('v1/mobile_login', [LoginController::class, 'loginByMobile'])->name('login.mobile'); // 手机号登录
         Route::post('v1/register', [RegisterController::class, 'register'])->name('register'); // 用户注册
         Route::get('v1/mobile_register', [RegisterController::class, 'requestRegisterByMobile'])->name('register.mobile.request'); // 手机号注册获取验证码
         Route::post('v1/mobile_register', [RegisterController::class, 'registerByMobile'])->name('register.mobile'); // 手机号注册

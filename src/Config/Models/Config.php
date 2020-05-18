@@ -1,13 +1,11 @@
 <?php
 
-namespace Modules\Core\Models;
+namespace Modules\Core\Config\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Modules\Core\Models\Admin\Traits\Method\ConfigMethod;
 
 class Config extends Model
 {
-    use ConfigMethod;
 
     /**
      * @var string
@@ -24,6 +22,6 @@ class Config extends Model
         'key',
         'value',
         'module',
-        'remark'
+        'description',
     ];
 }

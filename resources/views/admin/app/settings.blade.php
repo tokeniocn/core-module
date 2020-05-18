@@ -3,7 +3,7 @@
 @section('content')
     <div class="layui-card">
         <div class="layui-card-body">
-            <form method="post" class="layui-form" action="{{route('admin.config.update')}}">
+            <form method="post" class="layui-form" action="{{route('admin.app.settings.update')}}">
                 {{csrf_field()}}
                 @foreach($configList as $config)
                     <div class="layui-form-item">
@@ -39,7 +39,22 @@
                                         </div>
                                     </blockquote>
                                 </div>
-
+                            @elseif($config['type'] === 'radio')
+                                @foreach($config['data'] as $key)
+                                    <input type="radio" name="{{$config['key']}}" name="{{$key}}" title="{{$key}}"
+                                           @if($config['value'] == $key)
+                                           checked
+                                        @endif
+                                    />
+                                @endforeach
+                            @elseif($config['type'] === 'checkbox')
+                                @foreach($config['data'] as $key)
+                                    <input type="checkbox" name="{{$config['key']}}[{{$key}}]" lay-skin="primary" title="{{$key}}"
+                                        @if(in_array($key, $config['value']))
+                                           checked
+                                        @endif
+                                    />
+                                @endforeach
                             @else
                                 <input type="text" name="{{$config['key']}}" value="{{$config['value']}}"
                                        placeholder="请输入{{$config['title']}}" autocomplete="off" class="layui-input">
