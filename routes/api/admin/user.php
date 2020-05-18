@@ -2,7 +2,7 @@
 
 use Modules\Core\Http\Controllers\Admin\Api\User\UserController;
 
-// Module Management
+// User Management
 Route::group([
     'namespace' => 'User',
     'as' => 'user.',
