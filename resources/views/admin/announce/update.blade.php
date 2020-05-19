@@ -3,12 +3,12 @@
 @section('content')
     <div class="layui-card">
         <div class="layui-card-body">
-            <form method="post" class="layui-form" action="{{route('admin.notice.update',['key'=>$notice['key']])}}">
+            <form method="post" class="layui-form" action="{{route('admin.announce.update',['key'=>$announce['key']])}}">
                 {{csrf_field()}}
                 <div class="layui-form-item">
                     <label class="layui-form-label">标题</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="title" value="{{$notice['value']['title']}}"
+                        <input type="text" name="title" value="{{$announce['value']['title']}}"
                                placeholder="请输入标题" autocomplete="off" class="layui-input">
                     </div>
                 </div>
@@ -18,15 +18,15 @@
                     <div class="layui-input-inline">
                         <textarea type="text" id="content" name="content"
                                   placeholder="请输入公告内容" autocomplete="off" class="layui-textarea">
-                            {{$notice['value']['content']}}
+                            {{$announce['value']['content']}}
                         </textarea>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label"></label>
                     <div class="layui-input-inline">
-                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="lay-notice">立即提交</button>
-                        <a  href="{{route('admin.notice.index')}}" class="layui-btn layui-btn-primary" >返回</a>
+                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="lay-announce">立即提交</button>
+                        <a  href="{{route('admin.announce.index')}}" class="layui-btn layui-btn-primary" >返回</a>
                     </div>
                 </div>
             </form>

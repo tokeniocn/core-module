@@ -3,7 +3,7 @@
 @section('content')
     <div class="layui-card">
         <div class="layui-card-body">
-            <table id="lay-notice" lay-filter="lay-notice"></table>
+            <table id="lay-announce" lay-filter="lay-announce"></table>
         </div>
     </div>
     <script type="text/html" id="action-box">
@@ -21,8 +21,8 @@
                 , form = layui.form
                 , table = layui.table;
             table.render({
-                elem: '#lay-notice',
-                url: '{{ route('admin.api.notice.index') }}',
+                elem: '#lay-announce',
+                url: '{{ route('admin.api.announce.index') }}',
                 toolbar: '#bar-header-box',
                 defaultToolbar: ['filter', {
                     title: '提示'
@@ -61,15 +61,15 @@
                 },
             });
 
-            table.on('toolbar(lay-notice)', function (obj) {
+            table.on('toolbar(lay-announce)', function (obj) {
                 var checkStatus = table.checkStatus(obj.config.id);
                 switch (obj.event) {
                     case 'add':
-                        location.href = '{{ route('admin.notice.create') }}';
+                        location.href = '{{ route('admin.announce.create') }}';
                         break;
                 }
             });
-            table.on('tool(lay-notice)', function (obj) {
+            table.on('tool(lay-announce)', function (obj) {
                 var data = obj.data;
                 if(obj.event === 'del'){
                     layer.confirm('真的删除行么', function(index){
@@ -77,7 +77,7 @@
                         layer.close(index);
                     });
                 } else if(obj.event === 'edit'){
-                    location.href = '{{ route('admin.notice.update',['key' => '!key!']) }}'.replace('!key!', data.key)
+                    location.href = '{{ route('admin.announce.update',['key' => '!key!']) }}'.replace('!key!', data.key)
                 }
             });
 

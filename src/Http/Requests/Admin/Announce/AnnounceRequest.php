@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Core\Http\Requests\Admin\Notice;
+namespace Modules\Core\Http\Requests\Admin\Announce;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class NoticeRequest extends FormRequest
+class AnnounceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

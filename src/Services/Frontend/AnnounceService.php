@@ -7,7 +7,7 @@ use Modules\Core\Models\ListData;
 use Modules\Core\Services\Traits\HasListData;
 use Illuminate\Support\Str;
 
-class NoticeService
+class AnnounceService
 {
     use HasListData {
         all as queryAll;
@@ -21,7 +21,7 @@ class NoticeService
     /**
      * @var string
      */
-    protected $type = 'notice';
+    protected $type = 'announce';
 
     public function __construct(ListData $model)
     {
@@ -44,13 +44,13 @@ class NoticeService
 
     public function update(string $key, array $data, $options = [])
     {
-        $notice = $this->getByKey($key);
-        $notice->value = [
+        $announce = $this->getByKey($key);
+        $announce->value = [
             'title' => $data['title'],
             'content' => $data['content']
         ];
-        $notice->saveIfFail();
-        return $notice;
+        $announce->saveIfFail();
+        return $announce;
     }
 
 
@@ -65,7 +65,7 @@ class NoticeService
             if (!$keyExists) {
                 return $key;
             } elseif ($i > $max) {
-                throw new UnexpectedValueException('Max generate notice key times.');
+                throw new UnexpectedValueException('Max generate announce key times.');
             }
             $i++;
         }
@@ -78,13 +78,13 @@ class NoticeService
 
     public function all($where = null, array $options = [])
     {
-        $noticeList = $this->queryAll($where, $options);
-        $noticeList = $noticeList->toArray();
-        $noticeList['data'] = $this->normalizeNotice($noticeList['data']);
-        return $noticeList;
+        $announceList = $this->queryAll($where, $options);
+        $announceList = $announceList->toArray();
+        $announceList['data'] = $this->normalizeAnnounce($announceList['data']);
+        return $announceList;
     }
 
-    public function normalizeNotice(array $data)
+    public function normalizeAnnounce(array $data)
     {
         return array_map(function ($item) {
 //            $item = array_merge($item, $item['value']);

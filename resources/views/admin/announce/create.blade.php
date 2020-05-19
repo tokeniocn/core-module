@@ -3,7 +3,7 @@
 @section('content')
     <div class="layui-card">
         <div class="layui-card-body">
-            <form method="post" class="layui-form" action="{{route('admin.api.notice.create')}}">
+            <form method="post" class="layui-form" action="{{route('admin.api.announce.create')}}">
                 {{csrf_field()}}
                 <div class="layui-form-item">
                     <label class="layui-form-label">标题</label>
@@ -24,7 +24,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label"></label>
                     <div class="layui-input-inline">
-                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="lay-notice">立即提交</button>
+                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="lay-announce">立即提交</button>
                     </div>
                 </div>
             </form>
