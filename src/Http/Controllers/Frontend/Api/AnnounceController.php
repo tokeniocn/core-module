@@ -17,6 +17,6 @@ class AnnounceController extends Controller
 
     public function info(Request $request, AnnounceService $announceService)
     {
-        return $announceService->getByKey($request->key);
+        return $announceService->getById($request->id);
     }
 }

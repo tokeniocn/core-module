@@ -36,14 +36,14 @@ class AnnounceController extends Controller
     public function edit(Request $request, AnnounceService $announceService)
     {
         return view('core::admin.announce.update', [
-            'announce' => $announceService->getByKey($request->key)
+            'announce' => $announceService->getById($request->id)
         ]);
     }
 
     public function update(AnnounceRequest $request, AnnounceService $announceService)
     {
-        $announceService->update($request->key, $request->all());
-        return response()->redirectTo(route('admin.announce.edit', ['key' => $request->key]));
+        $announceService->update($request->id, $request->all());
+        return response()->redirectTo(route('admin.announce.edit', ['id' => $request->id]));
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Services\Frontend;
 
+use PascalDeVink\ShortUuid\ShortUuid;
 use UnexpectedValueException;
 use Modules\Core\Models\ListData;
 use Modules\Core\Services\Traits\HasListData;
@@ -32,7 +33,7 @@ class AnnounceService
     public function store(array $data)
     {
         return $this->model::create([
-            'key' => $this->generateUniqueKey(),
+            'key' => ShortUuid::uuid1(),
             'type' => $this->type,
             'value' => [
                 'title' => $data['title'],
@@ -42,9 +43,9 @@ class AnnounceService
         ]);
     }
 
-    public function update(string $key, array $data, $options = [])
+    public function update(string $id, array $data, $options = [])
     {
-        $announce = $this->getByKey($key);
+        $announce = $this->getById($id);
         $announce->value = [
             'title' => $data['title'],
             'content' => $data['content']

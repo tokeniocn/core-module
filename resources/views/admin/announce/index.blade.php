@@ -38,7 +38,7 @@
                     }
                 },
                 cols: [[{
-                    field: 'key',
+                    field: 'id',
                     title: 'ID',
                 }, {
                     field: 'title',
@@ -77,7 +77,7 @@
                         layer.close(index);
                     });
                 } else if(obj.event === 'edit'){
-                    location.href = '{{ route('admin.announce.update',['key' => '!key!']) }}'.replace('!key!', data.key)
+                    location.href = '{{ route('admin.announce.update',['id' => '!id!']) }}'.replace('!id!', data.id)
                 }
             });
 

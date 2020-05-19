@@ -10,7 +10,7 @@ Route::group([
 
     Route::get('/', [AnnounceController::class, 'index'])->name('index');
     Route::get('/create', [AnnounceController::class, 'create'])->name('create');
-    Route::get('/{key}', [AnnounceController::class, 'edit'])->name('edit');
-    Route::post('/{key}', [AnnounceController::class, 'update'])->name('update');
+    Route::get('/{id}', [AnnounceController::class, 'edit'])->name('edit');
+    Route::post('/{id}', [AnnounceController::class, 'update'])->name('update');
 
 });

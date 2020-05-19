@@ -11,5 +11,5 @@ Route::group([
 
     Route::get('/', [AnnounceController::class, 'index'])->name('index');
     Route::post('/', [AnnounceController::class, 'create'])->name('create');
-    Route::post('/{key}', [AnnounceController::class, 'update'])->name('update');
+    Route::post('/{id}', [AnnounceController::class, 'update'])->name('update');
 });
