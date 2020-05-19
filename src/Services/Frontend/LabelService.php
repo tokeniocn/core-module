@@ -40,7 +40,7 @@ class LabelService
             $key = str_replace('_', '.', $key);
             $label = $this->one(['type' => $this->type, 'key' => $key]);
             $label->value = strval($value);
-            $label->save();
+            $label->saveIfFail();
         }
 
     }

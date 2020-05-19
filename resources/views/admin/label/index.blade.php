@@ -17,7 +17,7 @@
             @endforeach
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="lay-label">立即提交</button>
                 </div>
             </div>
         </form>
