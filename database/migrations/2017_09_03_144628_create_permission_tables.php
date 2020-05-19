@@ -20,8 +20,8 @@ class CreatePermissionTables extends Migration
             $table->string('title');
             $table->unsignedInteger('sort')->default('0');
 
-            $table->dateTime('created_at')->nullable();
-            $table->dateTime('updated_at')->nullable();
+            $table->dateTimeTz('created_at')->nullable();
+            $table->dateTimeTz('updated_at')->nullable();
         });
 
         Schema::create($tableNames['roles'], function (Blueprint $table) {
@@ -31,8 +31,8 @@ class CreatePermissionTables extends Migration
             $table->string('title');
             $table->string('desc')->nullable();
             $table->unsignedInteger('sort')->default('0');
-            $table->dateTime('created_at')->nullable();
-            $table->dateTime('updated_at')->nullable();
+            $table->dateTimeTz('created_at')->nullable();
+            $table->dateTimeTz('updated_at')->nullable();
         });
 
         Schema::create($tableNames['model_has_permissions'], function (Blueprint $table) use ($tableNames) {

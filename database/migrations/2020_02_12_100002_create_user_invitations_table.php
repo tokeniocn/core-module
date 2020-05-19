@@ -18,10 +18,10 @@ class CreateUserInvitationsTable extends Migration
             $table->bigInteger('user_id')->default(0)->comment('关联用户ID');
             $table->bigInteger('used_user_id')->nullable()->default(0)->comment('使用的用户ID');
             $table->string('token', 40)->nullable()->default('')->comment('邀请码');
-            $table->dateTime('used_at')->nullable()->comment('使用时间');
-            $table->dateTime('expired_at')->nullable()->comment('过期时间');
-            $table->dateTime('created_at')->nullable();
-            $table->dateTime('updated_at')->nullable();
+            $table->dateTimeTz('used_at')->nullable()->comment('使用时间');
+            $table->dateTimeTz('expired_at')->nullable()->comment('过期时间');
+            $table->dateTimeTz('created_at')->nullable();
+            $table->dateTimeTz('updated_at')->nullable();
 
             $table->index(['token'], 'token');
             $table->index(['user_id'], 'user');
@@ -31,8 +31,8 @@ class CreateUserInvitationsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unique()->comment('关联用户ID');
             $table->json('data')->nullable()->comment('用户上级邀请关系, 按数组顺序记录上级邀请关系');
-            $table->dateTime('created_at')->nullable();
-            $table->dateTime('updated_at')->nullable();
+            $table->dateTimeTz('created_at')->nullable();
+            $table->dateTimeTz('updated_at')->nullable();
         });
     }
 

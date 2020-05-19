@@ -20,8 +20,8 @@ class CreateListDataTable extends Migration
             $table->string('type', 100)->default('')->comment('类型');
             $table->string('module', 100)->default('*')->comment('专属模块名,默认*表示全局');
             $table->string('remark')->nullable()->default('')->comment('描述');
-            $table->dateTime('created_at')->nullable();
-            $table->dateTime('updated_at')->nullable();
+            $table->dateTimeTz('created_at')->nullable();
+            $table->dateTimeTz('updated_at')->nullable();
         });
     }
 

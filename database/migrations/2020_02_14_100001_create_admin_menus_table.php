@@ -22,8 +22,8 @@ class CreateAdminMenusTable extends Migration
             $table->boolean('status')->default(0)->comment('状态 0=未启用 1=已启用');
             $table->unsignedSmallInteger('sort')->nullable()->default(0)->comment('排序');
 
-            $table->dateTime('created_at')->nullable();
-            $table->dateTime('updated_at')->nullable();
+            $table->dateTimeTz('created_at')->nullable();
+            $table->dateTimeTz('updated_at')->nullable();
         });
     }
 
