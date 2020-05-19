@@ -65,8 +65,15 @@ class AdminMenuTableSeeder extends Seeder
         $label_setting = AdminMenu::create([
             'title' => 'Label设置',
             'parent_id' => $app->id,
-            'icon' => 'phonelink_setup',
+            'icon' => 'label',
             'url' => route('admin.label.index', [], false),
+            'status' => 1,
+        ]);
+        $announce = AdminMenu::create([
+            'title' => '公告设置',
+            'parent_id' => $app->id,
+            'icon' => 'assignment',
+            'url' => route('admin.announce.index', [], false),
             'status' => 1,
         ]);
 

@@ -9,5 +9,6 @@ Route::group([
 ], function () {
 
     Route::get('/', [LabelController::class, 'index'])->name('index');
-
+    Route::get('/create', [LabelController::class, 'create'])->name('create');
+    Route::post('/', [LabelController::class, 'store'])->name('store');
 });

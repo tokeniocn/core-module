@@ -55,4 +55,16 @@ class LabelService
 
         return $label['value'];
     }
+
+    public function store(array $data)
+    {
+        $label = $this->model::create([
+            'key' => $data['key'],
+            'value' => $data['value'],
+            'remark' => $data['remark'],
+            'module' => $this->module,
+            'type' => $this->type
+        ]);
+        return $label;
+    }
 }
