@@ -25,7 +25,6 @@ class LabelRequest extends FormRequest
     {
         return [
             'key' => "required",
-            "value" => "required",
             "remark" => 'required'
         ];
     }

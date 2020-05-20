@@ -12,7 +12,7 @@
                             <div id="markdown_{{$label['id']}}">
                                 <textarea type="text" name="{{$label['key']}}" value="{{$label['value']}}"
                                           placeholder="请输入{{$label['remark']}}" autocomplete="off"
-                                          class="layui-textarea"></textarea>
+                                          class="layui-textarea">{{$label['value']}}</textarea>
                             </div>
                         </div>
                         <div class="layui-form-mid layui-word-aux">{{$label['remark']}}</div>
