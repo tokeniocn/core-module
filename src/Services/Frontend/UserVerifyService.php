@@ -2,7 +2,9 @@
 
 namespace Modules\Core\Services\Frontend;
 
+use App\Models\User;
 use Closure;
+use Modules\Core\Events\Frontend\UserMobileVerified;
 use UnexpectedValueException;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -54,9 +56,9 @@ class UserVerifyService
     public function getByKeyToken($key, $token, $type, array $options = [])
     {
         $model = $this->one([
-            'key'   => $key,
+            'key' => $key,
             'token' => $token,
-            'type'  => $type,
+            'type' => $type,
         ], array_merge([
             'exception' => function () {
                 return new UserVerifyNotFundException(trans('验证码错误'));
@@ -65,7 +67,7 @@ class UserVerifyService
 
         if ($model && ($options['setExpired'] ?? false)) {
             $model->setExpired()
-                  ->save();
+                ->save();
         }
 
         return $model;
@@ -85,10 +87,10 @@ class UserVerifyService
     {
         /** @var UserVerify $verify */
         $verify = $this->create([
-            'user_id'    => with_user_id($user),
-            'key'        => $key,
-            'type'       => $type,
-            'token'      => $token ?: $this->generateUniqueToken($key),
+            'user_id' => with_user_id($user),
+            'key' => $key,
+            'type' => $type,
+            'token' => $token ?: $this->generateUniqueToken($key),
             'expired_at' => $expiredAt ?: Carbon::now()->addSeconds(config('core::user.verify.expires', 600)),
         ], $options);
 
@@ -127,11 +129,11 @@ class UserVerifyService
         while (true) {
             $token = is_callable($tokenCallback) ? $tokenCallback() : Str::random(6);
             $verify = $this->one([
-                'key'   => $key,
+                'key' => $key,
                 'token' => $token,
             ], ['exception' => false]);
 
-            if ( ! $verify) {
+            if (!$verify) {
                 return $token;
             } elseif ($i > $max) {
                 throw new UnexpectedValueException(trans('超出唯一Token生成次数(:max)', ['max' => $max]));
@@ -154,13 +156,30 @@ class UserVerifyService
     {
         /** @var UserVerify $verify */
         $verify = $this->create([
-            'user_id'    => 0,
-            'key'        => $key,
-            'type'       => $type,
-            'token'      => $token ?: $this->generateUniqueToken($key),
+            'user_id' => 0,
+            'key' => $key,
+            'type' => $type,
+            'token' => $token ?: $this->generateUniqueToken($key),
             'expired_at' => $expiredAt ?: Carbon::now()->addSeconds(config('core::user.verify.expires', 600)),
         ], $options);
 
         return $verify;
+    }
+
+    public function bindMobile($mobile, $code, $options = [])
+    {
+        $uesrVerify = $this->getByKeyToken($mobile, $code, UserVerify::TYPE_MOBILE_SET, [
+            'with' => 'user'
+        ]);
+
+        $uesrVerify->setExpired()
+            ->save();
+
+        $uesrVerify->user->setMobileVerified($uesrVerify->key)->save();
+
+        event(new UserMobileVerified($uesrVerify->user));
+
+        return true;
+
     }
 }

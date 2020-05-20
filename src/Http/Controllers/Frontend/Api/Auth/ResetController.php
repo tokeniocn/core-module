@@ -54,7 +54,7 @@ class ResetController extends Controller
      */
     public function resetPayPassword(ResetPayPasswordRequest $request, UserResetService $userResetService)
     {
-        $userResetService->resetPayPassword($request->user(), $request->sms, $request->password);
+        $userResetService->resetPayPassword($request->user(), $request->code, $request->password);
 
         return [];
     }

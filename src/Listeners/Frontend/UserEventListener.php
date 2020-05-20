@@ -77,7 +77,7 @@ class UserEventListener
     {
         if (!empty($user->email)) {
             $user->emailHistories()->create([
-                'data' => $user->pay_password,
+                'data' => $user->email,
                 'type' => UserDataHistory::TYPE_EMAIL
             ]);
         }
@@ -90,7 +90,7 @@ class UserEventListener
     {
         if (!empty($user->mobile)) {
             $user->mobileHistories()->create([
-                'data' => $user->pay_password,
+                'data' => $user->mobile,
                 'type' => UserDataHistory::TYPE_MOBILE
             ]);
         }

@@ -24,10 +24,10 @@ class UserVerify extends Model
     const TYPE_PASSWORD_RESET = 'password_reset';
     const TYPE_PAY_PASSWORD_RESET = 'pay_password_reset';
     const TYPE_MOBILE_RESET = 'mobile_reset';
+    const TYPE_MOBILE_SET = 'mobile_set';
     const TYPE_MOBILE_LOGIN = 'mobile_login';
     const TYPE_MOBILE_REGISTER = 'mobile_register';
     const TYPE_EMAIL_RESET = 'email_reset';
-
     const UPDATED_AT = null;
 
     /**
