@@ -3,7 +3,8 @@
 namespace Modules\Core\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Modules\Core\Listeners\Frontend\UserEventListener;
+use Modules\Core\Events\Frontend\UserLoggedIn;
+use Modules\Core\Listeners\Frontend\UserLoggedInListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -12,14 +13,16 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $listen = [];
+    protected $listen = [
+        UserLoggedIn::class => [
+            UserLoggedInListener::class
+        ],
+    ];
 
     /**
      * The subscriber classes to register.
      *
      * @var array
      */
-    protected $subscribe = [
-        UserEventListener::class
-    ];
+    protected $subscribe = [];
 }

@@ -10,12 +10,12 @@ use Modules\Core\Captcha\Captcha;
 use Modules\Core\Auth\Guards\AdminGuard;
 use Modules\Core\Http\Middleware\UseGuard;
 use Modules\Core\Http\Composers\GlobalComposer;
-use Modules\Core\Observers\Frontend\UserObserver;
 use Modules\Core\Models\Frontend\UserInvitation;
-use Modules\Core\Observers\Frontend\UserInvitationObserver;
 use Modules\Core\Config\Repository as ConfigRepository;
 use Modules\Core\Captcha\Facades\Captcha as CaptchaFacade;
 use Modules\Core\Module\ModuleServiceProvider as ServiceProvider;
+use Modules\Core\Listeners\Frontend\UserEventListener;
+use Modules\Core\Listeners\Frontend\UserInvitationEventListener;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\AliasLoader;
@@ -46,7 +46,7 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerObservers();
+        $this->registerModelObservers();
         $this->registerCaptcha();
         $this->registerValidators();
 //        $this->registerTranslations();
@@ -68,10 +68,10 @@ class CoreServiceProvider extends ServiceProvider
         $this->registerHelpers();
     }
 
-    protected function registerObservers()
+    protected function registerModelObservers()
     {
-        User::observe(UserObserver::class);
-        UserInvitation::observe(UserInvitationObserver::class);
+        User::observe(UserEventListener::class);
+        UserInvitation::observe(UserInvitationEventListener::class);
     }
 
     protected function registerCaptcha()

@@ -1,14 +1,14 @@
 <?php
 
-namespace Modules\Core\Observers\Frontend;
+namespace Modules\Core\Listeners\Frontend;
 
 use Modules\Core\Models\Frontend\UserInvitation;
 use Modules\Core\Models\Frontend\UserInvitationTree;
 
 /**
- * Class UserInvitationObserver
+ * Class UserInvitationEventListener
  */
-class UserInvitationObserver
+class UserInvitationEventListener
 {
     /**
      * @param UserInvitation $invitation
