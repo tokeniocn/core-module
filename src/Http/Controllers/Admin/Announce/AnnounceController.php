@@ -28,6 +28,12 @@ class AnnounceController extends Controller
         return view('core::admin.announce.create');
     }
 
+    public function store(AnnounceRequest $request, AnnounceService $announceService)
+    {
+        $announceService->store($request->all());
+        return response()->redirectTo(route('admin.announce.index'));
+    }
+
     /**
      * @param Request $request
      * @param AnnounceService $announceService

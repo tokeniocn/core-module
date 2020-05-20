@@ -7,5 +7,5 @@ Route::group([
     'as'         => 'announce.'
 ], function () {
     Route::get('/', [AnnounceController::class, 'index'])->name('index');
-    Route::get('/{key}', [AnnounceController::class, 'info'])->name('info');
+    Route::get('/{id}', [AnnounceController::class, 'info'])->name('info');
 });

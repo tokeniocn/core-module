@@ -3,7 +3,7 @@
 @section('content')
     <div class="layui-card">
         <div class="layui-card-body">
-            <form method="post" class="layui-form" action="{{route('admin.api.announce.create')}}">
+            <form method="post" class="layui-form" action="{{route('admin.announce.store')}}">
                 {{csrf_field()}}
                 <div class="layui-form-item">
                     <label class="layui-form-label">标题</label>
