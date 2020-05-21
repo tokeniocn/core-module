@@ -36,6 +36,9 @@ class InvitationController extends Controller
 
     public function team(InvitationTeamRequest $request, UserInvitationService $userInvitationService)
     {
-        return $userInvitationService->getInviteesByUser($request->user(), ['level' => $request->level]);
+        return $userInvitationService->getInviteesByUser($request->user(), [
+            'level'      => $request->level,
+            'allOptions' => ['paginate' => true],
+        ]);
     }
 }
