@@ -281,4 +281,19 @@ class UserInvitationService
             'orderBy' => ['id', 'desc']
         ], $options));
     }
+
+    /**获取未使用的邀请码
+     * @param $user
+     * @param array $options
+     * @return mixed
+     */
+    public function getUnusedToken($user, $options = [])
+    {
+        return $this->one([
+            ['user_id', with_user_id($user)],
+            ['expired_at', '>', date('Y-m-d H:i:s')],
+        ], array_merge([
+            'orderBy' => ['id', 'asc']
+        ], $options));
+    }
 }
