@@ -83,6 +83,9 @@ class UserRegisterService
                 }
             ], $options['createOptions'] ?? []));
 
+            $user->username = "user-" . $user->id;
+            $user->save();
+
             /** @var UserInvitationService $invitationService */
             $invitationService = resolve(UserInvitationService::class);
             $invitationService->inviteUser($data['invite_code'] ?? null, $user, array_merge([
