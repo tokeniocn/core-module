@@ -90,6 +90,7 @@ class AnnounceService
         return array_map(function ($item) {
 //            $item = array_merge($item, $item['value']);
             $item['title'] = $item['value']['title'];
+            $item['description'] = mb_substr($item['value']['content'], 0, 50);
             unset($item['value']);
             return $item;
         }, $data);
