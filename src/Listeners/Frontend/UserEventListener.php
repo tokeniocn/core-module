@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Listeners\Frontend;
 
+use Cache;
 use App\Models\User;
 use Modules\Core\Models\Frontend\UserDataHistory;
 
@@ -28,6 +29,9 @@ class UserEventListener
      */
     public function updated(User $user): void
     {
+        // 更新缓存
+        Cache::tags('user:' . $user->id)->flush();
+
         if ($user->isDirty('password')) {
             $this->logPasswordHistory($user);
         }
@@ -43,7 +47,6 @@ class UserEventListener
         if ($user->isDirty('mobile') && $user->isMobileVerified(false)) {
             $this->logMobileHistory($user);
         }
-
     }
 
     /**
