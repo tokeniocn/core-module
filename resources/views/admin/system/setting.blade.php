@@ -3,9 +3,8 @@
 @section('content')
     <div class="layui-card">
         <div class="layui-card-body">
-            <form method="post" class="layui-form" action="{{route('admin.app.settings.update')}}">
+            <form method="post" class="layui-form" action="{{route('admin.system.settings.update')}}">
                 {{csrf_field()}}
-
                 <x-t-config-form :list="$configList"></x-t-config-form>
                 <div class="layui-form-item">
                     <div class="layui-input-block">

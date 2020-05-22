@@ -91,7 +91,7 @@ class UserVerifyService
             'key' => $key,
             'type' => $type,
             'token' => $token ?: $this->generateUniqueToken($key),
-            'expired_at' => $expiredAt ?: Carbon::now()->addSeconds(config('core::user.verify.expires', 600)),
+            'expired_at' => $expiredAt ?: Carbon::now()->addSeconds(config('core::system.user_verify_expires', 600)),
         ], $options);
 
         return $verify;
@@ -160,7 +160,7 @@ class UserVerifyService
             'key' => $key,
             'type' => $type,
             'token' => $token ?: $this->generateUniqueToken($key),
-            'expired_at' => $expiredAt ?: Carbon::now()->addSeconds(config('core::user.verify.expires', 600)),
+            'expired_at' => $expiredAt ?: Carbon::now()->addSeconds(config('core::system.user_verify_expires', 600)),
         ], $options);
 
         return $verify;

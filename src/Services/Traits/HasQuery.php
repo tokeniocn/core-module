@@ -191,7 +191,7 @@ trait HasQuery
         $columns = $options['columns'] ?? ['*'];
         $page = $options['page'] ?? null;
 
-        $maxLimit = $options['maxLimit'] ?? config('core::system.paginate.maxLimit', 100);
+        $maxLimit = $options['maxLimit'] ?? config('core::system.paginate_maxLimit', 100);
         if ($limit > $maxLimit) {
             $limit = $maxLimit;
         }
