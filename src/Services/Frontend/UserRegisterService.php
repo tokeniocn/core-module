@@ -15,7 +15,6 @@ class UserRegisterService
     use HasThrottles;
 
 
-
     /**
      * 用户注册
      *
@@ -27,7 +26,7 @@ class UserRegisterService
     public function register(array $data, array $options = [])
     {
         /** @var User $user */
-        $user = DB::transaction(function() use ($data, $options) {
+        $user = DB::transaction(function () use ($data, $options) {
             /** @var UserService $userService */
             $userService = resolve(UserService::class);
 
@@ -42,7 +41,7 @@ class UserRegisterService
             /** @var UserInvitationService $invitationService */
             $invitationService = resolve(UserInvitationService::class);
             $invitationService->inviteUser($data['invite_code'] ?? null, $user, array_merge([
-                'invitation' => config('core::system.register.invitation', 0)
+                'invitation' => config('core::system.register_invitation', 0)
             ], $options['inviteOptions'] ?? []));
 
             return $user;
@@ -64,7 +63,7 @@ class UserRegisterService
     public function registerByMobile(array $data, array $options = [])
     {
         /** @var User $user */
-        $user = DB::transaction(function() use ($data, $options) {
+        $user = DB::transaction(function () use ($data, $options) {
             /** @var UserVerifyService $userService */
             $userService = resolve(UserVerifyService::class);
             $userService->getByKeyToken($data['mobile'], $data['code'], UserVerify::TYPE_MOBILE_REGISTER, $options['userVerifyOptions'] ?? []);
@@ -78,7 +77,7 @@ class UserRegisterService
                 'mobile' => $data['mobile'],
                 'email' => $data['email'] ?? ''
             ], array_merge([
-                'beforeSave' => function($model) {
+                'beforeSave' => function ($model) {
                     /** @var User $model */
                     $model->setMobileVerified($model->mobile); // 标记为邮箱已验证
                 }
@@ -87,7 +86,7 @@ class UserRegisterService
             /** @var UserInvitationService $invitationService */
             $invitationService = resolve(UserInvitationService::class);
             $invitationService->inviteUser($data['invite_code'] ?? null, $user, array_merge([
-                'invitation' => config('core::system.register.invitation', 0)
+                'invitation' => config('core::system.register_invitation', 0)
             ], $options['inviteOptions'] ?? []));
 
             return $user;

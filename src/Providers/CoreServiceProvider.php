@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Providers;
 
+use Modules\Core\View\Components\ConfigForm;
 use View;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Validation\Factory as ValidationFactory;
+use Illuminate\Support\Facades\Blade;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -53,8 +55,10 @@ class CoreServiceProvider extends ServiceProvider
         $this->registerViews();
 //        $this->registerFactories();
 //        $this->registerModelRelations();
+        $this->registerBlade();;
         $this->loadMigrationsFrom($this->modulePath . '/database/migrations');
         $this->loadSeedsFrom($this->modulePath . '/database/seeds');
+
     }
 
     /**
@@ -169,7 +173,7 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function registerFactories()
     {
-        if ( ! app()->environment('production') && $this->app->runningInConsole()) {
+        if (!app()->environment('production') && $this->app->runningInConsole()) {
             app(Factory::class)->load(module_path($this->moduleName, 'database/factories'));
         }
     }
@@ -201,16 +205,16 @@ class CoreServiceProvider extends ServiceProvider
             $this->modulePath . '/config/captcha.php', 'captcha'
         );
 
-        if ( ! $this->app->configurationIsCached()) {
+        if (!$this->app->configurationIsCached()) {
             config([
                 'auth.guards' => array_merge([
                     'admin_web' => [
-                        'driver'   => 'session',
+                        'driver' => 'session',
                         'provider' => 'admin_users',
                     ],
 
                     'admin' => [
-                        'driver'   => 'admin',
+                        'driver' => 'admin',
                         'provider' => 'admin_users',
                     ],
                 ], config('auth.guards', [])),
@@ -220,7 +224,7 @@ class CoreServiceProvider extends ServiceProvider
                 'auth.providers' => array_merge([
                     'admin_users' => [
                         'driver' => 'eloquent',
-                        'model'  => \App\Models\AdminUser::class,
+                        'model' => \App\Models\AdminUser::class,
                     ],
                 ], config('auth.providers', [])),
             ]);
@@ -228,6 +232,16 @@ class CoreServiceProvider extends ServiceProvider
 
         $this->configureGuard();
         $this->configureMiddleware();
+    }
+
+    /**
+     * Register Blade Components
+     *
+     * @return void
+     */
+    protected function registerBlade()
+    {
+        Blade::component(ConfigForm::class, 't-config-form');
     }
 
     /**
@@ -261,7 +275,7 @@ class CoreServiceProvider extends ServiceProvider
 
         while ($it->valid()) {
             if (
-                ! $it->isDot() &&
+                !$it->isDot() &&
                 $it->isFile() &&
                 $it->isReadable() &&
                 $it->current()->getExtension() === 'php' &&

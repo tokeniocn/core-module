@@ -46,6 +46,14 @@ class AdminMenuTableSeeder extends Seeder
             'status' => 1,
         ]);
 
+        $system_config = AdminMenu::create([
+            'title' => '系统配置',
+            'parent_id' => $system->id,
+            'icon' => 'settings_system_daydream',
+            'url' => route('admin.system.settings.index', [], false),
+            'status' => 1,
+        ]);
+
         // APP设置
         $app = AdminMenu::create([
             'title' => 'App配置',
