@@ -124,6 +124,9 @@ class UserVerifyService
      */
     public function generateUniqueToken($key, Closure $tokenCallback = null, array $options = [])
     {
+        if (app()->environment() !== 'production' && config('core::verify.debug')) {
+            return config('core::verify.code');
+        }
         $i = 1;
         $max = $options['max'] ?? 10;
         while (true) {
