@@ -10,6 +10,7 @@ use Modules\Core\Http\Requests\Frontend\Auth\ResetEmailNotificationRequest;
 use Modules\Core\Http\Requests\Frontend\Auth\ResetMobileNotificationRequest;
 use Modules\Core\Http\Requests\Frontend\Auth\ResetPasswordByOldPasswordRequest;
 use Modules\Core\Http\Requests\Frontend\Auth\ResetPayPasswordByOldPasswordRequest;
+use Modules\Core\Http\Requests\Frontend\Auth\SetPayPasswordRequest;
 use Modules\Core\Services\Frontend\UserResetService;
 
 class ResetController extends Controller
@@ -40,6 +41,21 @@ class ResetController extends Controller
     public function resetPasswordByOldPassword(ResetPasswordByOldPasswordRequest $request, UserResetService $userResetService)
     {
         $userResetService->resetPasswordByOldPassword($request->user(), $request->old_password, $request->password);
+
+        return [];
+    }
+
+    /**
+     * 设置交易密码
+     *
+     * @param SetPayPasswordRequest $request
+     * @param UserResetService $userResetService
+     *
+     * @return array
+     */
+    public function setPayPassword(SetPayPasswordRequest $request, UserResetService $userResetService)
+    {
+        $userResetService->setPayPassword($request->user(), $request->password);
 
         return [];
     }

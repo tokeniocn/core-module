@@ -3,6 +3,7 @@
 namespace Modules\Core\Listeners\Frontend;
 
 use Cache;
+use Carbon\Carbon;
 use App\Models\User;
 use Modules\Core\Models\Frontend\UserDataHistory;
 
@@ -11,6 +12,7 @@ use Modules\Core\Models\Frontend\UserDataHistory;
  */
 class UserEventListener
 {
+
     /**
      * Listen to the User created event.
      *
@@ -20,6 +22,18 @@ class UserEventListener
     {
         $this->logPasswordHistory($user);
         $this->logPayPasswordHistory($user);
+    }
+
+    /**
+     * Listen to the User updating event.
+     *
+     * @param User $user
+     */
+    public function updating(User $user): void
+    {
+        if ($user->isDirty('pay_password') && ! $user->isDirty('pay_password_updated_at')) {
+            $user->pay_password_updated_at = Carbon::now();
+        }
     }
 
     /**
@@ -56,7 +70,7 @@ class UserEventListener
     {
         $user->passwordHistories()->create([
             'data' => $user->password,
-            'type' => UserDataHistory::TYPE_PASSWORD
+            'type' => UserDataHistory::TYPE_PASSWORD,
         ]);
     }
 
@@ -65,10 +79,10 @@ class UserEventListener
      */
     protected function logPayPasswordHistory(User $user): void
     {
-        if (!empty($user->pay_password)) {
+        if ( ! empty($user->pay_password)) {
             $user->payPasswordHistories()->create([
                 'data' => $user->pay_password,
-                'type' => UserDataHistory::TYPE_PAY_PASSWORD
+                'type' => UserDataHistory::TYPE_PAY_PASSWORD,
             ]);
         }
     }
@@ -78,10 +92,10 @@ class UserEventListener
      */
     protected function logEmailHistory(User $user): void
     {
-        if (!empty($user->email)) {
+        if ( ! empty($user->email)) {
             $user->emailHistories()->create([
                 'data' => $user->email,
-                'type' => UserDataHistory::TYPE_EMAIL
+                'type' => UserDataHistory::TYPE_EMAIL,
             ]);
         }
     }
@@ -91,10 +105,10 @@ class UserEventListener
      */
     protected function logMobileHistory(User $user): void
     {
-        if (!empty($user->mobile)) {
+        if ( ! empty($user->mobile)) {
             $user->mobileHistories()->create([
                 'data' => $user->mobile,
-                'type' => UserDataHistory::TYPE_MOBILE
+                'type' => UserDataHistory::TYPE_MOBILE,
             ]);
         }
     }

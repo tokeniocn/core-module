@@ -40,6 +40,7 @@ Route::group([
         Route::post('reset/password_by_old', [ResetController::class, 'resetPasswordByOldPassword'])->name('reset.password_by_old'); // 修改登录密码(旧密码)
 
         Route::get('reset/pay_password', [ResetController::class, 'requestResetPayPassword'])->name('reset.pay_password.request'); // 获取重置支付密码短信
+        Route::post('pay_password', [ResetController::class, 'setPayPassword'])->name('set.pay_password'); // 设置支付密码
         Route::post('reset/pay_password', [ResetController::class, 'resetPayPassword'])->name('reset.pay_password'); // 重置支付密码(短信验证码)
         Route::post('reset/pay_password_by_old', [ResetController::class, 'resetPayPasswordByOldPassword'])->name('reset.pay_password_by_old'); // 修改支付密码(旧支付密码)
 

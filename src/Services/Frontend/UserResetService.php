@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Services\Frontend;
 
+use Illuminate\Validation\ValidationException;
 use Modules\Core\Models\Frontend\UserVerify;
 use Modules\Core\Services\Traits\HasThrottles;
 
@@ -140,6 +141,29 @@ class UserResetService
         $userService = resolve(UserService::class);
         $userService->checkPayPassword($user, $oldPassword, $options);
         $user->pay_password = $newPassword;
+        $user->saveIfFail();
+
+        return true;
+    }
+
+    /**
+     * 设置默认交易密码
+     *
+     * @param $user
+     * @param $password
+     * @param array $options
+     */
+    public function setPayPassword($user, $password, array $options = [])
+    {
+        $user = with_user($user);
+
+        if ($user->isPayPasswordSet(false)) {
+            throw ValidationException::withMessages([
+                'password' => [trans('支付密码已设置')]
+            ]);
+        }
+
+        $user->pay_password = $password;
         $user->saveIfFail();
 
         return true;
