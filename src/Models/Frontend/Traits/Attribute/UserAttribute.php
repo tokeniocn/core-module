@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Hash;
  */
 trait UserAttribute
 {
+    /**
+     * @return bool
+     */
+    public function getPayPasswordSetAttribute()
+    {
+        return !empty($this->pay_password);
+    }
+
     public function setPayPasswordAttribute($payPassword): void
     {
         $this->attributes['pay_password'] = $this->generateHashByPassword($payPassword);
