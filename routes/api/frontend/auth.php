@@ -40,7 +40,8 @@ Route::group([
         Route::post('reset/pay_password', [UserController::class, 'resetPayPassword'])->name('reset.pay_password'); // 重置支付密码(短信验证码)
         Route::post('reset/pay_password_by_old', [UserController::class, 'resetPayPasswordByOldPassword'])->name('reset.pay_password_by_old'); // 修改支付密码(旧支付密码)
 
-//        Route::post('verify/email', [UserController::class, 'verifyEmail'])->name('verify.email'); // 修改邮箱
-        Route::post('verify/mobile', [UserController::class, 'verifyMobile'])->name('verify.mobile'); // 修改手机号
+//        Route::post('reset/email', [UserController::class, 'resetEmail'])->name('verify.email'); // 修改邮箱
+        Route::post('reset/mobile', [UserController::class, 'resetMobile'])->name('verify.mobile'); // 修改手机号
+        Route::post('reset/mobile_by_old', [UserController::class, 'resetMobileByOldMobile'])->name('verify.mobile_by_old'); // 修改手机号(通过旧手机验证码)
     });
 });
