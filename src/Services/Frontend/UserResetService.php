@@ -77,7 +77,7 @@ class UserResetService
 
         $user = $userVerify->user;
 
-        $userVerify = $this->userVerifyService->getByKeyToken($user->mobile, $token, UserVerify::TYPE_MOBILE_RESET, $options);
+        $userVerify = $this->userVerifyService->getByKeyToken($user->mobile, $token, UserVerify::TYPE_MOBILE_RESET_BY_OLD, $options);
 
         $userVerify->user->mobile = $newMobile;
         $userVerify->user->saveIfFail();
