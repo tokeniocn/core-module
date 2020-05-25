@@ -171,21 +171,4 @@ class UserVerifyService
 
         return $verify;
     }
-
-    public function bindMobile($mobile, $code, $options = [])
-    {
-        $uesrVerify = $this->getByKeyToken($mobile, $code, UserVerify::TYPE_MOBILE_SET, [
-            'with' => 'user'
-        ]);
-
-        $uesrVerify->setExpired()
-            ->save();
-
-        $uesrVerify->user->setMobileVerified($uesrVerify->key)->save();
-
-        event(new UserMobileVerified($uesrVerify->user));
-
-        return true;
-
-    }
 }

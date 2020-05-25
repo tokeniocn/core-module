@@ -69,13 +69,17 @@ class UserResetService
      *
      * @return bool
      */
-    public function resetMobileByOldMobile($mobile, $token, array $options = [])
+    public function resetMobileByOldMobile($newMobile, $newMobileToken, $token, array $options = [])
     {
-        $userVerify = $this->userVerifyService->getByKeyToken($mobile, $token, UserVerify::TYPE_MOBILE_RESET, array_merge([
+        $userVerify = $this->userVerifyService->getByKeyToken($newMobile, $newMobileToken, UserVerify::TYPE_MOBILE_RESET, array_merge([
             'with' => ['user'],
         ], $options));
 
-        $userVerify->user->mobile = $mobile;
+        $user = $userVerify->user;
+
+        $userVerify = $this->userVerifyService->getByKeyToken($user->mobile, $token, UserVerify::TYPE_MOBILE_RESET, $options);
+
+        $userVerify->user->mobile = $newMobile;
         $userVerify->user->saveIfFail();
 
         $userVerify->setExpired()->save();
