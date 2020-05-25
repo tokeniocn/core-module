@@ -24,6 +24,7 @@ class UserVerify extends Model
     const TYPE_PASSWORD_RESET = 'password_reset';
     const TYPE_PAY_PASSWORD_RESET = 'pay_password_reset';
     const TYPE_MOBILE_RESET = 'mobile_reset';
+    const TYPE_MOBILE_RESET_BY_OLD = 'mobile_reset_by_old';
     const TYPE_MOBILE_SET = 'mobile_set';
     const TYPE_MOBILE_LOGIN = 'mobile_login';
     const TYPE_MOBILE_REGISTER = 'mobile_register';

@@ -128,6 +128,7 @@ class UserVerifyService
             $token = config('core::verify.code');;
             $this->model->where(['key' => $key, 'token' => $token])->delete();
             return $token;
+
         }
         $i = 1;
         $max = $options['max'] ?? 10;
@@ -169,22 +170,5 @@ class UserVerifyService
         ], $options);
 
         return $verify;
-    }
-
-    public function bindMobile($mobile, $code, $options = [])
-    {
-        $uesrVerify = $this->getByKeyToken($mobile, $code, UserVerify::TYPE_MOBILE_SET, [
-            'with' => 'user'
-        ]);
-
-        $uesrVerify->setExpired()
-            ->save();
-
-        $uesrVerify->user->setMobileVerified($uesrVerify->key)->save();
-
-        event(new UserMobileVerified($uesrVerify->user));
-
-        return true;
-
     }
 }

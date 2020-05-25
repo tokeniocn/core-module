@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Services\Frontend;
 
+use Illuminate\Validation\ValidationException;
 use Modules\Core\Models\Frontend\UserVerify;
 use Modules\Core\Services\Traits\HasThrottles;
 
@@ -68,13 +69,17 @@ class UserResetService
      *
      * @return bool
      */
-    public function resetMobileByOldMobile($mobile, $token, array $options = [])
+    public function resetMobileByOldMobile($newMobile, $newMobileToken, $token, array $options = [])
     {
-        $userVerify = $this->userVerifyService->getByKeyToken($mobile, $token, UserVerify::TYPE_MOBILE_RESET, array_merge([
+        $userVerify = $this->userVerifyService->getByKeyToken($newMobile, $newMobileToken, UserVerify::TYPE_MOBILE_RESET, array_merge([
             'with' => ['user'],
         ], $options));
 
-        $userVerify->user->mobile = $mobile;
+        $user = $userVerify->user;
+
+        $userVerify = $this->userVerifyService->getByKeyToken($user->mobile, $token, UserVerify::TYPE_MOBILE_RESET_BY_OLD, $options);
+
+        $userVerify->user->mobile = $newMobile;
         $userVerify->user->saveIfFail();
 
         $userVerify->setExpired()->save();
@@ -140,6 +145,29 @@ class UserResetService
         $userService = resolve(UserService::class);
         $userService->checkPayPassword($user, $oldPassword, $options);
         $user->pay_password = $newPassword;
+        $user->saveIfFail();
+
+        return true;
+    }
+
+    /**
+     * 设置默认交易密码
+     *
+     * @param $user
+     * @param $password
+     * @param array $options
+     */
+    public function setPayPassword($user, $password, array $options = [])
+    {
+        $user = with_user($user);
+
+        if ($user->isPayPasswordSet(false)) {
+            throw ValidationException::withMessages([
+                'password' => [trans('支付密码已设置')]
+            ]);
+        }
+
+        $user->pay_password = $password;
         $user->saveIfFail();
 
         return true;

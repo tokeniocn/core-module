@@ -62,7 +62,8 @@ abstract class BaseUser extends Authenticatable
      */
     protected $casts = [
         'active' => 'boolean',
-        'auth' => 'boolean'
+        'auth' => 'boolean',
+        'pay_password_set' => 'boolean'
     ];
 
     /**
@@ -88,5 +89,9 @@ abstract class BaseUser extends Authenticatable
         'pay_password',
         'remember_token',
         'deleted_at'
+    ];
+
+    protected $appends = [
+        'pay_password_set',
     ];
 }
