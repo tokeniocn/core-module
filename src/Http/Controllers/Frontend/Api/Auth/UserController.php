@@ -53,7 +53,7 @@ class UserController extends Controller
      */
     public function resetMobileByOldMobile(ResetMobileByOldMobileRequest $request, UserResetService $userResetService)
     {
-        $userResetService->resetMobileByOldMobile($request->code, $request->new_mobile, $request->new_code);
+        $userResetService->resetMobileByOldMobile($request->new_mobile, $request->new_code, $request->code);
 
         return [];
     }
