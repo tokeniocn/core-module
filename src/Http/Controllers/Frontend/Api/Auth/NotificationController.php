@@ -11,7 +11,7 @@ class NotificationController extends Controller
     public function __construct()
     {
         // TODO web和api情况下的用户状态判断, 目前只支持判断api方式
-        if (request()->bearerToken()) {
+        if (($token = request()->bearerToken()) && $token != 'null') {
             $this->middleware('auth:sanctum');
         }
     }
