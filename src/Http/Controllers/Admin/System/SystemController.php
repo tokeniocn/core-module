@@ -16,10 +16,15 @@ class SystemController extends Controller
     protected $schema = [
         'register_invitation' => [
             'key' => 'register_invitation',
-            'type' => 'text',
+            'type' => 'radio',
             'title' => '邀请码使用方式',
             'value' => '1',
             'description' => '0-无需邀请码，1-一码一人，2-一码多人',
+            'data' => [
+                '0' => '无需邀请码',
+                '1' => '一码一人',
+                '2' => '一码多人'
+            ]
         ],
         'notification_mobile_maxAttempts' => [
             'key' => 'notification_mobile_maxAttempts',
