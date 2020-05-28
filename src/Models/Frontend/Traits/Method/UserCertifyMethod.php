@@ -17,4 +17,10 @@ trait UserCertifyMethod
         $this->status = UserCertify::STATUS_REJECT;
         return $this;
     }
+
+    public function setWaiting()
+    {
+        $this->status = UserCertify::STATUS_WAITING;
+        return $this;
+    }
 }

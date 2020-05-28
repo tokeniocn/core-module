@@ -52,7 +52,10 @@ class UserCertifyService
         if ($status === UserCertify::STATUS_SUCCESS) {
             $certify->setPassed();
             $certify->user->setAuthVerified();
-        } else if ($status == UserCertify::STATUS_REJECT) {
+        } else if ($status == UserCertify::STATUS_WAITING) {
+            $certify->setWaiting();
+            $certify->user->setAuthVerifyFail();
+        }else if ($status == UserCertify::STATUS_REJECT) {
             $certify->setReject();
             $certify->user->setAuthVerifyFail();
         }

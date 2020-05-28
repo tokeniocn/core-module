@@ -12,26 +12,8 @@ class CertifyController extends Controller
 {
     public function index(Request $request, UserCertifyService $userCertifyService)
     {
-        $where = [];
-        if (!empty($request->id)) {
-            $where[] = ['user_id', $request->id];
-        }
 
-        if (!empty($request->keyword)) {
-            $where[] = ['name', 'like', '%' . $request->keyword . '%'];
-        }
-
-        if (!empty($request->status)) {
-            $where[] = ['status', $request->status];
-        }
-
-        $certify = $userCertifyService->all($where, [
-            'paginate' => true,
-            'orderBy' => ['id', 'desc'],
-            'with' => ['user']
-        ]);
         return view('core::admin.certify.index', array_merge([
-            'certify_list' => $certify->items(),
             'status_list' => UserCertify::STATUS_MAP,
             'certify_type' => UserCertify::CERTIFY_TYPE_MAP
         ], $request->all()));

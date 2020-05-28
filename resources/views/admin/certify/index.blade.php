@@ -2,66 +2,33 @@
 
 @section('content')
     <div class="layui-card">
-        <form class="layui-card-body">
-            <form class="layui-form" action="">
-                <div class="layui-inline">
-                    <input type="text" name="id" value="{{isset($id)?$id:''}}" class="layui-input" id="id" placeholder="表ID">
-                </div>
-                <div class="layui-inline">
-                    <input type="text" name="keyword" value="{{isset($keyword)?$keyword:''}}"class="layui-input" id="keyword" placeholder="搜索用户真实姓名">
-                </div>
-                <div class="layui-inline">
-                    <select name="status" id="status" lay-verify="required" class="layui-select">
-                        <option value="">--实名认证--</option>
-                        @foreach ($status_list as $key=>$text)
-                            <option value="{{ $key }}" {{isset($status)?$key === $status?'checked':'':''}}>{{ $text }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <button class="layui-btn" data-type="reload">搜索</button>
-            </form>
+        <div class="layui-card-body">
+            {{--            <form class="layui-form" action="">--}}
+            <div class="layui-inline">
+                <input type="text" name="id" value="{{isset($id)?$id:''}}" class="layui-input" id="id"
+                       placeholder="表ID">
+            </div>
+            <div class="layui-inline">
+                <input type="text" name="keyword" value="{{isset($keyword)?$keyword:''}}" class="layui-input"
+                       id="keyword" placeholder="搜索用户真实姓名">
+            </div>
+            <div class="layui-inline">
+                <select name="status" id="status" lay-verify="required" class="layui-select">
+                    <option value="">--实名认证--</option>
+                    @foreach ($status_list as $key=>$text)
+                        <option value="{{ $key }}" {{isset($status)?$key === $status?'checked':'':''}}>{{ $text }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <button class="layui-btn" data-type="reload">搜索</button>
+            {{--            </form>--}}
 
 
             <script type="text/html" id="toolColumn">
                 <a class="layui-btn layui-btn-xs" lay-event="edit">审核</a>
             </script>
             <table id="lay-table" lay-filter="lay-table">
-                <thead>
-                <tr>
-                    <th lay-data="{field: 'id'}">ID</th>
-                    <th lay-data="{field: 'user_name'}">账号名</th>
-                    <th lay-data="{field: 'mobile'}">手机号</th>
-                    <th lay-data="{field: 'name'}">真实姓名</th>
-                    <th lay-data="{field: 'certify_type_text'}">证件类型</th>
-                    <th lay-data="{field: 'number',width:200}">证件号码</th>
-                    <th lay-data="{field: 'obverse'}">证件照正面</th>
-                    <th lay-data="{field: 'reverse'}">证件照发面</th>
-                    <th lay-data="{field: 'status_text'}">审核状态</th>
-                    <th lay-data="{field: 'status'}">状态</th>
-                    <th lay-data="{field: 'created_at'}">提交时间</th>
-                    <th lay-data="{field: 'right',toolbar: '#toolColumn'}">操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($certify_list as $key=>$certify)
-                    <tr>
-                        <td>{{$certify->id}}</td>
-                        <td>{{$certify->user->username}}</td>
-                        <td>{{$certify->user->mobile}}</td>
-                        <td>{{$certify->name}}</td>
-                        <td>{{$certify->certify_type_text}}</td>
-                        <td>{{$certify->number}}</td>
-                        <td>
-                            <a href="{{$certify->obverse}}" target="_blank">查看
-                            </a>
-                        </td>
-                        <td><a href="{{$certify->reverse}}" target="_blank">查看</a></td>
-                        <td>{{$certify->status_text}}</td>
-                        <td>{{$certify->status}}</td>
-                        <td>{{$certify->created_at}}</td>
-                    </tr>
-                @endforeach
-                </tbody>
+
             </table>
         </div>
         <div id="model" style="padding:10px;background:#FFFFFF;display:none;width:500px;">
@@ -90,14 +57,80 @@
                 , form = layui.form
                 , table = layui.table;
 
-            table.init('lay-table', {
+            table.render({
+                elem: '#lay-table',
+                url: '{{ route('admin.api.certify.index') }}',
+                parseData: function (res) { //res 即为原始返回的数据
+                    return {
+                        'code': res.message ? 400 : 0, //解析接口状态
+                        'msg': res.message || '加载失败', //解析提示文本
+                        'count': res.total, //解析数据长度
+                        'data': res.data || [] //解析数据列表
+                    };
+                },
                 page: {
-                    layout: ['count', 'prev', 'page', 'next', 'skip'],
-                    count:1000,
-                    groups:5
-                }
+                    layout: ['count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                },
+                id: "dataTable",
+                cols: [[
+                    {field: 'id', title: 'ID'},
+                    {field: 'user_name', title: '账户名'},
+                    {field: 'mobile', title: '手机号'},
+                    {field: 'name', title: '姓名'},
+                    {field: 'certify_type', title: '证件类型'},
+                    {field: 'number', title: '证件号码', width: 200},
+                    , {
+                        field: 'obverse', title: '身份证正面', width: 110, event: 'show_obverse', templet: function (res) {
+                            return "<img src='" + res.obverse + "' style='height: 80px;width: 80px'>"
+                        }
+                    }
+                    , {
+                        field: 'reverse', title: '身份证反面', width: 110, event: 'show_reverse', templet: function (res) {
+                            return "<img src='" + res.reverse + "' style='height: 80px;width: 80px'>"
+                        }
+                    },
+                    {
+                        field: 'status', title: '状态', templet: function (res) {
+                            if (res.status === 'waiting') {
+                                return '待审核'
+                            } else if (res.status === 'success') {
+                                return '已通过';
+                            } else if (res.status === 'reject') {
+                                return '已驳回';
+                            }
+                        }
+                    },
+                    {field: 'created_at', title: '提交时间'},
+                    {
+                        field: 'right',
+                        title: '操作',
+                        toolbar: '#toolColumn'
+                    }
+                ]],
+                text: {
+                    none: '没有可用数据'
+                },
             });
             $("#status").val('{{isset($status)?$status:''}}');
+            let active = {
+                reload: function () {
+                    let keyword = $('#keyword');
+                    let id = $('#id');
+                    let status = $('#status');
+                    //执行重载
+                    table.reload('dataTable', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        , where: {
+                            id: id.val(),
+                            keyword: keyword.val(),
+                            status: status.val()
+                        }
+                    }, 'data');
+                }
+            };
+
             form.render();
             table.on("tool(lay-table)", function (e) {
                 var data = e.data;
@@ -128,13 +161,44 @@
                                 type: "post",
                                 data: {id: id, status: status},
                                 success: function (res) {
-                                    window.location.reload();
+                                    active.reload();
                                 }
                             });
                             layer.close(index)
                         }
                     });
+                } else if (e.event === 'show_obverse') { //弹出正面图片
+
+                    var imgHtml = "<img src='" + data.obverse + "' width='600px' height='600px'/>";
+                    layer.open({
+                        type: 1,
+                        shade: 0.8,
+                        offset: 'auto',
+                        area: [600 + 'px', 550 + 'px'], // area: [width + 'px',height+'px'] //原图显示
+                        shadeClose: true,
+                        scrollbar: false,
+                        title: "身份证正面", //不显示标题
+                        content: imgHtml, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                    });
+                } else if (e.event === 'show_reverse') { //弹出正面图片
+
+                    var imgHtml = "<img src='" + data.reverse + "' width='600px' height='600px'/>";
+                    layer.open({
+                        type: 1,
+                        shade: 0.8,
+                        offset: 'auto',
+                        area: [600 + 'px', 550 + 'px'], // area: [width + 'px',height+'px'] //原图显示
+                        shadeClose: true,
+                        scrollbar: false,
+                        title: "身份证反面", //不显示标题
+                        content: imgHtml, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                    });
                 }
+            });
+
+            $('.layui-btn').on('click', function(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
             });
         })
     </script>
