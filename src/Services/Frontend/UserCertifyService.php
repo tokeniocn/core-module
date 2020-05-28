@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Services\Frontend;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Modules\Core\Exceptions\Frontend\Auth\UserCertifyException;
 use Modules\Core\Models\Frontend\UserCertify;
 use Modules\Core\Services\Traits\HasQuery;
@@ -38,5 +40,21 @@ class UserCertifyService
         return $this->create(array_merge([
             'user_id' => with_user_id($user),
         ], $data), $options);
+    }
+
+    public function certifyVerify($id, $status, $options = [])
+    {
+        $certify = $this->one(['id' => $id]);
+        DB::beginTransaction();
+        if ($status === UserCertify::STATUS_SUCCESS) {
+            $certify->setPassed();
+            $certify->user->setAuthVerified();
+        } else if ($status == UserCertify::STATUS_REJECT) {
+            $certify->setReject();
+            $certify->user->setAuthVerifyFail();
+        }
+        $certify->push();
+        DB::commit();
+        return true;
     }
 }

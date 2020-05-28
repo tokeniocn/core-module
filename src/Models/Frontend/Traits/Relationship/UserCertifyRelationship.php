@@ -2,12 +2,12 @@
 
 namespace Modules\Core\Models\Frontend\Traits\Relationship;
 
-use Modules\TianYuan\Models\User;
+use App\Models\User;
 
 trait UserCertifyRelationship
 {
     public function user()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }

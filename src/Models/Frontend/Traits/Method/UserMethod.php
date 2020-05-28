@@ -154,6 +154,17 @@ trait UserMethod
     }
 
     /**
+     * @return $this
+     */
+    public function setAuthVerifyFail()
+    {
+        $this->auth = 0;
+        $this->auth_verified_at = null;
+
+        return $this;
+    }
+
+    /**
      * @param $password
      *
      * @return bool

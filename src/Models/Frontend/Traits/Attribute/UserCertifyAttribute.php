@@ -15,8 +15,8 @@ trait UserCertifyAttribute
     /**
      * @return array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null
      */
-    public function getAuthTypeTextAttribute()
+    public function getCertifyTypeTextAttribute()
     {
-        return trans(self::AUTH_TYPE_MAP[$this->attributes['auth_type']]);
+        return trans(self::CERTIFY_TYPE_MAP[$this->attributes['certify_type']]);
     }
 }

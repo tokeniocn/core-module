@@ -82,7 +82,7 @@ trait UserRelationship
     /**
      * @return mixed
      */
-    public function userCertifies()
+    public function certifies()
     {
         return $this->hasMany(UserCertify::class);
     }
