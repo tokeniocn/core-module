@@ -22,6 +22,14 @@ class AdminMenuTableSeeder extends Seeder
             'status' => 1,
         ]);
 
+        $user = AdminMenu::create([
+            'title' => '实名认证',
+            'icon' => 'perm_identity',
+            'parent_id' => $user->id,
+            'url' => '',
+            'status' => 1,
+        ]);
+
         // 系统管理
         $system = AdminMenu::create([
             'title' => '系统管理',
