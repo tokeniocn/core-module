@@ -18,7 +18,7 @@ class SystemController extends Controller
             'key' => 'register_invitation',
             'type' => 'radio',
             'title' => '邀请码使用方式',
-            'value' => '1',
+            'value' => '0',
             'description' => '0-无需邀请码，1-一码一人，2-一码多人',
             'data' => [
                 '0' => '无需邀请码',
@@ -74,7 +74,6 @@ class SystemController extends Controller
      */
     protected function normalizeSchema(array $data)
     {
-
         return array_map(function ($value) use ($data) {
             return array_merge($value, [
                 'value' => $data[$value['key']] ?? $value['value'],

@@ -27,11 +27,5 @@ class BaseTableSeeder extends Seeder
             'android_version' => '',
             'android_download' => '',
         ]);
-        store_config('core::system', [
-            "register_invitation" => "0",
-            "notification_email_maxAttempts" => "3",
-            "notification_mobile_maxAttempts" => "3",
-            "notification_mobile_decaySeconds" => "600"
-        ]);
     }
 }
