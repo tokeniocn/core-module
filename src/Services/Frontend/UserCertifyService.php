@@ -20,11 +20,16 @@ class UserCertifyService
 
     public function createWithUser($user, $data = [], $options = [])
     {
+        $user = with_user($user);
+        if ($user->isAuthVerified(false)) {
+            throw new UserCertifyException(trans('您已经通过实名认证，请勿重复提交。'));
+        }
         //检查是否有提交未审核的
         $certify = $this->one([
             'user_id' => with_user_id($user),
             'status' => UserCertify::STATUS_WAITING
         ], ['exception' => false]);
+
 
         if (!empty($certify)) {
             throw new UserCertifyException(trans('您已经的实名认证正在审核中，请勿重复提交。'));
