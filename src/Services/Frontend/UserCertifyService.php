@@ -37,10 +37,10 @@ class UserCertifyService
             throw new UserCertifyException(trans('您已经的实名认证正在审核中，请勿重复提交。'));
         }
 
-        $certify = $this->create(array_merge([
+        $certify = $this->create(array_merge($data, [
             'status' => UserCertify::STATUS_WAITING,
             'user_id' => with_user_id($user),
-        ], $data), $options);
+        ]), $options);
         $certify->status_text = $certify->statusText;
         return $certify;
     }

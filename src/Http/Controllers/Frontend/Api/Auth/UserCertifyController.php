@@ -10,7 +10,7 @@ class UserCertifyController
 {
     public function store(UserCertifyRequest $request, UserCertifyService $userCertifyService)
     {
-        return $userCertifyService->createWithUser($request->user(), $request->all());
+        return $userCertifyService->createWithUser($request->user(), $request->validationData());
     }
 
     public function info(Request $request, UserCertifyService $userCertifyRequest)
