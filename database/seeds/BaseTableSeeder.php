@@ -28,7 +28,7 @@ class BaseTableSeeder extends Seeder
             'android_download' => '',
         ]);
         store_config('core::system', [
-            "register_invitation" => "1",
+            "register_invitation" => "0",
             "notification_email_maxAttempts" => "3",
             "notification_mobile_maxAttempts" => "3",
             "notification_mobile_decaySeconds" => "600"
