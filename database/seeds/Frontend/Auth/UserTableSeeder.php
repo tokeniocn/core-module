@@ -18,11 +18,11 @@ class UserTableSeeder extends Seeder
     {
 
         // Add the master administrator, user id of 1
-        $user = User::create([
-            'username' => 'test',
-            'email' => 'test@test.com',
-            'password' => 'test',
-        ]);
+//        $user = User::create([
+//            'username' => 'test',
+//            'email' => 'test@test.com',
+//            'password' => 'test',
+//        ]);
 
     }
 }

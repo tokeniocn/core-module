@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Models\Frontend\Traits\Relationship;
 
+use Modules\Core\Models\Frontend\UserAuth;
+use Modules\Core\Models\Frontend\UserCertify;
 use Modules\Core\Models\Frontend\UserVerify;
 use Modules\Core\Models\Frontend\UserInvitation;
 use Modules\Core\Models\Frontend\UserDataHistory;
@@ -20,7 +22,7 @@ trait UserRelationship
     {
         return $this->hasMany(UserDataHistory::class);
     }
-    
+
     /**
      * @return mixed
      */
@@ -75,5 +77,13 @@ trait UserRelationship
     public function invitationTree()
     {
         return $this->hasOne(UserInvitationTree::class);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function certifies()
+    {
+        return $this->hasMany(UserCertify::class);
     }
 }

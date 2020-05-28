@@ -2,11 +2,14 @@
 
 namespace Modules\Core\Exceptions\Frontend\Auth;
 
+use Exception;
+
 /**
- * 用户未实名认证异常
- *
+ * 实名认证异常
+ * Class UserCertifyException
  * @package Modules\Core\Exceptions\Frontend\Auth
  */
-class UserAuthVerifyException extends Exception
+class UserCertifyException extends Exception
 {
+
 }

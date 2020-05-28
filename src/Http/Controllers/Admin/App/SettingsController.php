@@ -102,13 +102,14 @@ class SettingsController extends Controller
         /** @var CoinService $coinService */
         $coinService = resolve(CoinService::class);
         $coins = $coinService->all();
-        $coinNames = $coins->pluck('symbol');
+        $coinNames = $coins->pluck('symbol','symbol');
         $this->schema['default_coin_list']['data'] = $this->schema['default_coin']['data'] = $coinNames;
         return array_map(function ($value) use ($data) {
             return array_merge($value, [
                 'value' => $data[$value['key']] ?? $value['value'],
             ]);
         }, $this->schema);
+
     }
 
     /**

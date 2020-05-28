@@ -39,8 +39,8 @@
                     </blockquote>
                 </div>
             @elseif($config['type'] === 'radio')
-                @foreach($config['data'] as $key)
-                    <input type="radio" name="{{$config['key']}}" name="{{$key}}" value="{{$key}}" title="{{$key}}"
+                @foreach($config['data'] as $key => $title)
+                    <input type="radio" name="{{$config['key']}}" name="{{$key}}" value="{{$key}}" title="{{$title}}"
                            @if($config['value'] == $key)
                            checked
                             @endif
