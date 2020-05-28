@@ -27,7 +27,7 @@ class CreateUserCertifyTable extends Migration
             $table->dateTime('deleted_at')->nullable();
         });
 
-        DB::statement("ALTER TABLE `" . config('database.connections.mysql.prefix') . "user_certify` comment'用户实名认证'"); // 表注释
+        DB::statement("ALTER TABLE `" . config('database.connections.mysql.prefix') . "user_certifies` comment'用户实名认证'"); // 表注释
 
     }
 
