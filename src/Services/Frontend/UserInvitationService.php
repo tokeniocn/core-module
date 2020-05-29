@@ -58,10 +58,17 @@ class UserInvitationService
      */
     public function create(array $data, array $options = [])
     {
+        if (isset($data['expired_at'])) {
+            $expiredAt = $data['expired_at'];
+        } elseif (config('core::system.register_invitation', 0) == 2) { // 一码多人默认99年有效期
+            $expiredAt = config('core::user.invitation.any_expires', 86400 * 365 * 99);
+        } else {
+            $expiredAt = config('core::user.invitation.one_expires', 86400 * 7); // 默认7天
+        }
+
         return $this->queryCreate(array_merge($data, [
             'token' => $data['token'] ?: $this->generateUniqueToken(),
-            'expired_at' => $data['expired_at'] ?: Carbon::now()->addSeconds(config('core::user.invitation.expires',
-                86400 * 7)),
+            'expired_at' => $expiredAt,
         ]), $options);
     }
 
