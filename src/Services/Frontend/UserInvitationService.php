@@ -215,7 +215,9 @@ class UserInvitationService
         if ($invitationState == 0) { // 不开启邀请码
             return;
         }
-
+        if (empty($token)) {
+            return;
+        }
         if ($invitationState == 1) { // 一码一人模式
             $invitation = $this->inviteOneUser($token, $usedUser);
         } else { // 一码多人模式
