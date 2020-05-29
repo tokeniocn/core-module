@@ -32,9 +32,9 @@ class UserCertify extends Model
         self::CERTIFY_TYPE_PASSPORT => '护照'
     ];
 
-    const STATUS_WAITING = '1';
-    const STATUS_SUCCESS = '2';
-    const STATUS_REJECT = '3';
+    const STATUS_WAITING = '0';
+    const STATUS_SUCCESS = '1';
+    const STATUS_REJECT = '-1';
 
     public static $statusMap = [
         self::STATUS_WAITING => '待审核',
