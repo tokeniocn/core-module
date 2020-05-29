@@ -219,7 +219,7 @@ class UserInvitationService
 
         if (empty($token)) {
             // 强制邀请
-            $mandatoryInvitation = $options['invitationMandatory'] ?? config('core::system.register_invitation_mandatory', false);
+            $mandatoryInvitation = $options['invitationMandatory'] ?? config('core::system.register_invitation_mandatory', 0);
 
             if ($mandatoryInvitation) {
                 throw new InvalidArgumentException(trans('请输入邀请码'));

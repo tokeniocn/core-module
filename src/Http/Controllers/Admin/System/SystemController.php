@@ -14,6 +14,17 @@ class SystemController extends Controller
 {
 
     protected $schema = [
+        'register_invitation_mandatory' => [
+            'key' => 'register_invitation_mandatory',
+            'type' => 'radio',
+            'title' => '注册强制邀请码',
+            'value' => '0',
+            'description' => '0-无需邀请码，1-必须邀请码才能注册',
+            'data' => [
+                '0' => '否',
+                '1' => '是',
+            ]
+        ],
         'register_invitation' => [
             'key' => 'register_invitation',
             'type' => 'radio',
