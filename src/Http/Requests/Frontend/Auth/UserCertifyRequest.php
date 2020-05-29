@@ -29,7 +29,7 @@ class UserCertifyRequest extends FormRequest
             'reverse' => 'required',
             'name' => 'required',
             'number' => 'required',
-            'certify_type' => 'required|in:' . implode(',', array_keys(UserCertify::CERTIFY_TYPE_MAP))
+            'certify_type' => 'required|in:' . implode(',', array_keys(UserCertify::$certifyTypeMap))
         ];
     }
 

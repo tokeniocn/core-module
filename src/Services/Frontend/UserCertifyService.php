@@ -42,6 +42,7 @@ class UserCertifyService
             'user_id' => with_user_id($user),
         ]), $options);
         $certify->status_text = $certify->statusText;
+        $certify->status = intval($certify->status);
         return $certify;
     }
 
