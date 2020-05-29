@@ -3,17 +3,17 @@
 namespace Modules\Core\Services\Frontend;
 
 use Closure;
+use InvalidArgumentException;
 use UnexpectedValueException;
 use Carbon\Carbon;
 use App\Models\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Modules\Core\Services\Traits\HasQuery;
 use Illuminate\Validation\ValidationException;
 use Modules\Core\Events\Frontend\UserInvited;
 use Modules\Core\Models\Frontend\UserInvitation;
 use Modules\Core\Models\Frontend\UserInvitationTree;
-use Modules\Core\Services\Traits\HasQuery;
-
 
 class UserInvitationService
 {
@@ -210,21 +210,29 @@ class UserInvitationService
      */
     public function inviteUser($token, User $usedUser, array $options = [])
     {
-        $invitationState = $options['invitation'] ?? 1;
+        // 邀请类型
+        $invitation = $options['invitation'] ?? config('core::system.register_invitation', 0);
 
-        if ($invitationState == 0) { // 不开启邀请码
+        if ($invitation == 0) { // 不开启邀请码
             return;
         }
+
         if (empty($token)) {
+            // 强制邀请
+            $mandatoryInvitation = $options['invitationMandatory'] ?? config('core::system.register_invitation_mandatory', false);
+
+            if ($mandatoryInvitation) {
+                throw new InvalidArgumentException(trans('请输入邀请码'));
+            }
+
             return;
         }
-        if ($invitationState == 1) { // 一码一人模式
-            $invitation = $this->inviteOneUser($token, $usedUser);
-        } else { // 一码多人模式
-            $invitation = $this->inviteAnyUser($token, $usedUser);
-        }
 
-        return $invitation;
+        if ($invitation == 1) {
+            return $this->inviteOneUser($token, $usedUser); // 一码一人模式;
+        } elseif ($invitation == 2) {
+            return $this->inviteAnyUser($token, $usedUser); // 一码多人模式
+        }
     }
 
     /**
