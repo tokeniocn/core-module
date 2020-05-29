@@ -68,11 +68,13 @@ class UserRegisterService
                 'setExpired' => true, // 标记已使用
             ], $options['userVerifyOptions'] ?? []));
 
+            $username = $data['username'] ?? '';
+
             /** @var UserService $userService */
             $userService = resolve(UserService::class);
             /** @var User $user */
             $user = $userService->create([
-                'username' => $data['username'] ?? ShortUuid::uuid1(),
+                'username' => $username ?: ShortUuid::uuid1(),
                 'password' => $data['password'],
                 'mobile' => $data['mobile'],
                 'email' => $data['email'] ?? ''
@@ -83,8 +85,10 @@ class UserRegisterService
                 }
             ], $options['createOptions'] ?? []));
 
-            $user->username = "user-" . $user->id;
-            $user->save();
+            if (empty($username)) { // 空用户名则补全用户名
+                $user->username = "user-" . $user->id;
+                $user->save();
+            }
 
             /** @var UserInvitationService $invitationService */
             $invitationService = resolve(UserInvitationService::class);
