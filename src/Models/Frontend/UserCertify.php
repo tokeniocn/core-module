@@ -24,19 +24,19 @@ class UserCertify extends Model
         UserCertifyMethod,
         UserCertifyRelationship;
 
-    const CERTIFY_TYPE_IDENTIFICATION = 'identification';
-    const CERTIFY_TYPE_PASSPORT = 'passport';
+    const CERTIFY_TYPE_IDENTIFICATION = '1';
+    const CERTIFY_TYPE_PASSPORT = '2';
 
-    const CERTIFY_TYPE_MAP = [
+    public static $certifyTypeMap = [
         self::CERTIFY_TYPE_IDENTIFICATION => '身份证',
         self::CERTIFY_TYPE_PASSPORT => '护照'
     ];
 
-    const STATUS_WAITING = 'waiting';
-    const STATUS_SUCCESS = 'success';
-    const STATUS_REJECT = 'reject';
+    const STATUS_WAITING = '1';
+    const STATUS_SUCCESS = '2';
+    const STATUS_REJECT = '3';
 
-    const STATUS_MAP = [
+    public static $statusMap = [
         self::STATUS_WAITING => '待审核',
         self::STATUS_SUCCESS => '已通过',
         self::STATUS_REJECT => '已驳回',

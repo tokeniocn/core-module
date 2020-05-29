@@ -9,7 +9,7 @@ trait UserCertifyAttribute
      */
     public function getStatusTextAttribute()
     {
-        return trans(self::STATUS_MAP[$this->attributes['status']]);
+        return trans(self::$statusMap[$this->attributes['status']]);
     }
 
     /**
@@ -17,6 +17,6 @@ trait UserCertifyAttribute
      */
     public function getCertifyTypeTextAttribute()
     {
-        return trans(self::CERTIFY_TYPE_MAP[$this->attributes['certify_type']]);
+        return trans(self::$certifyTypeMap[$this->attributes['certify_type']]);
     }
 }

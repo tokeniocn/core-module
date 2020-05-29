@@ -91,11 +91,11 @@
                     },
                     {
                         field: 'status', title: '状态', templet: function (res) {
-                            if (res.status === 'waiting') {
+                            if (res.status === '1') {
                                 return '待审核'
-                            } else if (res.status === 'success') {
+                            } else if (res.status === '2') {
                                 return '已通过';
-                            } else if (res.status === 'reject') {
+                            } else if (res.status === '3') {
                                 return '已驳回';
                             }
                         }
