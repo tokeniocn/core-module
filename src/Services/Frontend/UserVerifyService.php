@@ -55,6 +55,7 @@ class UserVerifyService
      */
     public function getByKeyToken($key, $token, $type, array $options = [])
     {
+        /** @var UserVerify $model */
         $model = $this->one([
             'key' => $key,
             'token' => $token,
@@ -107,8 +108,8 @@ class UserVerifyService
     {
         $verify = $this->queryCreate($data, $options);
 
-        $deleteOther = $options['delete_other'] ?? true;
-        if ($deleteOther || ($options['expire_other'] ?? true)) {
+        $deleteOther = $options['deleteOther'] ?? true;
+        if ($deleteOther || ($options['expireOther'] ?? true)) {
             $verify->makeOtherExpired($deleteOther);
         }
 

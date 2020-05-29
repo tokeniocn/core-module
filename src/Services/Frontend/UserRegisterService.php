@@ -64,7 +64,9 @@ class UserRegisterService
         $user = DB::transaction(function () use ($data, $options) {
             /** @var UserVerifyService $userService */
             $userService = resolve(UserVerifyService::class);
-            $userService->getByKeyToken($data['mobile'], $data['code'], UserVerify::TYPE_MOBILE_REGISTER, $options['userVerifyOptions'] ?? []);
+            $userService->getByKeyToken($data['mobile'], $data['code'], UserVerify::TYPE_MOBILE_REGISTER, array_merge([
+                'setExpired' => true, // 标记已使用
+            ], $options['userVerifyOptions'] ?? []));
 
             /** @var UserService $userService */
             $userService = resolve(UserService::class);
