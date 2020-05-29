@@ -14,8 +14,8 @@ class CertifyController extends Controller
     {
 
         return view('core::admin.certify.index', array_merge([
-            'status_list' => UserCertify::STATUS_MAP,
-            'certify_type' => UserCertify::CERTIFY_TYPE_MAP
+            'status_list' => UserCertify::$statusMap,
+            'certify_type' => UserCertify::$certifyTypeMap
         ], $request->all()));
     }
 }
