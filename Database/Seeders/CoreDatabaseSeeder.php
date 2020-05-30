@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Database\Seeders\CoreDatabaseSeeder;
+namespace Modules\Core\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Modules\Core\Database\Seeders\Admin\AdminUserTableSeeder;
