@@ -6,6 +6,7 @@ use Modules\Core\Http\Controllers\Controller;
 use Modules\Core\Models\Media;
 use Illuminate\Http\Request;
 use MediaUploader;
+use OSS\OssClient;
 
 class UploadController extends Controller
 {
@@ -21,5 +22,18 @@ class UploadController extends Controller
 
         $request->user()->attachMedia($media, ['author']);
         return $media;
+    }
+
+    public function uploadSettings(Request $request)
+    {
+
+        $policy = Media::aliOssPolicy();
+        return [
+            'policy' => $policy,
+            'expired_at' => Media::aliOssSignatureExpireTime(),
+            'access_key' => config('filesystems.disks.oss.access_key'),
+            'url' => Media::aliOssUrl(),
+            'signature' => Media::aliOssSignature($policy)
+        ];
     }
 }
