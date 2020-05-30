@@ -21,7 +21,7 @@ trait HasSchedule
     public function addSchedules(Closure $callback)
     {
         if ($this->app->runningInConsole()) {
-            $this->app->resolving(Schedule::class, $callback);
+            $this->callAfterResolving(Schedule::class, $callback);
         }
     }
 }
