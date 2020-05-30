@@ -36,21 +36,31 @@ class UserCertifyService
         }
         //检查是否有提交未审核的
         $certify = $this->one([
-            'user_id' => with_user_id($user),
-            'status' => UserCertify::STATUS_WAITING
+            'user_id' => with_user_id($user)
         ], ['exception' => false]);
 
 
         if (!empty($certify)) {
-            throw new UserCertifyException(trans('您已经的实名认证正在审核中，请勿重复提交。'));
+            if ($certify->status === UserCertify::STATUS_SUCCESS) {
+                throw new UserCertifyException(trans('您已经的实名认证正在审核中，请勿重复提交。'));
+            } else {
+                $certify->status = intval(UserCertify::STATUS_WAITING);
+                $certify->obverse = $data['obverse'];
+                $certify->reverse = $data['reverse'];
+                $certify->name = $data['name'];
+                $certify->number = $data['number'];
+                $certify->certify_type = $data['certify_type'];
+                $certify->save();
+            }
+        } else {
+            $certify = $this->create(array_merge($data, [
+                'status' => UserCertify::STATUS_WAITING,
+                'user_id' => with_user_id($user),
+            ]), $options);
         }
 
-        $certify = $this->create(array_merge($data, [
-            'status' => UserCertify::STATUS_WAITING,
-            'user_id' => with_user_id($user),
-        ]), $options);
+
         $certify->status_text = $certify->statusText;
-        $certify->status = intval($certify->status);
         return $certify;
     }
 
