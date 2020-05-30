@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Http\Requests\Admin\Auth\Permission;
+namespace Modules\Core\Http\Requests\Admin\Auth\Certify;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Modules\Core\Models\Frontend\UserCertify;
