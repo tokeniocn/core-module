@@ -30,7 +30,7 @@ class SystemController extends Controller
             'type' => 'radio',
             'title' => '邀请码使用方式',
             'value' => '0',
-            'description' => '0-无需邀请码，1-一码一人，2-一码多人',
+            'description' => '0-无需邀请码，1-一码一人，2-一码多人(切换成一码多人模式后，用户需要进入重新生成邀请码)',
             'data' => [
                 '0' => '无需邀请码',
                 '1' => '一码一人',
