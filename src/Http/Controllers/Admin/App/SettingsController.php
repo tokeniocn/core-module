@@ -85,6 +85,13 @@ class SettingsController extends Controller
             'value' => '1.0.0',
             'description' => '正式版下载地址',
         ],
+        'share_link' => [
+            'key' => 'share_link',
+            'type' => 'text',
+            'title' => '分享链接',
+            'value' => '',
+            'description' => '分享链接',
+        ],
     ];
 
     /**
