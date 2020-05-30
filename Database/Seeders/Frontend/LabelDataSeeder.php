@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Modules\Core\Database\Seeds\Frontend;
+namespace Modules\Core\Database\Seeders\Frontend;
 
 
 use Illuminate\Database\Seeder;

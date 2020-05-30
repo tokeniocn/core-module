@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Database\Seeds\Admin;
+namespace Modules\Core\Database\Seeders\Admin;
 
 use Illuminate\Database\Seeder;
 use Modules\Core\Models\Admin\AdminMenu;

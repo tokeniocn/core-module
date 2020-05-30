@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Database\Seeds\Frontend\Auth;
+namespace Modules\Core\Database\Seeders\Frontend\Auth;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
