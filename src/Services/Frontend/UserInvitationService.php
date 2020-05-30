@@ -285,7 +285,9 @@ class UserInvitationService
         return $usedInvitation;
     }
 
-    /**获取用户的邀请码列表
+    /**
+     * 获取用户的邀请码列表
+     * 
      * @param $userId
      * @param array $options
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
@@ -299,7 +301,9 @@ class UserInvitationService
         ], $options));
     }
 
-    /**获取未使用的邀请码
+    /**
+     * 获取未使用的邀请码
+     *
      * @param $user
      * @param array $options
      * @return mixed
