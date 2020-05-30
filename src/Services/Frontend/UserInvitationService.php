@@ -274,7 +274,7 @@ class UserInvitationService
     {
         $usedUser = with_user($usedUser);
 
-        $invitation = $this->getByToken($token, ['available' => true]);
+        $invitation = $this->getByToken($token, ['available' => false]);
 
         $usedInvitation = $invitation->replicate();
         $usedInvitation->setUsed($usedUser)
@@ -308,6 +308,8 @@ class UserInvitationService
     {
         return $this->one([
             ['user_id', with_user_id($user)],
+            ['used_user_id', 0],
+            ['used_at', null],
             ['expired_at', '>', date('Y-m-d H:i:s')],
         ], array_merge([
             'orderBy' => ['id', 'asc']
