@@ -74,8 +74,14 @@
                 id: "dataTable",
                 cols: [[
                     {field: 'id', title: 'ID'},
-                    {field: 'user_name', title: '账户名'},
-                    {field: 'mobile', title: '手机号'},
+                    {field: 'user_name', title: '账户名',templet: function (res) {
+                            return res.user.username
+                        }
+                    },
+                    {field: 'mobile', title: '手机号',templet: function (res) {
+                            return res.user.mobile
+                        }
+                    },
                     {field: 'name', title: '姓名'},
                     {field: 'certify_type', title: '证件类型'},
                     {field: 'number', title: '证件号码', width: 200},
@@ -91,11 +97,11 @@
                     },
                     {
                         field: 'status', title: '状态', templet: function (res) {
-                            if (res.status === '1') {
+                            if (res.status === '0') {
                                 return '待审核'
-                            } else if (res.status === '2') {
+                            } else if (res.status === '1') {
                                 return '已通过';
-                            } else if (res.status === '3') {
+                            } else if (res.status === '-1') {
                                 return '已驳回';
                             }
                         }

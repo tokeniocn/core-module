@@ -26,7 +26,7 @@ class AdminMenuTableSeeder extends Seeder
             'title' => '实名认证',
             'icon' => 'perm_identity',
             'parent_id' => $user->id,
-            'url' => '',
+            'url' => route('admin.certify.index', [], false),
             'status' => 1,
         ]);
 
