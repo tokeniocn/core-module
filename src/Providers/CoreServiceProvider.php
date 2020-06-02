@@ -56,9 +56,7 @@ class CoreServiceProvider extends ServiceProvider
 //        $this->registerFactories();
 //        $this->registerModelRelations();
         $this->registerBlade();;
-        $this->loadMigrationsFrom($this->modulePath . '/database/migrations');
-        $this->loadSeedsFrom($this->modulePath . '/database/seeds');
-
+        $this->loadMigrationsFrom($this->modulePath . '/Database/Migrations');
     }
 
     /**

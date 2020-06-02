@@ -9,7 +9,6 @@ use Modules\Core\Module\Traits\HasSchedule;
 
 class ModuleServiceProvider extends ServiceProvider
 {
-    use HasSeeds,
-        HasModule,
+    use HasModule,
         HasSchedule;
 }

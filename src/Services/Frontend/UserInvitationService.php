@@ -287,7 +287,7 @@ class UserInvitationService
 
     /**
      * 获取用户的邀请码列表
-     * 
+     *
      * @param $userId
      * @param array $options
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection

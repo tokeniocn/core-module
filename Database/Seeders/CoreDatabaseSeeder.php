@@ -1,14 +1,14 @@
 <?php
 
-namespace Modules\Core\Seeds;
+namespace Modules\Core\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Core\Seeds\Admin\AdminUserTableSeeder;
-use Modules\Core\Seeds\Admin\AdminMenuTableSeeder;
-use Modules\Core\Seeds\Admin\AdminRolePermissionTableSeeder;
-use Modules\Core\Seeds\Frontend\Auth\UserTableSeeder;
-use Modules\Core\Seeds\Frontend\ConfigTableSeeder;
-use Modules\Core\Seeds\Frontend\LabelDataSeeder;
+use Modules\Core\Database\Seeders\Admin\AdminUserTableSeeder;
+use Modules\Core\Database\Seeders\Admin\AdminMenuTableSeeder;
+use Modules\Core\Database\Seeders\Admin\AdminRolePermissionTableSeeder;
+use Modules\Core\Database\Seeders\Frontend\Auth\UserTableSeeder;
+use Modules\Core\Database\Seeders\Frontend\ConfigTableSeeder;
+use Modules\Core\Database\Seeders\Frontend\LabelDataSeeder;
 
 
 class CoreDatabaseSeeder extends Seeder
