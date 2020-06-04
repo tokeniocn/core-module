@@ -3,9 +3,11 @@
 namespace Modules\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Models\Traits\HasFail;
 
 class ListData extends Model
 {
+    use HasFail;
     /**
      * @var string
      */

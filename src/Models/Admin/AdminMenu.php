@@ -18,4 +18,14 @@ class AdminMenu extends Model
 
     const STATUS_ENABLED = 1;
     const STATUS_DISABLED = 0;
+
+    protected $fillable = [
+        'parent_id',
+        'icon',
+        'title',
+        'url',
+        'status',
+        'sort'
+
+    ];
 }

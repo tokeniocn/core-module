@@ -1,6 +1,9 @@
 <?php
 
+use Modules\Core\Http\Controllers\Frontend\Auth\RegisterController;
 use Modules\Core\Http\Controllers\Frontend\Auth\EmailVerifyController;
+
+Route::get('register', [RegisterController::class, 'index'])->name('register');
 
 Route::group([
     'namespace' => 'Auth',

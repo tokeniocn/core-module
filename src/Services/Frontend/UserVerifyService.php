@@ -2,7 +2,9 @@
 
 namespace Modules\Core\Services\Frontend;
 
+use App\Models\User;
 use Closure;
+use Modules\Core\Events\Frontend\UserMobileVerified;
 use UnexpectedValueException;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -53,10 +55,11 @@ class UserVerifyService
      */
     public function getByKeyToken($key, $token, $type, array $options = [])
     {
+        /** @var UserVerify $model */
         $model = $this->one([
-            'key'   => $key,
+            'key' => $key,
             'token' => $token,
-            'type'  => $type,
+            'type' => $type,
         ], array_merge([
             'exception' => function () {
                 return new UserVerifyNotFundException(trans('验证码错误'));
@@ -65,7 +68,7 @@ class UserVerifyService
 
         if ($model && ($options['setExpired'] ?? false)) {
             $model->setExpired()
-                  ->save();
+                ->save();
         }
 
         return $model;
@@ -85,11 +88,11 @@ class UserVerifyService
     {
         /** @var UserVerify $verify */
         $verify = $this->create([
-            'user_id'    => with_user_id($user),
-            'key'        => $key,
-            'type'       => $type,
-            'token'      => $token ?: $this->generateUniqueToken($key),
-            'expired_at' => $expiredAt ?: Carbon::now()->addSeconds(config('core::user.verify.expires', 600)),
+            'user_id' => with_user_id($user),
+            'key' => $key,
+            'type' => $type,
+            'token' => $token ?: $this->generateUniqueToken($key),
+            'expired_at' => $expiredAt ?: Carbon::now()->addSeconds(config('core::system.user_verify_expires', 600)),
         ], $options);
 
         return $verify;
@@ -105,8 +108,8 @@ class UserVerifyService
     {
         $verify = $this->queryCreate($data, $options);
 
-        $deleteOther = $options['delete_other'] ?? true;
-        if ($deleteOther || ($options['expire_other'] ?? true)) {
+        $deleteOther = $options['deleteOther'] ?? true;
+        if ($deleteOther || ($options['expireOther'] ?? true)) {
             $verify->makeOtherExpired($deleteOther);
         }
 
@@ -122,16 +125,22 @@ class UserVerifyService
      */
     public function generateUniqueToken($key, Closure $tokenCallback = null, array $options = [])
     {
+        if (app()->environment() !== 'production' && config('core::verify.debug')) {
+            $token = config('core::verify.code');;
+            $this->model->where(['key' => $key, 'token' => $token])->delete();
+            return $token;
+
+        }
         $i = 1;
         $max = $options['max'] ?? 10;
         while (true) {
             $token = is_callable($tokenCallback) ? $tokenCallback() : Str::random(6);
             $verify = $this->one([
-                'key'   => $key,
+                'key' => $key,
                 'token' => $token,
             ], ['exception' => false]);
 
-            if ( ! $verify) {
+            if (!$verify) {
                 return $token;
             } elseif ($i > $max) {
                 throw new UnexpectedValueException(trans('超出唯一Token生成次数(:max)', ['max' => $max]));
@@ -154,11 +163,11 @@ class UserVerifyService
     {
         /** @var UserVerify $verify */
         $verify = $this->create([
-            'user_id'    => 0,
-            'key'        => $key,
-            'type'       => $type,
-            'token'      => $token ?: $this->generateUniqueToken($key),
-            'expired_at' => $expiredAt ?: Carbon::now()->addSeconds(config('core::user.verify.expires', 600)),
+            'user_id' => 0,
+            'key' => $key,
+            'type' => $type,
+            'token' => $token ?: $this->generateUniqueToken($key),
+            'expired_at' => $expiredAt ?: Carbon::now()->addSeconds(config('core::system.user_verify_expires', 600)),
         ], $options);
 
         return $verify;

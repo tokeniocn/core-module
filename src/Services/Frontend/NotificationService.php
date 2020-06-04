@@ -24,8 +24,8 @@ class NotificationService
         $key = $mobile . '|' . $type;
         $this->checkKeyAttempts(
             $key,
-            config('core::system.notification.mobile.maxAttempts', 3),
-            config('core::system.notification.mobile.decaySeconds', 600)
+            config('core::system.notification_mobile_maxAttempts', 3),
+            config('core::system.notification_mobile_decaySeconds', 600)
         );
 
         $userVerifyService = resolve(UserVerifyService::class);
@@ -62,8 +62,8 @@ class NotificationService
         $key = $email . '|' . $type;
         $this->checkKeyAttempts(
             $key,
-            config('core::system.notification.email.maxAttempts', 3),
-            config('core::system.notification.email.decaySeconds', 600)
+            config('core::system.notification._email_maxAttempts', 3),
+            config('core::system.notification._email_decaySeconds', 600)
         );
 
         $userVerifyService = resolve(UserVerifyService::class);

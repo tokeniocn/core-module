@@ -15,7 +15,6 @@ class UserRegisterService
     use HasThrottles;
 
 
-
     /**
      * 用户注册
      *
@@ -27,7 +26,7 @@ class UserRegisterService
     public function register(array $data, array $options = [])
     {
         /** @var User $user */
-        $user = DB::transaction(function() use ($data, $options) {
+        $user = DB::transaction(function () use ($data, $options) {
             /** @var UserService $userService */
             $userService = resolve(UserService::class);
 
@@ -41,9 +40,7 @@ class UserRegisterService
 
             /** @var UserInvitationService $invitationService */
             $invitationService = resolve(UserInvitationService::class);
-            $invitationService->inviteUser($data['invite_code'] ?? null, $user, array_merge([
-                'invitation' => config('core::system.register.invitation', 0)
-            ], $options['inviteOptions'] ?? []));
+            $invitationService->inviteUser($data['invite_code'] ?? null, $user, $options['inviteOptions'] ?? []);
 
             return $user;
         });
@@ -64,31 +61,38 @@ class UserRegisterService
     public function registerByMobile(array $data, array $options = [])
     {
         /** @var User $user */
-        $user = DB::transaction(function() use ($data, $options) {
+        $user = DB::transaction(function () use ($data, $options) {
             /** @var UserVerifyService $userService */
             $userService = resolve(UserVerifyService::class);
-            $userService->getByKeyToken($data['mobile'], $data['code'], UserVerify::TYPE_MOBILE_REGISTER, $options['userVerifyOptions'] ?? []);
+            $userService->getByKeyToken($data['mobile'], $data['code'], UserVerify::TYPE_MOBILE_REGISTER, array_merge([
+                'setExpired' => true, // 标记已使用
+            ], $options['userVerifyOptions'] ?? []));
+
+            $username = $data['username'] ?? '';
 
             /** @var UserService $userService */
             $userService = resolve(UserService::class);
             /** @var User $user */
             $user = $userService->create([
-                'username' => $data['username'] ?? ShortUuid::uuid1(),
+                'username' => $username ?: ShortUuid::uuid1(),
                 'password' => $data['password'],
                 'mobile' => $data['mobile'],
                 'email' => $data['email'] ?? ''
             ], array_merge([
-                'beforeSave' => function($model) {
+                'beforeSave' => function ($model) {
                     /** @var User $model */
                     $model->setMobileVerified($model->mobile); // 标记为邮箱已验证
                 }
             ], $options['createOptions'] ?? []));
 
+            if (empty($username)) { // 空用户名则补全用户名
+                $user->username = "user-" . $user->id;
+                $user->save();
+            }
+
             /** @var UserInvitationService $invitationService */
             $invitationService = resolve(UserInvitationService::class);
-            $invitationService->inviteUser($data['invite_code'] ?? null, $user, array_merge([
-                'invitation' => config('core::system.register.invitation', 0)
-            ], $options['inviteOptions'] ?? []));
+            $invitationService->inviteUser($data['invite_code'] ?? null, $user, $options['inviteOptions'] ?? []);
 
             return $user;
         });

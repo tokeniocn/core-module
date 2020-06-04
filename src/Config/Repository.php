@@ -2,9 +2,9 @@
 
 namespace Modules\Core\Config;
 
-use Modules\Core\Config\Traits\ConfigStore;
 use Illuminate\Support\Arr;
 use Illuminate\Config\Repository as ConfigRepository;
+use Modules\Core\Config\Traits\ConfigStore;
 
 /**
  * Class Repository

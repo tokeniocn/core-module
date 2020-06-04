@@ -3,17 +3,17 @@
 namespace Modules\Core\Services\Frontend;
 
 use Closure;
+use InvalidArgumentException;
 use UnexpectedValueException;
 use Carbon\Carbon;
 use App\Models\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Modules\Core\Services\Traits\HasQuery;
 use Illuminate\Validation\ValidationException;
 use Modules\Core\Events\Frontend\UserInvited;
 use Modules\Core\Models\Frontend\UserInvitation;
 use Modules\Core\Models\Frontend\UserInvitationTree;
-use Modules\Core\Services\Traits\HasQuery;
-
 
 class UserInvitationService
 {
@@ -58,10 +58,17 @@ class UserInvitationService
      */
     public function create(array $data, array $options = [])
     {
+        if (isset($data['expired_at'])) {
+            $expiredAt = $data['expired_at'];
+        } elseif (config('core::system.register_invitation', 0) == 2) { // 一码多人默认99年有效期
+            $expiredAt = config('core::user.invitation.any_expires', 86400 * 365 * 99);
+        } else {
+            $expiredAt = config('core::user.invitation.one_expires', 86400 * 7); // 默认7天
+        }
+
         return $this->queryCreate(array_merge($data, [
             'token' => $data['token'] ?: $this->generateUniqueToken(),
-            'expired_at' => $data['expired_at'] ?: Carbon::now()->addSeconds(config('core::user.invitation.expires',
-                86400 * 7)),
+            'expired_at' => $expiredAt,
         ]), $options);
     }
 
@@ -210,19 +217,29 @@ class UserInvitationService
      */
     public function inviteUser($token, User $usedUser, array $options = [])
     {
-        $invitationState = $options['invitation'] ?? 1;
+        // 邀请类型
+        $invitation = $options['invitation'] ?? config('core::system.register_invitation', 0);
 
-        if ($invitationState == 0) { // 不开启邀请码
+        if ($invitation == 0) { // 不开启邀请码
             return;
         }
 
-        if ($invitationState == 1) { // 一码一人模式
-            $invitation = $this->inviteOneUser($token, $usedUser);
-        } else { // 一码多人模式
-            $invitation = $this->inviteAnyUser($token, $usedUser);
+        if (empty($token)) {
+            // 强制邀请
+            $mandatoryInvitation = $options['invitationMandatory'] ?? config('core::system.register_invitation_mandatory', 0);
+
+            if ($mandatoryInvitation) {
+                throw new InvalidArgumentException(trans('请输入邀请码'));
+            }
+
+            return;
         }
 
-        return $invitation;
+        if ($invitation == 1) {
+            return $this->inviteOneUser($token, $usedUser); // 一码一人模式;
+        } elseif ($invitation == 2) {
+            return $this->inviteAnyUser($token, $usedUser); // 一码多人模式
+        }
     }
 
     /**
@@ -268,7 +285,9 @@ class UserInvitationService
         return $usedInvitation;
     }
 
-    /**获取用户的邀请码列表
+    /**
+     * 获取用户的邀请码列表
+     *
      * @param $userId
      * @param array $options
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
@@ -279,6 +298,23 @@ class UserInvitationService
             'user_id' => with_user_id($user)
         ], array_merge([
             'orderBy' => ['id', 'desc']
+        ], $options));
+    }
+
+    /**
+     * 获取未使用的邀请码
+     *
+     * @param $user
+     * @param array $options
+     * @return mixed
+     */
+    public function getUnusedToken($user, $options = [])
+    {
+        return $this->one([
+            ['user_id', with_user_id($user)],
+            ['used_user_id', 0]
+        ], array_merge([
+            'orderBy' => ['id', 'asc']
         ], $options));
     }
 }

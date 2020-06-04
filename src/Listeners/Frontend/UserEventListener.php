@@ -2,107 +2,114 @@
 
 namespace Modules\Core\Listeners\Frontend;
 
-use Modules\Core\Events\Frontend\UserConfirmed;
-use Modules\Core\Events\Frontend\UserLoggedIn;
-use Modules\Core\Events\Frontend\UserLoggedOut;
-use Modules\Core\Events\Frontend\UserProviderRegistered;
-use Modules\Core\Events\Frontend\UserRegistered;
+use Cache;
+use Carbon\Carbon;
+use App\Models\User;
+use Modules\Core\Models\Frontend\UserDataHistory;
 
 /**
  * Class UserEventListener.
  */
 class UserEventListener
 {
+
     /**
-     * @param $event
+     * Listen to the User created event.
+     *
+     * @param User $user
      */
-    public function onLoggedIn($event)
+    public function created(User $user): void
     {
-        $ip_address = request()->getClientIp();
+        $this->logPasswordHistory($user);
+        $this->logPayPasswordHistory($user);
+    }
 
-        // Update the logging in users time & IP
-        $event->user->fill([
-            'last_login_at' => now()->toDateTimeString(),
-            'last_login_ip' => $ip_address,
-        ]);
+    /**
+     * Listen to the User updating event.
+     *
+     * @param User $user
+     */
+    public function updating(User $user): void
+    {
+        if ($user->isDirty('pay_password') && ! $user->isDirty('pay_password_updated_at')) {
+            $user->pay_password_updated_at = Carbon::now();
+        }
+    }
 
-        // Update the timezone via IP address
-        $geoip = geoip($ip_address);
+    /**
+     * Listen to the User updated event.
+     *
+     * @param User $user
+     */
+    public function updated(User $user): void
+    {
+        // 更新缓存
+        Cache::tags('user:' . $user->id)->flush();
 
-        if ($event->user->timezone !== $geoip['timezone']) {
-            // Update the users timezone
-            $event->user->fill([
-                'timezone' => $geoip['timezone'],
-            ]);
+        if ($user->isDirty('password')) {
+            $this->logPasswordHistory($user);
         }
 
-        $event->user->save();
+        if ($user->isDirty('pay_password')) {
+            $this->logPayPasswordHistory($user);
+        }
 
-        logger('User Logged In: '.$event->user->full_name);
+        if ($user->isDirty('email') && $user->isEmailVerified(false)) {
+            $this->logEmailHistory($user);
+        }
+
+        if ($user->isDirty('mobile') && $user->isMobileVerified(false)) {
+            $this->logMobileHistory($user);
+        }
     }
 
     /**
-     * @param $event
+     * @param User $user
      */
-    public function onLoggedOut($event)
+    protected function logPasswordHistory(User $user): void
     {
-        logger('User Logged Out: '.$event->user->full_name);
+        $user->passwordHistories()->create([
+            'data' => $user->password,
+            'type' => UserDataHistory::TYPE_PASSWORD,
+        ]);
     }
 
     /**
-     * @param $event
+     * @param User $user
      */
-    public function onRegistered($event)
+    protected function logPayPasswordHistory(User $user): void
     {
-        logger('User Registered: '.$event->user->full_name);
+        if ( ! empty($user->pay_password)) {
+            $user->payPasswordHistories()->create([
+                'data' => $user->pay_password,
+                'type' => UserDataHistory::TYPE_PAY_PASSWORD,
+            ]);
+        }
     }
 
     /**
-     * @param $event
+     * @param User $user
      */
-    public function onProviderRegistered($event)
+    protected function logEmailHistory(User $user): void
     {
-        logger('User Provider Registered: '.$event->user->full_name);
+        if ( ! empty($user->email)) {
+            $user->emailHistories()->create([
+                'data' => $user->email,
+                'type' => UserDataHistory::TYPE_EMAIL,
+            ]);
+        }
     }
 
     /**
-     * @param $event
+     * @param User $user
      */
-    public function onConfirmed($event)
+    protected function logMobileHistory(User $user): void
     {
-        logger('User Confirmed: '.$event->user->full_name);
-    }
-
-    /**
-     * Register the listeners for the subscriber.
-     *
-     * @param \Illuminate\Events\Dispatcher $events
-     */
-    public function subscribe($events)
-    {
-        $events->listen(
-            UserLoggedIn::class,
-            'Modules\Core\Listeners\Frontend\UserEventListener@onLoggedIn'
-        );
-
-//        $events->listen(
-//            UserLoggedOut::class,
-//            'Modules\Core\Listeners\Frontend\UserEventListener@onLoggedOut'
-//        );
-//
-//        $events->listen(
-//            UserRegistered::class,
-//            'Modules\Core\Listeners\Frontend\UserEventListener@onRegistered'
-//        );
-//
-//        $events->listen(
-//            UserProviderRegistered::class,
-//            'Modules\Core\Listeners\Frontend\UserEventListener@onProviderRegistered'
-//        );
-//
-//        $events->listen(
-//            UserConfirmed::class,
-//            'Modules\Core\Listeners\Frontend\UserEventListener@onConfirmed'
-//        );
+        if ( ! empty($user->mobile)) {
+            $user->mobileHistories()->create([
+                'data' => $user->mobile,
+                'type' => UserDataHistory::TYPE_MOBILE,
+            ]);
+        }
     }
 }

@@ -2,7 +2,6 @@
 
 use Modules\Core\Http\Controllers\Admin\MediaController;
 
-// All route names are prefixed with 'admin.'.
 Route::group([
     'middleware' => ['auth:admin'],
     'prefix' => 'media',

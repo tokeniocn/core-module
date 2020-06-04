@@ -5,6 +5,7 @@ namespace Modules\Core\Http\Controllers\Frontend\Api;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Core\Http\Requests\Frontend\Invitation\InvitationTeamRequest;
 use Modules\Core\Services\Frontend\UserInvitationService;
 
 class InvitationController extends Controller
@@ -32,4 +33,29 @@ class InvitationController extends Controller
         return $userInvitationService->createWithUser($user);
     }
 
+
+    /**
+     * @param Request $request
+     * @param UserInvitationService $userInvitationService
+     * @return bool|\Modules\Core\Models\Frontend\UserInvitation
+     */
+    public function info(Request $request, UserInvitationService $userInvitationService)
+    {
+        $user = $request->user();
+        $invitation = $userInvitationService->getUnusedToken($user, ['exception' => false]);
+        if (empty($invitation)) {
+            $invitation = $userInvitationService->createWithUser($user);
+        }
+        return $invitation;
+
+    }
+
+
+    public function team(InvitationTeamRequest $request, UserInvitationService $userInvitationService)
+    {
+        return $userInvitationService->getInviteesByUser($request->user(), [
+            'level' => $request->level,
+            'allOptions' => ['paginate' => true],
+        ]);
+    }
 }

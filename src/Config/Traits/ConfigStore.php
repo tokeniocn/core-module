@@ -2,17 +2,18 @@
 
 namespace Modules\Core\Config\Traits;
 
-use Illuminate\Support\Str;
-use Illuminate\Filesystem\Filesystem;
 use InvalidArgumentException;
-use Modules\Core\Models\Config;
+use UnexpectedValueException;
+use Illuminate\Support\Arr;
+use Illuminate\Filesystem\Filesystem;
+use Modules\Core\Config\Models\Config;
 
 trait ConfigStore
 {
     /**
-     * @return Config
+     * @return string
      */
-    public function getModel()
+    public function model()
     {
         return Config::class;
     }
@@ -35,7 +36,7 @@ trait ConfigStore
 
     public function cacheSettingsToFile()
     {
-        $modelClass = $this->getModel();
+        $modelClass = $this->model();
 
         $items = [];
         foreach ($modelClass::all() as $setting) {
@@ -51,40 +52,39 @@ trait ConfigStore
             ->put($path, '<?php return ' . var_export($items, true) . ';' . PHP_EOL);
     }
 
-    public function store($key, $value = null, $refreshCache = true)
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @param array $options
+     */
+    public function store($key, $value, array $options = [])
     {
-        if (is_array($key)) {
-            $keys = $key;
+        $data = [$key => $value];
+        $modelClass = $this->model();
 
-            if ($value != null) {
-                $refreshCache = boolval($value);
-            }
-        } else {
-            $keys = [$key => $value];
-        }
-
-        $modelClass = $this->getModel();
-
-        foreach ($keys as $key => $value) {
+        foreach ($data as $key => $value) {
             if (strpos($key, '.') !== false) {
                 throw new InvalidArgumentException('Config only support store one-level settings(key without ".").');
             }
-            if (!Str::has($key, '::')) {
+            if (strpos($key, '::') === false) {
                 $key = '*::' . $key;
             }
             list($module, $key) = explode('::', $key);
 
+            /** @var Config $model */
             $model = $modelClass::firstOrNew([
                 'key' => $key,
                 'module' => $module,
             ]);
+
             $model->value = $value;
+            $model->description = $options['description'] ?? '';
             $model->saveOrFail();
         }
 
-        $this->set($keys);
+        $this->set($data);
 
-        if ($refreshCache) {
+        if ($options['refreshCache'] ?? true) {
             $this->cacheSettingsToFile();
         }
     }
