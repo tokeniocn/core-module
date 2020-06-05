@@ -3,8 +3,9 @@
 namespace Modules\Core\Http\Requests\Frontend\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\Core\Models\Frontend\UserBank;
 
-class SetMobileRequest extends FormRequest
+class UserBankRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +25,8 @@ class SetMobileRequest extends FormRequest
     public function rules()
     {
         return [
-            'mobile' => ['required', 'regex:/^1[3456789]\d{9}$/'],
+            'value' => 'required',
+            'bank' => 'required|in:' . implode(',', array_keys(UserBank::$bankTypeMap))
         ];
     }
 
