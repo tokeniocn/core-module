@@ -1,8 +1,11 @@
 <?php
 
+use Modules\Core\Models\Frontend\UserCertify;
+
 namespace Modules\Core\Models\Frontend\Traits\Relationship;
 
 use Modules\Core\Models\Frontend\UserAuth;
+use Modules\Core\Models\Frontend\UserBank;
 use Modules\Core\Models\Frontend\UserCertify;
 use Modules\Core\Models\Frontend\UserVerify;
 use Modules\Core\Models\Frontend\UserInvitation;
@@ -85,5 +88,14 @@ trait UserRelationship
     public function certifies()
     {
         return $this->hasMany(UserCertify::class);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function banks()
+    {
+        return $this->hasMany(UserBank::class);
+
     }
 }

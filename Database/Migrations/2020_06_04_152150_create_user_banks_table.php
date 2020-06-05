@@ -21,7 +21,7 @@ class CreateUserBanksTable extends Migration
             $table->boolean('enable')->default(false)->comment('是否启用');
             $table->dateTimeTz('created_at');
             $table->dateTimeTz('updated_at');
-            $table->dateTimeTz('deleted_at');
+            $table->dateTimeTz('deleted_at')->nullable();
         });
     }
 

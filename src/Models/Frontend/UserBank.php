@@ -4,6 +4,8 @@ namespace Modules\Core\Models\Frontend;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Core\Models\Frontend\Traits\Method\UserBankMethod;
+use Modules\Core\Models\Frontend\Traits\Relationship\UserBankRelationship;
 use Modules\Core\Models\Traits\HasFail;
 use Modules\Core\Models\Traits\HasTableName;
 use Modules\Core\Models\Traits\DynamicRelationship;
@@ -14,6 +16,9 @@ class UserBank extends Model
         HasTableName,
         SoftDeletes,
         DynamicRelationship;
+
+    use UserBankMethod,
+        UserBankRelationship;
 
     const BANK_TYPE_WECHAT = 'wechat';
     const BANK_TYPE_ALIPAY = 'alipay';
