@@ -9,6 +9,7 @@ use Modules\Core\Exceptions\Frontend\Auth\UserAuthVerifyException;
 use Modules\Core\Exceptions\Frontend\Auth\UserEmailVerifyException;
 use Modules\Core\Exceptions\Frontend\Auth\UserMobileVerifyException;
 use Modules\Core\Exceptions\Frontend\Auth\UserPayPasswordEmptyException;
+use Modules\Core\Exceptions\Frontend\Auth\UserPayPasswordException;
 
 //use Modules\Core\Models\Frontend\UserVerify;
 
@@ -179,8 +180,14 @@ trait UserMethod
      *
      * @return bool
      */
-    public function checkPayPassword($payPassword)
+    public function checkPayPassword($payPassword, $exception = false)
     {
-        return Hash::check($payPassword, $this->pay_password);
+        $verified = Hash::check($payPassword, $this->pay_password);
+
+        if (!$verified && $exception) {
+            throw new UserPayPasswordException(trans('支付密码错误'));
+        }
+
+        return $verified;
     }
 }
