@@ -10,47 +10,37 @@ use Modules\Core\Services\Traits\HasQuery;
 
 class UserBankService
 {
-    use HasQuery {
-        all as queryAll;
-    }
+    use HasQuery;
 
     public function __construct(UserBank $model)
     {
         $this->model = $model;
     }
 
-    /**
-     * @param $user
-     * @param $bank
-     * @param array $options
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
-     */
-    public function all($user, array $options = [])
-    {
-        $list = [];
-        $bank_types = array_keys(UserBank::$bankTypeMap);
-        foreach ($bank_types as $type) {
-            $list[$type] = $this->allWithBank(
-                $user, $type, ['jsonDecode' => true]
-            );
-        }
-        return $list;
-    }
 
     /**
      * @param $user
-     * @param $bank
+     * @param array|null $banks
      * @param array $options
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection[]
      */
-    public function allWithBank($user, $bank, array $options = [])
+    public function allWithBanks($user, array $banks = null, array $options = [])
     {
         $user_id = with_user_id($user);
-        $list = $this->queryAll([
-            'bank' => $bank,
-            'user_id' => $user_id
-        ]);
-        return $list;
+        $result = [];
+
+        if ($banks === null) {
+            $banks = UserBank::$bankTypeMap;
+        }
+
+        foreach ((array) $banks as $bank) {
+            $result[$bank] = $this->all([
+                'bank' => $bank,
+                'user_id' => $user_id
+            ]);
+        }
+
+        return $result;
     }
 
     /**

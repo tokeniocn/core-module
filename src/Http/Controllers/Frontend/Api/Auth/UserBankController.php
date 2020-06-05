@@ -4,6 +4,7 @@ namespace Modules\Core\Http\Controllers\Frontend\Api\Auth;
 
 use Illuminate\Http\Request;
 use Modules\Core\Http\Requests\Frontend\Auth\UserBankStoreRequest;
+use Modules\Core\Models\Frontend\UserBank;
 use Modules\Core\Services\Frontend\UserBankService;
 
 class UserBankController
@@ -13,7 +14,7 @@ class UserBankController
      */
     public function index(Request $request, UserBankService $userBankService)
     {
-        return $userBankService->all($request->user());
+        return $userBankService->allWithBanks($request->user());
     }
 
     /**
