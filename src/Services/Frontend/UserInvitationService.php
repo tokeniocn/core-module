@@ -66,7 +66,7 @@ class UserInvitationService
             } else {
                 $expiredAt = config('core::user.invitation.one_expires', 86400 * 7); // 默认7天
             }
-            $expiredAt = date('Y-m-d H:i:s' . time() + $expiredAt);
+            $expiredAt = date('Y-m-d H:i:s', (time() + $expiredAt));
         }
 
         return $this->queryCreate(array_merge($data, [
