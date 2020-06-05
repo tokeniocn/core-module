@@ -41,4 +41,8 @@ class UserBank extends Model
         'value',
         'enable'
     ];
+
+    protected $casts = [
+        'value' => 'array'
+    ];
 }

@@ -3,7 +3,7 @@
 namespace Modules\Core\Http\Controllers\Frontend\Api\Auth;
 
 use Illuminate\Http\Request;
-use Modules\Core\Http\Requests\Frontend\Auth\UserBankRequest;
+use Modules\Core\Http\Requests\Frontend\Auth\UserBankStoreRequest;
 use Modules\Core\Services\Frontend\UserBankService;
 
 class UserBankController
@@ -19,7 +19,7 @@ class UserBankController
     /**
      * 创建
      */
-    public function store(UserBankRequest $request, UserBankService $userBankService)
+    public function store(UserBankStoreRequest $request, UserBankService $userBankService)
     {
         return $userBankService->createWithUser($request->user(), $request->validationData());
     }

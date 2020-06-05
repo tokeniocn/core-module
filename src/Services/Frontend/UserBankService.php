@@ -50,11 +50,6 @@ class UserBankService
             'bank' => $bank,
             'user_id' => $user_id
         ]);
-        if ($options['jsonDecode'] ?? false) {
-            foreach ($list as $item) {
-                $item->value_decode = json_decode($item->value);
-            }
-        }
         return $list;
     }
 

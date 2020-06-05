@@ -4,8 +4,9 @@ namespace Modules\Core\Http\Requests\Frontend\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Modules\Core\Models\Frontend\UserBank;
+use Illuminate\Validation\Rule;
 
-class UserBankRequest extends FormRequest
+class UserBankStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +27,10 @@ class UserBankRequest extends FormRequest
     {
         return [
             'value' => 'required',
-            'bank' => 'required|in:' . implode(',', array_keys(UserBank::$bankTypeMap))
+            'bank' => [
+                'required',
+                Rule::in(array_keys(UserBank::$bankTypeMap))
+            ]
         ];
     }
 
