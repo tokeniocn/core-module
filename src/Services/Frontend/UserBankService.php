@@ -30,10 +30,10 @@ class UserBankService
         $result = [];
 
         if ($banks === null) {
-            $banks = UserBank::$bankTypeMap;
+            $banks = array_keys(UserBank::$bankTypeMap);
         }
 
-        foreach ((array) $banks as $bank) {
+        foreach ((array)$banks as $bank) {
             $result[$bank] = $this->all([
                 'bank' => $bank,
                 'user_id' => $user_id
@@ -86,10 +86,14 @@ class UserBankService
         DB::beginTransaction();
         if ($enableChanged == UserBank::ENABLE_OPEN) {
             // 设为启用，则先将其他记录设为禁用
-            UserBank::where([
+            $all = $this->all([
                 'user_id' => $user_id,
                 'bank' => $bank->bank,
-            ])->update(['enable' => UserBank::ENABLE_CLOSE]);
+            ]);
+            foreach ($all as $item) {
+                $item->enable = UserBank::ENABLE_CLOSE;
+                $item->save();
+            }
         }
         $bank->enable = $enableChanged;
         $bank->save();
