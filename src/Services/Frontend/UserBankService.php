@@ -37,7 +37,7 @@ class UserBankService
             $result[$bank] = $this->all([
                 'bank' => $bank,
                 'user_id' => $user_id
-            ]);
+            ], $options);
         }
 
         return $result;
@@ -115,5 +115,26 @@ class UserBankService
             'id' => $id
         ]);
         $bank->delete();
+    }
+
+
+    /**
+     * 获取已启用的账户列表
+     * @param $user
+     * @param null $bank
+     * @param $options
+     */
+    public function enableBankList($user, $bank = null, $idList = [], $options = [])
+    {
+        return $this->allWithBanks($user, $bank, array_merge(
+            [
+                'queryCallback' => function ($query) use ($idList) {
+                    $query->where('enable', UserBank::ENABLE_OPEN);
+                    if (!empty($idList)) {
+                        is_array($idList) ? $query->whereIn('id', $idList) : $query->where('id', $idList);
+                    }
+                }
+            ],
+            $options));
     }
 }
