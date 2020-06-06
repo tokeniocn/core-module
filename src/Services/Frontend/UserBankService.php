@@ -27,19 +27,27 @@ class UserBankService
     public function allWithBanks($user, array $banks = null, array $options = [])
     {
         $user_id = with_user_id($user);
-        $result = [];
 
         if ($banks === null) {
             $banks = array_keys(UserBank::$bankTypeMap);
         }
+        $result = array_fill_keys($banks, []);
 
-        foreach ((array)$banks as $bank) {
-            $result[$bank] = $this->all([
-                'bank' => $bank,
-                'user_id' => $user_id
-            ], $options);
+
+        $list = $this->all([
+            'user_id' => $user_id
+        ], array_merge(
+            [
+                'queryCallback' => function ($query) use ($banks) {
+                    $query->whereIn('bank', $banks);
+                }
+            ],
+            $options));
+        if ($list->count() > 0) {
+            $result = array_merge($result,
+                array_column($list->toArray(), null, 'bank')
+            );
         }
-
         return $result;
     }
 
@@ -124,17 +132,14 @@ class UserBankService
      * @param null $bank
      * @param $options
      */
-    public function enableBankList($user, $bank = null, $idList = [], $options = [])
+    public function enableBankList($user, $bank = null, $options = [])
     {
-        return $this->allWithBanks($user, $bank, array_merge(
-            [
-                'queryCallback' => function ($query) use ($idList) {
-                    $query->where('enable', UserBank::ENABLE_OPEN);
-                    if (!empty($idList)) {
-                        is_array($idList) ? $query->whereIn('id', $idList) : $query->where('id', $idList);
-                    }
+        return $this->allWithBanks($user, $bank, [
+            'queryCallback' =>
+                function ($query) use ($bank) {
+                    $query->where('enable', UserBank::ENABLE_OPEN)
+                        ->whereIn('bank', $bank);
                 }
-            ],
-            $options));
+        ]);
     }
 }
