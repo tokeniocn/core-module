@@ -22,33 +22,23 @@ class UserBankService
      * @param $user
      * @param array|null $banks
      * @param array $options
-     * @return \Illuminate\Database\Eloquent\Collection[]
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
      */
     public function allWithBanks($user, array $banks = null, array $options = [])
     {
-        $user_id = with_user_id($user);
-
         if ($banks === null) {
             $banks = array_keys(UserBank::$bankTypeMap);
         }
-        $result = array_fill_keys($banks, []);
 
-
-        $list = $this->all([
-            'user_id' => $user_id
-        ], array_merge(
-            [
-                'queryCallback' => function ($query) use ($banks) {
-                    $query->whereIn('bank', $banks);
-                }
+        return $this->all(null, array_merge($options, [
+            'where' => [
+                'user_id' => with_user_id($user),
             ],
-            $options));
-        if ($list->count() > 0) {
-            $result = array_merge($result,
-                array_column($list->toArray(), null, 'bank')
-            );
-        }
-        return $result;
+            'whereIn' => [
+                'bank' => $banks === null ? array_keys(UserBank::$bankTypeMap) : $banks
+            ]
+        ]));
     }
 
     /**

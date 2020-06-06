@@ -14,7 +14,9 @@ class UserBankController
      */
     public function index(Request $request, UserBankService $userBankService)
     {
-        return $userBankService->allWithBanks($request->user());
+        $result = $userBankService->allWithBanks($request->user());
+
+        return $result->keyBy('bank');
     }
 
     /**
