@@ -54,6 +54,12 @@ trait HasQuery
             $query->where($where);
         }
 
+        if ($whereIn = $options['whereIn'] ?? false) {
+            foreach($whereIn as $key => $values) {
+                $query->whereIn($key, $where);
+            }
+        }
+
         if ($with = $options['with'] ?? false) {
             $query->with($with);
         }
