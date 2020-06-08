@@ -56,7 +56,7 @@ trait HasQuery
 
         if ($whereIn = $options['whereIn'] ?? false) {
             foreach($whereIn as $key => $values) {
-                $query->whereIn($key, $where);
+                $query->whereIn($key, $values);
             }
         }
 
