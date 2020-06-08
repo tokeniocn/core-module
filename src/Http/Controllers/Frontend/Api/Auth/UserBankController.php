@@ -17,7 +17,7 @@ class UserBankController
         $bankList = $userBankService->allWithBanks($request->user());
         $result = array_fill_keys(array_keys(UserBank::$bankTypeMap), []);
         foreach ($bankList as $bank) {
-            $result[$bank->bank] = $bank;
+            $result[$bank->bank][] = $bank;
         }
 
         return $result;
