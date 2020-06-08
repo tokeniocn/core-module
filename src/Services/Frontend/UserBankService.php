@@ -27,10 +27,6 @@ class UserBankService
      */
     public function allWithBanks($user, array $banks = null, array $options = [])
     {
-        if ($banks === null) {
-            $banks = array_keys(UserBank::$bankTypeMap);
-        }
-
         return $this->all(null, array_merge($options, [
             'where' => [
                 'user_id' => with_user_id($user),
@@ -126,9 +122,9 @@ class UserBankService
     {
         return $this->allWithBanks($user, $bank, [
             'queryCallback' =>
-                function ($query) use ($bank) {
+                function ($query) use ($user) {
                     $query->where('enable', UserBank::ENABLE_OPEN)
-                        ->whereIn('bank', $bank);
+                        ->where('user_id', with_user_id($user));
                 }
         ]);
     }
