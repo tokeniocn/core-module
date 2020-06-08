@@ -14,9 +14,13 @@ class UserBankController
      */
     public function index(Request $request, UserBankService $userBankService)
     {
-        $result = $userBankService->allWithBanks($request->user());
+        $bankList = $userBankService->allWithBanks($request->user());
+        $result = array_fill_keys(array_keys(UserBank::$bankTypeMap), []);
+        foreach ($bankList as $bank) {
+            $result[$bank->bank] = $bank;
+        }
 
-        return $result->keyBy('bank');
+        return $result;
     }
 
     /**
