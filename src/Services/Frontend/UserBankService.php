@@ -128,4 +128,27 @@ class UserBankService
                 }
         ]);
     }
+
+    /**
+     * 是否有可用的银行账户
+     *
+     * @param $user
+     * @param array $options
+     * @return bool
+     * @throws UserBankException
+     */
+    public function hasEnableBank($user, $options = [])
+    {
+        $has = $this->has([
+            'user_id' => with_user_id($user),
+            'enable' => UserBank::ENABLE_OPEN
+        ], $options);
+        if (empty($has)) {
+            if ($options['exception']) {
+                throw new UserBankException(trans('未设置收付款账户'));
+            }
+            return false;
+        }
+        return true;
+    }
 }
