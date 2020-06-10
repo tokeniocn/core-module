@@ -4,6 +4,7 @@ use Modules\Core\Models\Frontend\UserCertify;
 
 namespace Modules\Core\Models\Frontend\Traits\Relationship;
 
+use Laravel\Socialite\One\User;
 use Modules\Core\Models\Frontend\UserAuth;
 use Modules\Core\Models\Frontend\UserBank;
 use Modules\Core\Models\Frontend\UserCertify;
@@ -97,5 +98,10 @@ trait UserRelationship
     {
         return $this->hasMany(UserBank::class);
 
+    }
+
+    public function enableBanks()
+    {
+        return $this->hasMany(UserBank::class)->whereEnable();
     }
 }

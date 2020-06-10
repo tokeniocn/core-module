@@ -27,14 +27,12 @@ class UserBankService
      */
     public function allWithBanks($user, array $banks = null, array $options = [])
     {
-        return $this->all(null, array_merge($options, [
-            'where' => [
-                'user_id' => with_user_id($user),
-            ],
+        $options = array_merge($options, [
             'whereIn' => [
                 'bank' => $banks === null ? array_keys(UserBank::$bankTypeMap) : $banks
             ]
-        ]));
+        ]);
+        return $this->all(['user_id' => with_user_id($user)], $options);
     }
 
     /**

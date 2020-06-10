@@ -9,6 +9,7 @@ use Modules\Core\Models\Frontend\Traits\Relationship\UserBankRelationship;
 use Modules\Core\Models\Traits\HasFail;
 use Modules\Core\Models\Traits\HasTableName;
 use Modules\Core\Models\Traits\DynamicRelationship;
+use Modules\Core\Models\Frontend\Traits\Scope\UserBankScope;
 
 class UserBank extends Model
 {
@@ -18,7 +19,8 @@ class UserBank extends Model
         DynamicRelationship;
 
     use UserBankMethod,
-        UserBankRelationship;
+        UserBankRelationship,
+        UserBankScope;
 
     const BANK_TYPE_WECHAT = 'wechat';
     const BANK_TYPE_ALIPAY = 'alipay';
