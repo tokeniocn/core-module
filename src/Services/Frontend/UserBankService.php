@@ -129,6 +129,7 @@ class UserBankService
         ]);
     }
 
+
     /**
      * 是否有可用的银行账户
      *
@@ -150,5 +151,22 @@ class UserBankService
             return false;
         }
         return true;
+    }
+
+
+    /**
+     * 已启用的支付方式种类
+     *
+     * @param $user
+     * @return \Illuminate\Support\Collection
+     */
+    public function enableBankType($user)
+    {
+        return $this->query([
+            'where' => [
+                'user_id' => with_user_id($user),
+                'enable' => UserBank::ENABLE_OPEN
+            ]
+        ])->pluck('bank');
     }
 }
