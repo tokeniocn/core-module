@@ -155,18 +155,18 @@ class UserBankService
 
 
     /**
-     * 已启用的支付方式种类
+     * 获取已启用的支付方式
      *
      * @param $user
      * @return \Illuminate\Support\Collection
      */
-    public function enableBankType($user)
+    public function enableBank($user)
     {
         return $this->query([
             'where' => [
                 'user_id' => with_user_id($user),
                 'enable' => UserBank::ENABLE_OPEN
             ]
-        ])->pluck('bank');
+        ]);
     }
 }
