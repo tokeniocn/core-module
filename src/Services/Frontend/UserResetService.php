@@ -99,11 +99,11 @@ class UserResetService
     public function resetPassword($mobile, $token, $password, array $options = [])
     {
         $userVerify = $this->userVerifyService->getByKeyToken($mobile, $token, UserVerify::TYPE_PASSWORD_RESET, array_merge([
-            'with' => ['user'],
+            'with' => ['mobileUser'],
         ], $options));
 
-        $userVerify->user->password = $password;
-        $userVerify->user->saveIfFail();
+        $userVerify->mobileUser->password = $password;
+        $userVerify->mobileUser->saveIfFail();
 
         $userVerify->setExpired()->save();
         return true;

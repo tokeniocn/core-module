@@ -10,4 +10,10 @@ trait UserVerifyRelationship
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function mobileUser()
+    {
+        return $this->belongsTo(User::class, 'key', 'mobile')
+            ->whereMobileVerified();
+    }
 }

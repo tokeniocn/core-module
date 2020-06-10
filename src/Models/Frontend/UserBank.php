@@ -47,6 +47,10 @@ class UserBank extends Model
         'enable'
     ];
 
+    protected $hidden = [
+        'deleted_at'
+    ];
+
     protected $casts = [
         'value' => 'array'
     ];

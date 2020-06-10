@@ -28,4 +28,9 @@ trait UserScope
     {
         return $query->where('active', $status);
     }
+
+    public function scopeWhereMobileVerified($query)
+    {
+        return $query->whereNotNull('mobile_verified_at');
+    }
 }
