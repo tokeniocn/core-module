@@ -106,7 +106,10 @@
                             }
                         }
                     },
-                    {field: 'created_at', title: '提交时间'},
+                    {field: 'created_at', title: '提交时间', templet: function (res) {
+                            return moment(res.created_at).format("YYYY-MM-DD HH:mm:ss")
+                        }
+                    },
                     {
                         field: 'right',
                         title: '操作',
