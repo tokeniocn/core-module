@@ -4,6 +4,7 @@ use Modules\Core\Models\Frontend\UserCertify;
 
 namespace Modules\Core\Models\Frontend\Traits\Relationship;
 
+use Laravel\Sanctum\PersonalAccessToken;
 use Laravel\Socialite\One\User;
 use Modules\Core\Models\Frontend\UserAuth;
 use Modules\Core\Models\Frontend\UserBank;
@@ -91,6 +92,9 @@ trait UserRelationship
         return $this->hasMany(UserCertify::class);
     }
 
+    /**
+     * @return mixed
+     */
     public function certifyPass()
     {
         return $this->hasOne(UserCertify::class, 'user_id', 'id')->wherePass();
@@ -105,8 +109,23 @@ trait UserRelationship
 
     }
 
+    /**
+     * @return mixed
+     */
     public function enableBanks()
     {
         return $this->hasMany(UserBank::class)->whereEnable();
+    }
+
+
+    public function lastActiveAccessToken()
+    {
+        return $this->personalAccessToken()->orderBy('last_used_at', 'desc');
+    }
+
+    public function personalAccessToken()
+    {
+        return $this->hasOne(PersonalAccessToken::class, 'tokenable_id', 'id')
+            ->where('tokenable_type', 'App\Models\User');
     }
 }
