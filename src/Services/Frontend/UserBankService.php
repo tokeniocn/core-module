@@ -167,4 +167,30 @@ class UserBankService
             ]
         ]);
     }
+
+
+    /**
+     * 某个银行账号是否存在
+     *
+     * @param $where
+     * @param array $options
+     * @return int
+     * @throws UserBankException
+     */
+    public function checkBankExists($where, $options = [])
+    {
+        if (isset($where['value'])) {
+            $value = $where['value'];
+            unset($where['value']);
+        }
+        $has = $this->query(array_merge(['where' => $where], $options));
+
+        //value值是json,需要单独处理
+        $has = isset($value) ? $has->whereJsonContains('value', $value) : $has;
+        $has = $has->exists();
+        if (!$has && $options['exception']) {
+            throw new UserBankException(trans('收付款账户不存在'));
+        }
+        return $has;
+    }
 }
