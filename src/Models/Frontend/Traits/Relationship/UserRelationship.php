@@ -91,6 +91,11 @@ trait UserRelationship
         return $this->hasMany(UserCertify::class);
     }
 
+    public function certifyPass()
+    {
+        return $this->hasOne(UserCertify::class, 'user_id', 'id')->wherePass();
+    }
+
     /**
      * @return mixed
      */

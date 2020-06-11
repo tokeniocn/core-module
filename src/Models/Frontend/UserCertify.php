@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Models\Frontend\Traits\Attribute\UserCertifyAttribute;
 use Modules\Core\Models\Frontend\Traits\Method\UserCertifyMethod;
 use Modules\Core\Models\Frontend\Traits\Relationship\UserCertifyRelationship;
+use Modules\Core\Models\Frontend\Traits\Scope\UserCertifyScope;
 use Modules\Core\Models\Traits\HasFail;
 use Modules\Core\Models\Traits\HasTableName;
 use Modules\Core\Models\Traits\DynamicRelationship;
@@ -20,7 +21,8 @@ class UserCertify extends Model
         HasTableName,
         DynamicRelationship;
 
-    use UserCertifyAttribute,
+    use UserCertifyScope,
+        UserCertifyAttribute,
         UserCertifyMethod,
         UserCertifyRelationship;
 
@@ -54,5 +56,7 @@ class UserCertify extends Model
         'status'
     ];
 
-
+    protected $hidden = [
+        'deleted_at'
+    ];
 }
