@@ -85,12 +85,26 @@ class SettingsController extends Controller
             'value' => '1.0.0',
             'description' => '正式版下载地址',
         ],
-        'share_link' => [
+        /*'share_link' => [
             'key' => 'share_link',
             'type' => 'text',
             'title' => '分享链接',
             'value' => '',
             'description' => '分享链接',
+        ],*/
+        'admin_mobile' => [
+            'key' => 'admin_mobile',
+            'type' => 'text',
+            'title' => '管理员手机',
+            'value' => '',
+            'description' => '可用于接收系统通知',
+        ],
+        'admin_email' => [
+            'key' => 'admin_email',
+            'type' => 'text',
+            'title' => '管理员邮箱',
+            'value' => '',
+            'description' => '可用于接收系统通知',
         ],
     ];
 
