@@ -16,6 +16,14 @@ class UserInfo extends Model
 
     use UserInfoRelationship;
 
+    protected $fillable = [
+        'user_id',
+        'nick_name',
+        'real_name',
+        'age',
+        'sex',
+        'country'
+    ];
     protected $hidden = [
         'created_at',
         'updated_at'
