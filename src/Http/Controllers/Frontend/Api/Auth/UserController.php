@@ -25,7 +25,9 @@ class UserController extends Controller
      */
     public function info(Request $request)
     {
-        return $request->user();
+        $user = $request->user();
+        $user->load('userInfo');
+        return $user;
     }
 
     /**

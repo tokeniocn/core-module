@@ -9,6 +9,7 @@ use Laravel\Socialite\One\User;
 use Modules\Core\Models\Frontend\UserAuth;
 use Modules\Core\Models\Frontend\UserBank;
 use Modules\Core\Models\Frontend\UserCertify;
+use Modules\Core\Models\Frontend\UserInfo;
 use Modules\Core\Models\Frontend\UserVerify;
 use Modules\Core\Models\Frontend\UserInvitation;
 use Modules\Core\Models\Frontend\UserDataHistory;
@@ -118,14 +119,30 @@ trait UserRelationship
     }
 
 
+    /**
+     * @return mixed
+     */
     public function lastActiveAccessToken()
     {
         return $this->personalAccessToken()->orderBy('last_used_at', 'desc');
     }
 
+
+    /**
+     * @return mixed
+     */
     public function personalAccessToken()
     {
         return $this->hasOne(PersonalAccessToken::class, 'tokenable_id', 'id')
             ->where('tokenable_type', 'App\Models\User');
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function userInfo()
+    {
+        return $this->hasOne(UserInfo::class, 'user_id', 'id');
     }
 }
