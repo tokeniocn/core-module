@@ -109,6 +109,26 @@ class UserResetService
         return true;
     }
 
+    /**
+     * @param $email
+     * @param $token
+     * @param $password
+     * @param array $options
+     * @return bool
+     */
+    public function resetPasswordByEmail($email, $token, $password, array $options = [])
+    {
+        $userVerify = $this->userVerifyService->getByKeyToken($email, $token, UserVerify::TYPE_PASSWORD_RESET, array_merge([
+            'with' => ['emailUser'],
+        ], $options));
+
+        $userVerify->emailUser->password = $password;
+        $userVerify->emailUser->saveIfFail();
+
+        $userVerify->setExpired()->save();
+        return true;
+    }
+
 
     /**
      * @param $user

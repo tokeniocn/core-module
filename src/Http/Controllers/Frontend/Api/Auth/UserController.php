@@ -75,6 +75,19 @@ class UserController extends Controller
         return [];
     }
 
+    /**
+     * 修改密码（通过邮箱验证码）
+     *
+     * @param ResetPasswordRequest $request
+     * @param UserResetService $userResetService
+     * @return array
+     */
+    public function resetPasswordByEmail(ResetPasswordRequest $request, UserResetService $userResetService)
+    {
+        $userResetService->resetPasswordByEmail($request->email, $request->code, $request->password);
+        return [];
+    }
+
 
     /**
      * 修改密码(通过旧密码)

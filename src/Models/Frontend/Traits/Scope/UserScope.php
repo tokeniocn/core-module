@@ -33,4 +33,9 @@ trait UserScope
     {
         return $query->whereNotNull('mobile_verified_at');
     }
+
+    public function scopeWhereEmailVerified($query)
+    {
+        return $query->whereNotNull('email_verified_at');
+    }
 }

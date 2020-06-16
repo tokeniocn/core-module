@@ -16,4 +16,10 @@ trait UserVerifyRelationship
         return $this->belongsTo(User::class, 'key', 'mobile')
             ->whereMobileVerified();
     }
+
+    public function emailUser()
+    {
+        return $this->belongsTo(User::class,'key','email')
+            ->whereEmailVerified();
+    }
 }
