@@ -21,6 +21,7 @@ Route::group([
         Route::post('v1/mobile_login', [LoginController::class, 'loginByMobile'])->name('login.mobile'); // 手机号登录
         Route::post('v1/register', [RegisterController::class, 'register'])->name('register'); // 用户注册
         Route::post('v1/mobile_register', [RegisterController::class, 'registerByMobile'])->name('register.mobile'); // 手机号注册
+        Route::post('v1/email_register',[RegisterController::class,'registerByEmail'])->name('register.email'); // 邮箱注册
         Route::post('v1/reset/password', [UserController::class, 'resetPassword'])->name('reset.password'); // 重置登录密码(短信)
     });
     Route::group(['middleware' => ['auth:sanctum']], function () {

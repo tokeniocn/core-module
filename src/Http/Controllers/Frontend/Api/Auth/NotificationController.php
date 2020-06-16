@@ -4,6 +4,7 @@ namespace Modules\Core\Http\Controllers\Frontend\Api\Auth;
 
 use Modules\Core\Http\Controllers\Controller;
 use Modules\Core\Http\Requests\Frontend\Auth\NotifyMobileRequest;
+use Modules\Core\Http\Requests\Frontend\Auth\NotifyEmailRequest;
 use Modules\Core\Services\Frontend\NotificationService;
 
 class NotificationController extends Controller
@@ -34,12 +35,12 @@ class NotificationController extends Controller
     /**
      * 发送邮箱验证码
      *
-     * @param NotifyMobileRequest $request
+     * @param NotifyEmailRequest $request
      * @param NotificationService $notificationService
      *
      * @return array
      */
-    public function sendEmailVerifyNotification(NotifyMobileRequest $request,  NotificationService $notificationService)
+    public function sendEmailVerifyNotification(NotifyEmailRequest $request,  NotificationService $notificationService)
     {
         $notificationService->sendEmailVerifyNotification($request->email, $request->type, $request->user());
 

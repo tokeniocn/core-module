@@ -28,6 +28,7 @@ class UserVerify extends Model
     const TYPE_MOBILE_SET = 'mobile_set';
     const TYPE_MOBILE_LOGIN = 'mobile_login';
     const TYPE_MOBILE_REGISTER = 'mobile_register';
+    const TYPE_EMAIL_REGISTER = 'email_register';
     const TYPE_EMAIL_RESET = 'email_reset';
     const UPDATED_AT = null;
 

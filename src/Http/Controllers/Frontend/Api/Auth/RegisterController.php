@@ -7,6 +7,7 @@ use Modules\Core\Http\Controllers\Controller;
 use Modules\Core\Services\Frontend\UserRegisterService;
 use Modules\Core\Http\Requests\Frontend\Auth\RegisterRequest;
 use Modules\Core\Http\Requests\Frontend\Auth\MobileRegisterRequest;
+use Modules\Core\Http\Requests\Frontend\Auth\EmailRegisterRequest;
 
 /**
  * Class RegisterController.
@@ -29,6 +30,13 @@ class RegisterController extends Controller
     public function registerByMobile(MobileRegisterRequest $request, UserRegisterService $userRegisterService)
     {
         $user = $userRegisterService->registerByMobile($request->validationData());
+
+        return $user->refresh();
+    }
+
+    public function registerByEmail(EmailRegisterRequest $request,UserRegisterService $userRegisterService)
+    {
+        $user = $userRegisterService->registerByEmail($request->validationData());
 
         return $user->refresh();
     }

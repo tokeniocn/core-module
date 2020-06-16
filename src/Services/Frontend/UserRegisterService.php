@@ -81,7 +81,58 @@ class UserRegisterService
             ], array_merge([
                 'beforeSave' => function ($model) {
                     /** @var User $model */
-                    $model->setMobileVerified($model->mobile); // 标记为邮箱已验证
+                    $model->setMobileVerified($model->mobile); // 标记为手机已验证
+                }
+            ], $options['createOptions'] ?? []));
+
+            if (empty($username)) { // 空用户名则补全用户名
+                $user->username = "user-" . $user->id;
+                $user->save();
+            }
+
+            /** @var UserInvitationService $invitationService */
+            $invitationService = resolve(UserInvitationService::class);
+            $invitationService->inviteUser($data['invite_code'] ?? null, $user, $options['inviteOptions'] ?? []);
+
+            return $user;
+        });
+
+        event(new UserRegistered($user));
+
+        return $user;
+    }
+
+    /**
+     * 用户注册（邮箱方式）
+     * @param array $data
+     * @param array $options
+     *
+     * @return User
+     */
+    public function registerByEmail(array $data, array $options = [])
+    {
+        /** @var User $user */
+        $user = DB::transaction(function () use ($data, $options) {
+            /** @var UserVerifyService $userService */
+            $userService = resolve(UserVerifyService::class);
+            $userService->getByKeyToken($data['email'], $data['code'], UserVerify::TYPE_EMAIL_REGISTER, array_merge([
+                'setExpired' => true, // 标记已使用
+            ], $options['userVerifyOptions'] ?? []));
+
+            $username = $data['username'] ?? '';
+
+            /** @var UserService $userService */
+            $userService = resolve(UserService::class);
+            /** @var User $user */
+            $user = $userService->create([
+                'username' => $username ?: ShortUuid::uuid1(),
+                'password' => $data['password'],
+                'mobile' => $data['mobile'] ?? '',
+                'email' => $data['email']
+            ], array_merge([
+                'beforeSave' => function ($model) {
+                    /** @var User $model */
+                    $model->setEmailVerified($model->email); // 标记为邮箱已验证
                 }
             ], $options['createOptions'] ?? []));
 
