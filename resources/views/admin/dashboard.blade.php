@@ -200,13 +200,13 @@
                     layer.prompt({title: '输入新登录密码，并确认', formType: 1}, function(password, index){
                         layer.close(index);
 
-                        layer.confirm('确定要修改当前等级管理员的登录密码？', function () {
+                        layer.confirm('确定要修改当前登录管理员的登录密码？', function () {
                             $.ajax({
                                 url: '{{ route('admin.api.auth.edit_password') }}',
                                 type: 'post',
                                 data: {password:password},
                                 success: function() {
-                                    //window.location.href = '{{ route('admin.auth.login') }}'
+                                    
                                     layer.msg("修改成功，请牢记！");
                                 }
                             });
