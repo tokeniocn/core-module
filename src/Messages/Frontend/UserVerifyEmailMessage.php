@@ -22,7 +22,7 @@ class UserVerifyEmailMessage extends MailMessage
     protected function init()
     {
         $this->subject('邮件确认')
-             ->line('请点击下面按钮完成邮箱确认')
-             ->action('验证邮箱', route('frontend.auth.email.verify', ['token' => $this->userVerify->token]));
+            ->line('您的验证码为：' . $this->userVerify->token);
+//             ->action('验证邮箱', route('frontend.auth.email.verify', ['token' => $this->userVerify->token]));
     }
 }
