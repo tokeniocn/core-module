@@ -20,7 +20,10 @@
             <q-btn-dropdown stretch flat label="{{ $logged_in_user->username }}">
                 <q-list>
                     <q-item clickable v-ripple>
-                        <q-item-section lay-event="logout">退出1</q-item-section>
+                        <q-item-section lay-event="edit_password">修改密码</q-item-section>
+                    </q-item>
+                    <q-item clickable v-ripple>
+                        <q-item-section lay-event="logout">退出</q-item-section>
                     </q-item>
                 </q-list>
             </q-btn-dropdown>
@@ -190,6 +193,24 @@
                             success: function() {
                                 window.location.href = '{{ route('admin.auth.login') }}'
                             }
+                        });
+                    });
+                },
+                edit_password:function () {
+                    layer.prompt({title: '输入新登录密码，并确认', formType: 1}, function(password, index){
+                        layer.close(index);
+
+                        layer.confirm('确定要修改当前等级管理员的登录密码？', function () {
+                            $.ajax({
+                                url: '{{ route('admin.api.auth.edit_password') }}',
+                                type: 'post',
+                                data: {password:password},
+                                success: function() {
+                                    //window.location.href = '{{ route('admin.auth.login') }}'
+                                    layer.msg("修改成功，请牢记！");
+                                }
+                            });
+
                         });
                     });
                 }
