@@ -17,14 +17,14 @@ class AdminMenuTableSeeder extends Seeder
         // 用户管理
         $user = AdminMenu::create([
             'title' => '用户管理',
-            'icon' => 'perm_identity',
+            'icon' => '',
             'url' => '',
             'status' => 1,
         ]);
 
         $user = AdminMenu::create([
             'title' => '实名认证',
-            'icon' => 'perm_identity',
+            'icon' => '',
             'parent_id' => $user->id,
             'url' => route('admin.certify.index', [], false),
             'status' => 1,
@@ -33,7 +33,7 @@ class AdminMenuTableSeeder extends Seeder
         $system_config = AdminMenu::create([
             'title' => '注册设置',
             'parent_id' => $user->id,
-            'icon' => 'settings_system_daydream',
+            'icon' => '',
             'url' => route('admin.system.settings.index', [], false),
             'status' => 1,
         ]);
@@ -42,7 +42,7 @@ class AdminMenuTableSeeder extends Seeder
         // 系统管理
         $system = AdminMenu::create([
             'title' => '系统管理',
-            'icon' => 'settings',
+            'icon' => '',
             'url' => '',
             'status' => 1,
         ]);
@@ -50,7 +50,7 @@ class AdminMenuTableSeeder extends Seeder
         $system_role = AdminMenu::create([
             'title' => '角色权限',
             'parent_id' => $system->id,
-            'icon' => 'verified_user',
+            'icon' => '',
             'url' => route('admin.auth.roles', [], false),
             'status' => 1,
         ]);
@@ -58,7 +58,7 @@ class AdminMenuTableSeeder extends Seeder
         $system_module = AdminMenu::create([
             'title' => '模块管理',
             'parent_id' => $system->id,
-            'icon' => 'extension',
+            'icon' => '',
             'url' => route('admin.module.modules', [], false),
             'status' => 1,
         ]);
@@ -68,7 +68,7 @@ class AdminMenuTableSeeder extends Seeder
         // APP设置
         $app = AdminMenu::create([
             'title' => 'App配置',
-            'icon' => 'stay_primary_portrait',
+            'icon' => '',
             'url' => '',
             'status' => 1,
         ]);
@@ -76,7 +76,7 @@ class AdminMenuTableSeeder extends Seeder
         $app_settings = AdminMenu::create([
             'title' => '基本设置',
             'parent_id' => $app->id,
-            'icon' => 'phonelink_setup',
+            'icon' => '',
             'url' => route('admin.app.settings.index', [], false),
             'status' => 1,
         ]);
@@ -84,14 +84,14 @@ class AdminMenuTableSeeder extends Seeder
         $label_setting = AdminMenu::create([
             'title' => 'Label设置',
             'parent_id' => $app->id,
-            'icon' => 'label',
+            'icon' => '',
             'url' => route('admin.label.index', [], false),
             'status' => 1,
         ]);
         $announce = AdminMenu::create([
             'title' => '公告设置',
             'parent_id' => $app->id,
-            'icon' => 'assignment',
+            'icon' => '',
             'url' => route('admin.announce.index', [], false),
             'status' => 1,
         ]);
