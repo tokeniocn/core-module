@@ -196,19 +196,28 @@
                         });
                     });
                 },
+
+
                 edit_password:function () {
                     layer.prompt({title: '输入新登录密码，并确认', formType: 1}, function(password, index){
                         layer.close(index);
+                        layer.prompt({title: '再次输入密码，并确认', formType: 1}, function(re_password, index){
+                            layer.close(index);
 
-                        layer.confirm('确定要修改当前登录管理员的登录密码？', function () {
-                            $.ajax({
-                                url: '{{ route('admin.api.auth.edit_password') }}',
-                                type: 'post',
-                                data: {password:password},
-                                success: function() {
-                                    
-                                    layer.msg("修改成功，请牢记！");
-                                }
+                            if (password != re_password) {
+                                layer.msg("两次输入的密码不一致");
+                                return false;
+                            }
+
+                            layer.confirm('确定要修改当前登录管理员的登录密码？', function () {
+                                $.ajax({
+                                    url: '{{ route('admin.api.auth.edit_password') }}',
+                                    type: 'post',
+                                    data: {password:password},
+                                    success: function() {
+                                        layer.msg("修改成功，请牢记！");
+                                    }
+                                });
                             });
 
                         });

@@ -1,96 +1,127 @@
 @extends('core::admin.layouts.app')
-<link rel="stylesheet" href="/vendor/editormd/css/editormd.css"/>
+
 @section('content')
     <div class="layui-card">
         <div class="layui-card-body">
-            <form method="post" class="layui-form" action="{{route('admin.api.label.update')}}">
-                {{csrf_field()}}
-                @foreach($labelList as $label)
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">{{$label['key']}}</label>
-                        <div class="layui-input-inline">
-                            <div id="markdown_{{$label['id']}}">
-                                <textarea type="text" name="{{$label['key']}}" value="{{$label['value']}}"
-                                          placeholder="请输入{{$label['remark']}}" autocomplete="off"
-                                          class="layui-textarea">{{$label['value']}}</textarea>
-                            </div>
-                        </div>
-                        <div class="layui-form-mid layui-word-aux">{{$label['remark']}}</div>
-                    </div>
-                @endforeach
-                <div class="layui-form-item">
-                    <label class="layui-form-label"></label>
-                    <div class="layui-input-block">
-                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="lay-label">立即提交</button>
-                        <a href="{{route('admin.label.create')}}" class="layui-btn layui-btn-primary">添加Label</a>
-                    </div>
-                </div>
-            </form>
+
+            <div class="test-table-reload-btn" style="margin-bottom: 10px;">
+
+                <button class="layui-btn" data-type="create">添加</button>
+            </div>
+
+            <table id="LAY-user-back-role" lay-filter="LAY-user-back-role"></table>
         </div>
     </div>
-
 @endsection
-
 @push('after-scripts')
-    <script src="/vendor/zepto/zepto-1.2.0.js"></script>
-    <script src="/vendor/editormd/js/editormd.js"></script>
-    <script>
-        layui.use(['form'], function () {
-            var $ = layui.$
-            @foreach($labelList as $key=>$label)
-                let editor_{{$key}} = editormd("markdown_{{$label['id']}}", {
-                    height: 250,
-                    toolbarIcons: function () {
-                        return ["undo", "redo", "|", "bold", "del", "italic", "quote", "uppercase", "|", "h1", "h2", "h3", "h4", "h5", "h6", "|", "preview", "watch"]
-                    },
-                    watch: false,
-                    path: "/vendor/editormd/lib/"
-                });
-            @endforeach
-        });
+    <script type="text/html" id="table-useradmin-admin">
+
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+
     </script>
-@endpush
-<style>
-    .layui-form-item .layui-input-inline {
-        width: 1000px !important;
-    }
 
-    .layui-upload-img {
-        width: 100px;
-        height: 100px;
-        margin: 10px;
-    }
+    @push('after-scripts')
 
-    .layui-upload-list {
-        overflow: hidden;
-    }
+        <script>
 
-    .layui-form-label {
-        box-sizing: initial;
-        width: 200px !important;
-    }
+            layui.use(['form', 'table', 'util', 'laydate'], function () {
 
-    .layui-form-checkbox {
-        display: inline-flex !important;
+                var $ = layui.$
+                    , util = layui.util
+                    , form = layui.form
+                    , table = layui.table
+                    , laydate = layui.laydate;
 
-    }
+                laydate.render({
+                    elem: '#laydate-range-datetime'
+                    , type: 'date'
+                    , range: '||'
+                });
 
-    .layui-form-checkbox span {
-        font-size: 15px !important;
-        color: #000 !important;
-    }
+                table.render({
+                    elem: '#LAY-user-back-role',
+                    toolbar: '#tableToolbar',
+                    url: '{{ route('admin.api.label.index') }}',
+                    method: 'post',
+                    parseData: function (res) { //res 即为原始返回的数据
+                        return {
+                            'code': res.message ? 400 : 0, //解析接口状态
+                            'msg': res.message || '加载失败', //解析提示文本
+                            'count': res.total || 0, //解析数据长度
+                            'data': res.data || [] //解析数据列表
+                        };
+                    },
+                    cols: [[
+                        {fixed: 'left', title: '操作', toolbar: '#table-useradmin-admin', width: 120}
+                        , {field: 'key',title: 'KEY',}
+                        ,{field: 'remark',title: '说明'}
+                        , {field: 'value', title: '内容值'}
+                    ]],
+                    text: {
+                        none: '无相关数据'
+                    },
+                    page: true
+                });
 
-    .image-preview-box {
-        float: left;
-        overflow: hidden;
-        text-align: center;
-        display: inline-flex;
-        flex-direction: column;
-    }
-
-    .image-preview-box .layui-btn {
-        margin: 0px 10px;
-    }
-</style>
 
 
+                table.on("tool(LAY-user-back-role)", function (e) {
+                    if (events[e.event]) {
+                        events[e.event].call(this, e.data);
+                    }
+
+                    var data = e.data;
+                    if(e.event==='edit') {
+
+                        var url = '{{ route('admin.label.update') }}?id='+data.id;
+                        layer.open({
+                            type: 2
+                            , title: '编辑标签信息'
+                            , content: url
+                            , area: ['90%', '90%']
+                        })
+                    }
+
+                });
+                util.event('lay-event', events);
+
+
+                var events = {};
+
+
+                //搜搜重载
+                var $ = layui.$, active = {
+                    reload: function () {
+
+                        //执行重载
+                        table.reload('LAY-user-back-role', {
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                            , where: {
+
+                            }
+                        });
+                    },
+
+                    create:function () {
+
+                        var url = '{{ route('admin.label.create') }}';
+                        layer.open({
+                            type: 2
+                            , title: "添加Label"
+                            , content: url
+                            , area: ['90%', '90%']
+                        })
+                    }
+
+                };
+
+                $('.test-table-reload-btn .layui-btn').on('click', function () {
+                    var type = $(this).data('type');
+                    active[type] ? active[type].call(this) : '';
+                });
+
+            })
+        </script>
+    @endpush

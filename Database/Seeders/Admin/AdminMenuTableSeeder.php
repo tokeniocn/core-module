@@ -30,6 +30,15 @@ class AdminMenuTableSeeder extends Seeder
             'status' => 1,
         ]);
 
+        $system_config = AdminMenu::create([
+            'title' => '注册设置',
+            'parent_id' => $user->id,
+            'icon' => 'settings_system_daydream',
+            'url' => route('admin.system.settings.index', [], false),
+            'status' => 1,
+        ]);
+
+
         // 系统管理
         $system = AdminMenu::create([
             'title' => '系统管理',
@@ -54,13 +63,7 @@ class AdminMenuTableSeeder extends Seeder
             'status' => 1,
         ]);
 
-        $system_config = AdminMenu::create([
-            'title' => '系统配置',
-            'parent_id' => $system->id,
-            'icon' => 'settings_system_daydream',
-            'url' => route('admin.system.settings.index', [], false),
-            'status' => 1,
-        ]);
+
 
         // APP设置
         $app = AdminMenu::create([

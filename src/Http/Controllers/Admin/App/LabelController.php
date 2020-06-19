@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Http\Controllers\Admin\App;
 
+use Illuminate\Http\Request;
 use Modules\Core\Http\Controllers\Controller;
 use Modules\Core\Http\Requests\Admin\Label\LabelRequest;
 use Modules\Core\Services\Frontend\LabelService;
@@ -15,12 +16,17 @@ class LabelController extends Controller
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(LabelService $labelService)
+    /*public function index(LabelService $labelService)
     {
         return view('core::admin.label.index', [
             'labelList' => $this->normalizeLabel($labelService->all()->toArray()),
         ]);
+    }*/
+    public function index()
+    {
+        return view('core::admin.label.index');
     }
+
 
     /**
      * @param $data
@@ -38,7 +44,18 @@ class LabelController extends Controller
 
     public function store(LabelRequest $request, LabelService $labelService)
     {
-        $labelService->store($request->all());
-        return response()->redirectTo(route('admin.label.index'));
+        return $labelService->store($request->all());
+        //return response()->redirectTo(route('admin.label.index'));
     }
+
+    public function update(Request $request, LabelService $labelService)
+    {
+
+        $id = $request->input('id');
+        $info = $labelService->getById($id);
+        return view('core::admin.label.update', [
+            'info' => $info
+        ]);
+    }
+
 }
