@@ -1,5 +1,5 @@
 import Vue from "vue";
-import "./boot/global";
+import "./config";
 import "./boot/http";
 import "./boot/plugins";
 import "./boot/mixin";

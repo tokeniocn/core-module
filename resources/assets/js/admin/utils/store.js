@@ -15,7 +15,7 @@
  *   },
  *   getters: {
  *      files(state) {
- *        return state.files || defaultPaginationData;
+ *        return state.files || paginationDataStruct;
  *      }
  *   },
  *   actions: {
@@ -26,9 +26,9 @@
  * }
  * ```
  */
-import { upperFirst, isEqual } from "lodash";
+import { upperFirst, isEqual } from "lodash-es";
+import $config from "../config";
 import $http from "../boot/http";
-import { defaultPaginationData } from "./index";
 
 function resolveMutation(name) {
   return (state, data) => (state[name] = data);
@@ -53,20 +53,16 @@ function resolveAction(
 ) {
   const isPageType = ["infinite", "page"].includes(options.commitType);
   const defaultParams = isPageType ? { page: 1, limit: 20 } : {};
-  return async (
-    { getters, dispatch, commit, state, rootState },
-    params = {}
-  ) => {
+  return async (methods, params = {}) => {
+    const { getters, dispatch, commit, state, rootState } = methods;
     const actionOptions = params.options || {};
     delete params.options;
 
     // state缓存判断,
     if (options.cacheState) {
       // 缓存数据(非强制更新)直接返回
-      if (
-        !isEqual(state[stateKey], stateDefaultValue) &&
-        !actionOptions.force
-      ) {
+      const equal = isEqual(state[stateKey], stateDefaultValue);
+      if (!equal && !actionOptions.force) {
         return state[stateKey];
       }
     }
@@ -76,12 +72,14 @@ function resolveAction(
       typeof options.request === "function"
         ? options.request
         : async () => {
-            const { data } = await $http.request({
+            const { data } = await $http.request(
               url,
-              method,
-              params: method == "get" ? { ...defaultParams, ...params } : {},
-              data: method != "get" ? params : {},
-            });
+              method != "get" ? params : null,
+              {
+                method,
+                params: method == "get" ? { ...defaultParams, ...params } : {},
+              }
+            );
             return data;
           };
     const data = await dispatch(
@@ -108,12 +106,12 @@ function resolveAction(
         ...data,
         has_next_page: data.last_page > data.current_page,
       };
-    } else if (options.commitType == "data") {
-      // 数据保存
-      commitData = data;
     } else if (typeof options.commitType == "function") {
       // 自定义处理数据
-      commitData = await options.commitType({ state, rootState }, data);
+      commitData = await options.commitType(methods, data);
+    } else {
+      // 数据保存
+      commitData = data;
     }
     commit(mutationKey, commitData);
 
@@ -135,7 +133,13 @@ export function mapStore(
     actionKey = "load" + upperFirst(stateKey),
     mutation = resolveMutation(name),
     getter = resolveGetter(name, {
-      options: { defaultData: defaultPaginationData, ...options.getterOptions },
+      options: {
+        defaultData:
+          (options.actionOptions || {}).commitType == "data"
+            ? {}
+            : $config.store.defaultPaginationData,
+        ...options.getterOptions,
+      },
     }),
     action = resolveAction(name, {
       url,
@@ -146,7 +150,7 @@ export function mapStore(
       getterKey,
       mutationKey,
       options: {
-        commitType: "page",
+        commitType: $config.store.commitType,
         cacheState: false,
         ...options.actionOptions,
       },

@@ -3,14 +3,7 @@
     <q-header class="bg-white text-grey-9" bordered height-hint="98">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="left = !left" />
-        <q-btn
-          v-if="tabs.length"
-          @click.stop="refreshPage"
-          dense
-          flat
-          round
-          icon="refresh"
-        />
+        <q-btn v-if="tabs.length" @click.stop="refreshPage" dense flat round icon="refresh" />
         <slot name="toolbar-left"></slot>
 
         <q-space />
@@ -18,12 +11,7 @@
         <slot name="toolbar-right"></slot>
       </q-toolbar>
 
-      <page-tab
-        :tabs="tabs"
-        :activeTab="activeTab"
-        @switch="toggleTab"
-        @remove="removeTab"
-      ></page-tab>
+      <page-tab :tabs="tabs" :activeTab="activeTab" @switch="toggleTab" @remove="removeTab"></page-tab>
     </q-header>
 
     <q-drawer
@@ -36,15 +24,10 @@
       bordered
     >
       <q-toolbar class="text-center">
-        <q-toolbar-title>{{ $G.name }}</q-toolbar-title>
+        <q-toolbar-title>{{ $config.name }}</q-toolbar-title>
       </q-toolbar>
 
-      <left-menu
-        v-if="tree"
-        :tree="tree"
-        :activeMenu="activeTab"
-        @nav="toggleTab"
-      ></left-menu>
+      <left-menu v-if="tree" :tree="tree" :activeMenu="activeTab" @nav="toggleTab"></left-menu>
     </q-drawer>
 
     <q-page-container :style="style">
@@ -54,12 +37,7 @@
         class="content"
         :class="{ show: activeTab && activeTab.id == tab.id }"
       >
-        <iframe
-          :ref="`page_${tab.id}`"
-          frameborder="0"
-          :src="tab.url"
-          class="iframe"
-        ></iframe>
+        <iframe :ref="`page_${tab.id}`" frameborder="0" :src="tab.url" class="iframe"></iframe>
       </div>
     </q-page-container>
   </q-layout>
@@ -72,12 +50,12 @@ import { mapState, mapGetters, mapActions } from "vuex";
 export default {
   components: {
     LeftMenu,
-    PageTab,
+    PageTab
   },
   data() {
     return {
       left: false,
-      height: this.$q.screen.height,
+      height: this.$q.screen.height
     };
   },
   created() {
@@ -88,7 +66,7 @@ export default {
     ...mapGetters("menu", ["tabs", "activeTab"]),
     style() {
       return { height: this.$q.screen.height + "px" };
-    },
+    }
   },
   methods: {
     ...mapActions("menu", ["loadTree", "toggleTab", "removeTab"]),
@@ -98,8 +76,8 @@ export default {
         const $el = this.$refs[key][0];
         $el.contentWindow.location.reload(!0);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -1,18 +1,18 @@
-import G from "./boot/global";
+import $config from "./config";
 import $http from "./boot/http";
 import _ from "lodash";
 import Vue from "vue";
 import axios from "axios";
 import moment from "moment";
+import { errorHandler } from "./boot/handler";
 
-window.G = G;
 window._ = _;
 window.Vue = Vue;
 window.axios = axios;
 window.moment = moment;
 
+window.$config = $config;
 window.$http = $http;
-
 const headers = {
   "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
 };
@@ -50,6 +50,7 @@ layui
   .extend({})
   .use(["jquery"], function() {
     const $ = layui.$;
+    window.jQuery || (window.jQuery = $);
 
     // iframe 下隐藏
     if (top == window) {
@@ -64,25 +65,12 @@ layui
       //   return data;
       // },
       error: function(jqXHR, textStatus, errorMsg) {
-        // 出错时默认的处理函数
-        if (!$.isEmptyObject(jqXHR.responseJSON)) {
-          var data = jqXHR.responseJSON;
-          var msg = "";
-          if (!$.isEmptyObject(data.errors)) {
-            var errors = [];
-            Object.keys(data.errors).forEach(function(key) {
-              errors = errors.concat(data.errors[key]);
-            });
-            msg = "<ul><li>" + errors.join("</li><li>") + "</li></ul>";
-          } else {
-            msg = data.message;
-          }
-
-          layer.msg(msg, {
-            offset: "15px",
-            time: 2000,
-          });
-        }
+        // 模拟 axios错误
+        errorHandler({
+          response: {
+            data: jqXHR.responseJSON,
+          },
+        });
       },
     });
   });

@@ -43,7 +43,7 @@
                     <div class="layui-col-xs5">
                         <div style="margin-left: 10px;">
                             <img class="user-login-codeimg" id="LAY-user-get-vercode"
-                                 src="{{ Captcha::src() }}">
+                                 src="{{ Captcha::src('math') }}">
                         </div>
                     </div>
                 </div>
@@ -94,13 +94,6 @@
                         end: function() {
                             window.location.href = '{{ route('admin.dashboard') }}';
                         }
-                    })
-                },
-                error: function(res) {
-                    updateCaptcha()
-                    layer.msg(res.responseJSON.message || '登录失败', {
-                        offset: '15px',
-                        time: 2000
                     })
                 }
             })

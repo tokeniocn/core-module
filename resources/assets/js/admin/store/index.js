@@ -17,55 +17,64 @@ Vue.use(Vuex);
  * with the Store instance.
  */
 
-export default function(/* { ssrContext } */) {
-  const Store = new Vuex.Store({
-    state: {
-      loading: null,
+export default new Vuex.Store({
+  state: {
+    notify: null,
+    loading: null,
+  },
+  mutations: {
+    setNotify(state, notify) {
+      state.notify = notify;
     },
-    mutations: {
-      setLoading(state, loading) {
-        state.loading = loading;
-      },
+    setLoading(state, loading) {
+      state.loading = loading;
     },
-    getters: {
-      loading(state) {
-        return state.loading || {};
-      },
+  },
+  getters: {
+    loading(state) {
+      return state.loading || {};
     },
-    actions: {
-      async toggleLoading({ state, commit }, { key, loading }) {
-        if (typeof loading === "function") {
-          try {
-            commit("setLoading", {
-              ...state.loading,
-              [key]: true,
-            });
-            return await loading();
-          } finally {
-            commit("setLoading", {
-              ...state.loading,
-              [key]: false,
-            });
-          }
-        } else {
+  },
+  actions: {
+    async showNotify({ commit }, options) {
+      commit("setNotify", {
+        ...(typeof options === "string"
+          ? {
+              message: options,
+            }
+          : options),
+      });
+    },
+    async toggleLoading({ state, commit }, { key, loading }) {
+      if (typeof loading === "function") {
+        try {
           commit("setLoading", {
             ...state.loading,
-            [key]: typeof loading === "boolean" ? loading : !state.loading[key],
+            [key]: true,
+          });
+          return await loading();
+        } finally {
+          commit("setLoading", {
+            ...state.loading,
+            [key]: false,
           });
         }
-      },
+      } else {
+        commit("setLoading", {
+          ...state.loading,
+          [key]: typeof loading === "boolean" ? loading : !state.loading[key],
+        });
+      }
     },
-    modules: {
-      menu,
-      media,
+  },
+  modules: {
+    menu,
+    media,
 
-      // example
-    },
+    // example
+  },
 
-    // enable strict mode (adds overhead!)
-    // for dev mode only
-    strict: process.env.DEV,
-  });
-
-  return Store;
-}
+  // enable strict mode (adds overhead!)
+  // for dev mode only
+  strict: process.env.DEV,
+});

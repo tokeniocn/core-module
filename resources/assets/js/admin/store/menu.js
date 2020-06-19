@@ -1,6 +1,6 @@
 import { merge, cloneDeep } from "lodash";
 import { mapStore } from "../utils/store";
-import G from "../boot/global";
+import $config from "../config";
 
 export default merge(
   {
@@ -40,7 +40,7 @@ export default merge(
     },
   },
   mapStore("tree", {
-    url: G.url.menu.tree,
+    url: $config.api.menu.tree,
 
     getter: false,
     loadingKey: "menu.tree",

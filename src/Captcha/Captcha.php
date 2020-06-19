@@ -2,6 +2,18 @@
 
 namespace Modules\Core\Captcha;
 
+/**
+ * Laravel 5 & 6 Captcha package
+ *
+ * @copyright Copyright (c) 2015 MeWebStudio
+ * @version 2.x
+ * @author Muharrem ERİN
+ * @contact me@mewebstudio.com
+ * @web http://www.mewebstudio.com
+ * @date 2015-04-03
+ * @license http://www.opensource.org/licenses/mit-license.php The MIT License
+ */
+
 use Exception;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Hashing\BcryptHasher as Hasher;
@@ -16,6 +28,7 @@ use Illuminate\Support\HtmlString;
 
 /**
  * Class Captcha
+ * @package Mews\Captcha
  */
 class Captcha
 {
