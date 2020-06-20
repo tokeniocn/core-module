@@ -62,8 +62,8 @@ class NotificationService
         $key = $email . '|' . $type;
         $this->checkKeyAttempts(
             $key,
-            config('core::system.notification._email_maxAttempts', 3),
-            config('core::system.notification._email_decaySeconds', 600)
+            config('core::system.notification_email_maxAttempts', 3),
+            config('core::system.notification_email_decaySeconds', 600)
         );
 
         $userVerifyService = resolve(UserVerifyService::class);
