@@ -27,9 +27,7 @@
               @click="handleNav(grandSubMenu)"
             >
               <q-item-section>
-                <q-item-label style="padding-left: 84px">
-                  {{ grandSubMenu.title }}
-                </q-item-label>
+                <q-item-label style="padding-left: 84px">{{ grandSubMenu.title }}</q-item-label>
               </q-item-section>
             </q-item>
           </q-expansion-item>
@@ -77,12 +75,12 @@ export default {
   props: {
     tree: {
       type: Array,
-      required: true,
+      required: true
     },
     activeMenu: {
       type: Object,
-      default: {},
-    },
+      default: {}
+    }
   },
 
   methods: {
@@ -91,13 +89,23 @@ export default {
     },
     isActive(menu) {
       return this.activeMenu.id == menu.id;
-    },
-  },
+    }
+  }
 };
 </script>
 
-<style lang="scss" scoped>
-.left-menu-list .q-expansion-item__content {
-  background: rgba(0, 0, 0, 0.3);
+<style lang="scss">
+.left-menu-list {
+  .q-item__section--main {
+    margin-left: 56px;
+  }
+
+  .q-item__section--avatar + .q-item__section--main {
+    margin-left: 0;
+  }
+
+  .q-expansion-item__content {
+    background: rgba(0, 0, 0, 0.3);
+  }
 }
 </style>
