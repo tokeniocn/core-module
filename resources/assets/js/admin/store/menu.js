@@ -1,7 +1,7 @@
 import { merge, cloneDeep } from "lodash";
 import { mapStore } from "../utils/store";
 import $config from "../config";
-console.log(1);
+
 export default merge(
   {
     namespaced: true,
