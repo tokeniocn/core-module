@@ -23,11 +23,10 @@
       :width="230"
       bordered
     >
-      <q-scroll-area class="fit" dark>
-        <q-toolbar class="text-center">
-          <q-toolbar-title>{{ $config.name }}</q-toolbar-title>
-        </q-toolbar>
-
+      <q-toolbar class="text-center">
+        <q-toolbar-title>{{ $config.name }}</q-toolbar-title>
+      </q-toolbar>
+      <q-scroll-area style="height:calc(100% - 50px)" dark>
         <left-menu v-if="tree" :tree="tree" :activeMenu="activeTab" @nav="toggleTab"></left-menu>
       </q-scroll-area>
     </q-drawer>
