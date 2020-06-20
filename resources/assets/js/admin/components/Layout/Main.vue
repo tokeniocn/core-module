@@ -20,14 +20,16 @@
       v-model="left"
       side="left"
       behavior="desktop"
-      :width="260"
+      :width="230"
       bordered
     >
-      <q-toolbar class="text-center">
-        <q-toolbar-title>{{ $config.name }}</q-toolbar-title>
-      </q-toolbar>
+      <q-scroll-area class="fit" dark>
+        <q-toolbar class="text-center">
+          <q-toolbar-title>{{ $config.name }}</q-toolbar-title>
+        </q-toolbar>
 
-      <left-menu v-if="tree" :tree="tree" :activeMenu="activeTab" @nav="toggleTab"></left-menu>
+        <left-menu v-if="tree" :tree="tree" :activeMenu="activeTab" @nav="toggleTab"></left-menu>
+      </q-scroll-area>
     </q-drawer>
 
     <q-page-container :style="style">

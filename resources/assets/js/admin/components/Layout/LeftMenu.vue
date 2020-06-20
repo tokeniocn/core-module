@@ -98,13 +98,14 @@ export default {
 <style lang="scss">
 .left-menu-list {
   .q-item__section--main {
-    margin-left: 56px;
+    margin-left: 40px;
   }
-
+  .q-item__section--avatar {
+    min-width: 40px;
+  }
   .q-item__section--avatar + .q-item__section--main {
     margin-left: 0;
   }
-
   .q-expansion-item__content {
     background: rgba(0, 0, 0, 0.3);
   }
