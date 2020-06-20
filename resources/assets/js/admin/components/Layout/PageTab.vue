@@ -41,9 +41,23 @@ export default {
 <style lang="scss">
 .page-tab {
   border-top: 1px solid #f6f6f6;
+  .q-tabs {
+    .q-tabs__arrow--left,
+    .q-tabs__arrow--right {
+      background: #fff;
+    }
+
+    .q-tabs__arrow--left {
+      border-right: 1px solid #f6f6f6;
+    }
+    .q-tabs__arrow--right {
+      border-left: 1px solid #f6f6f6;
+    }
+  }
 
   .q-tab {
     padding: 0 25px;
+    border-right: 1px solid #f6f6f6;
     .close {
       position: absolute;
       right: -20px;
@@ -63,6 +77,4 @@ export default {
     }
   }
 }
-</style>
-<style lang="scss" scoped>
 </style>

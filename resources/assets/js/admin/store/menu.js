@@ -1,7 +1,7 @@
 import { merge, cloneDeep } from "lodash";
 import { mapStore } from "../utils/store";
 import $config from "../config";
-
+console.log(1);
 export default merge(
   {
     namespaced: true,
@@ -32,7 +32,8 @@ export default merge(
       },
       async removeTab({ getters, commit }, tab) {
         const tabs = cloneDeep(getters.tabs);
-        const index = tabs.length == 1 ? -1 : tabs.indexOf(tab);
+        const index =
+          tabs.length == 1 ? -1 : tabs.findIndex((_tab) => _tab.id == tab.id);
         tabs.splice(index, 1);
 
         commit("setTabs", tabs);
