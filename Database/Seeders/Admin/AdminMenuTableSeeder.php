@@ -63,7 +63,13 @@ class AdminMenuTableSeeder extends Seeder
             'status' => 1,
         ]);
 
-
+        $system_generator = AdminMenu::create([
+            'title' => '代码生成',
+            'parent_id' => $system->id,
+            'icon' => '',
+            'url' => route('admin.generators', [], false),
+            'status' => 1,
+        ]);
 
         // APP设置
         $app = AdminMenu::create([
