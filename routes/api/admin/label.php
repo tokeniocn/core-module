@@ -9,5 +9,7 @@ Route::group([
     'prefix' => 'v1/label'
 ], function () {
 
-    Route::post('/', [LabelController::class, 'index'])->name('update');
+    //Route::post('/', [LabelController::class, 'index'])->name('update');
+    Route::post('/', [LabelController::class, 'index'])->name('index');
+    Route::post('/update', [LabelController::class, 'update'])->name('update');
 });
