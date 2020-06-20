@@ -25,9 +25,10 @@
               active-class="bg-secondary text-white"
               :active="isActive(grandSubMenu)"
               @click="handleNav(grandSubMenu)"
+              style="padding-left: 65.6px"
             >
               <q-item-section>
-                <q-item-label style="padding-left: 84px">{{ grandSubMenu.title }}</q-item-label>
+                <q-item-label>{{ grandSubMenu.title }}</q-item-label>
               </q-item-section>
             </q-item>
           </q-expansion-item>
