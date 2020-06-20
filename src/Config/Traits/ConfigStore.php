@@ -3,10 +3,9 @@
 namespace Modules\Core\Config\Traits;
 
 use InvalidArgumentException;
-use UnexpectedValueException;
-use Illuminate\Support\Arr;
 use Illuminate\Filesystem\Filesystem;
-use Modules\Core\Config\Models\Config;
+use Modules\Core\Models\Config;
+use Illuminate\Support\Facades\Schema;
 
 trait ConfigStore
 {
@@ -39,11 +38,15 @@ trait ConfigStore
         $modelClass = $this->model();
 
         $items = [];
-        foreach ($modelClass::all() as $setting) {
-            $key = $setting->module == '*' ? $setting->key : $setting->module . '::';
-            $items[$key] =  array_merge($items[$key] ?? [], [
-                $setting->key => $setting->value
-            ]);
+
+        // detect config table exists when first install
+        if (Schema::hasTable($modelClass::table())) {
+            foreach ($modelClass::all() as $setting) {
+                $key = $setting->module == '*' ? $setting->key : $setting->module . '::';
+                $items[$key] =  array_merge($items[$key] ?? [], [
+                    $setting->key => $setting->value
+                ]);
+            }
         }
 
         $path = $this->getSettingsCachedPath();
