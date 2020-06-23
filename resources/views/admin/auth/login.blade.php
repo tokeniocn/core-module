@@ -70,7 +70,7 @@
         var $ = layui.$
             , $body = $('body')
             , form = layui.form
-        var captchaUrl = '{{ Captcha::src() }}'
+        var captchaUrl = '{{ Captcha::src('math') }}'
         var $captcha = $('#LAY-user-get-vercode')
 
         $(document).keydown(function(event){
