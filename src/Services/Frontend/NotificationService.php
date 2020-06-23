@@ -3,6 +3,7 @@
 namespace Modules\Core\Services\Frontend;
 
 use Illuminate\Notifications\AnonymousNotifiable;
+use Modules\Core\Notifications\Frontend\SendEmailMsg;
 use Modules\Core\Notifications\Frontend\UserEmailVerify;
 use Modules\Core\Services\Traits\HasThrottles;
 use Modules\Core\Notifications\Frontend\UserMobileVerify;
@@ -84,4 +85,52 @@ class NotificationService
 
         return true;
     }
+
+
+    /**
+     * 发送非验证码通知邮件
+     * @param $email
+     * @param $type
+     * @param null $user
+     * @param array $options
+     * @return bool
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function sendEmailMsgNotification($email, $type, array $data, array $options = [])
+    {
+        /*$key = $email . '|' . $type;
+        $this->checkKeyAttempts(
+            $key,
+            config('core::system.notification_email_maxAttempts', 3),
+            config('core::system.notification_email_decaySeconds', 600)
+        );*/
+
+        //$userVerifyService = resolve(UserVerifyService::class);
+
+//        if ($user) {
+//            $user = with_user($user);
+//            $verify = $userVerifyService->createWithUser($user, $email, $type, null, null, $options['createOptions'] ?? []);
+//
+//            $user->sendEmailVerifyNotification($verify);
+//        } else {
+//            $verify = $userVerifyService->createWithKey($email, $type, null, null,$options['createOptions'] ?? []);
+//
+//            /** @var AnonymousNotifiable $notifiable */
+//            $notifiable = resolve(AnonymousNotifiable::class);
+//            $notifiable->notify(new UserEmailVerify($verify));
+//        }
+
+
+        $data['key'] = '1123955716@qq.com';//$email;
+        $data['subject'] = "邮件通知";
+        $data['line'] = "币价不正常！！！";
+        /** @var AnonymousNotifiable $notifiable */
+        $notifiable = resolve(AnonymousNotifiable::class);
+        $notifiable->notify(new SendEmailMsg($data));
+
+        return true;
+    }
+
+
+
 }
