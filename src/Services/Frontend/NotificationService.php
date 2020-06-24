@@ -3,6 +3,17 @@
 namespace Modules\Core\Services\Frontend;
 
 use Illuminate\Notifications\AnonymousNotifiable;
+
+/*use Modules\Core\Notifications\Frontend\SystemWalletBalanceWarning;*/
+
+use Illuminate\Notifications\Messages\MailMessage;
+
+//use Modules\Core\Messages\EmailMessage;
+use Illuminate\Notifications\Notification;
+use Leonis\Notifications\EasySms\Messages\EasySmsMessage as MobileMessage;
+use Modules\Core\Messages\SystemWalletBalanceEmailMessage;
+use Modules\Core\Notifications\Frontend\SendMobileMsg;
+use Modules\Core\Notifications\Frontend\email\SystemWalletBalanceWarning;
 use Modules\Core\Notifications\Frontend\UserEmailVerify;
 use Modules\Core\Services\Traits\HasThrottles;
 use Modules\Core\Notifications\Frontend\UserMobileVerify;
@@ -39,7 +50,7 @@ class NotificationService
 
             $user->sendMobileVerifyNotification($verify);
         } else {
-            $verify = $userVerifyService->createWithKey($mobile, $type, $token, null,$options['createOptions'] ?? []);
+            $verify = $userVerifyService->createWithKey($mobile, $type, $token, null, $options['createOptions'] ?? []);
 
             /** @var AnonymousNotifiable $notifiable */
             $notifiable = resolve(AnonymousNotifiable::class);
@@ -74,13 +85,12 @@ class NotificationService
 
             $user->sendEmailVerifyNotification($verify);
         } else {
-            $verify = $userVerifyService->createWithKey($email, $type, null, null,$options['createOptions'] ?? []);
+            $verify = $userVerifyService->createWithKey($email, $type, null, null, $options['createOptions'] ?? []);
 
             /** @var AnonymousNotifiable $notifiable */
             $notifiable = resolve(AnonymousNotifiable::class);
             $notifiable->notify(new UserEmailVerify($verify));
         }
-
 
         return true;
     }
