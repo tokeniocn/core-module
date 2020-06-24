@@ -33,6 +33,12 @@ trait HasConfigQuery
         return $this->config->all();
     }
 
+    protected function storeConfig($data, array $options = [])
+    {
+        return store_config($this->key, $data, $options);
+    }
+
+
     /**
      * @param Collection $data
      * @param array $options
@@ -120,10 +126,10 @@ trait HasConfigQuery
     {
         $config = $this->config();
 
-        if (Arr::isAssoc($where) || is_callable($where)) { // where查询或者回调方法查询
-            $this->withCollectionOptions($config, array_merge($options, [
+        if ((is_array($where) && Arr::isAssoc($where)) || is_callable($where)) { // where查询或者回调方法查询
+            return $this->withCollectionOptions($config, array_merge($options, [
                 'where' => $where,
-            ]))->count();
+            ]))->count() > 0;
         }
 
         return $config->has($where); // key 或者 [key, key1] 查询
@@ -184,7 +190,7 @@ trait HasConfigQuery
             return $item['key'] !== $key;
         });
 
-        $this->saveConfig($config);
+        $this->storeConfig($config);
 
         return true;
     }
@@ -202,7 +208,7 @@ trait HasConfigQuery
         if (empty($key)) {
             throw new InvalidArgumentException(trans('Key键值必须设置'));
         }
-        if ($this->has($key)) {
+        if ($this->has(['key' => $key])) {
             // @param \Closure|bool $exception 自定义异常设置
             $exception = $options['exception'] ?? true;
 
@@ -219,7 +225,7 @@ trait HasConfigQuery
             'updated_at' => Carbon::now(),
         ]));
 
-        $this->saveConfig($config);
+        $this->storeConfig($config);
 
         return true;
     }
@@ -237,7 +243,7 @@ trait HasConfigQuery
         if (empty($key)) {
             throw new InvalidArgumentException(trans('Key键值必须设置'));
         }
-        if (!$this->has($key)) {
+        if (!$this->has(['key' => $key])) {
             // @param \Closure|bool $exception 自定义异常设置
             $exception = $options['exception'] ?? true;
 
@@ -257,7 +263,7 @@ trait HasConfigQuery
             return $oldData;
         });
 
-        $this->saveConfig($config);
+        $this->storeConfig($config);
 
         return true;
     }
