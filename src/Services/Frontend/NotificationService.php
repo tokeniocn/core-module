@@ -106,7 +106,7 @@ class NotificationService
      * @param array $options
      * @return bool
      */
-    public function sendMobileMsgNotification($mobile, Notification $message, array $options = [])
+    public function sendMobileMsgNotification($mobile, MobileMessage $message, array $options = [])
     {
         $limitTimes = $options['limit_times'] ?? false;
         if ($limitTimes) { //是否限制发送频率
@@ -131,14 +131,13 @@ class NotificationService
      * 具体实现类需继承Notification类
      * 没有相关的专项服务类，请自行后续扩展
      * @param $email
-     * @param Notification $message
+     * @param MailMessage $message
      * @param array $options
      * @return bool
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function sendEmailMsgNotification($email, Notification $message, array $options = [])
+    public function sendEmailMsgNotification($email, MailMessage $message, array $options = [])
     {
-
         $limitTimes = $options['limit_times'] ?? false;
         if ($limitTimes) { //是否限制发送频率
             $key = $email . '|' . get_class($message);

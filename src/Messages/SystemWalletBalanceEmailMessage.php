@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class SystemWalletBalanceEmailMessage extends Notification implements ShouldQueue
+class SystemWalletBalanceEmailMessage extends MailMessage implements ShouldQueue
 {
     use Queueable;
 
