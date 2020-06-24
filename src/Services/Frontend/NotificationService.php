@@ -92,68 +92,25 @@ class NotificationService
             $notifiable->notify(new UserEmailVerify($verify));
         }
 
-
         return true;
     }
-
 
     /**
-     * 发送非验证码短信
-     * 具体实现类需继承Notification类
-     * 没有相关的专项服务类，请自行后续扩展
-     * @param $mobile
-     * @param MobileMessage $message
+     * @param Notification $notification
+     * @param null $user
      * @param array $options
-     * @return bool
      */
-    public function sendMobileMsgNotification($mobile, MobileMessage $message, array $options = [])
+    public function sendNotification(Notification $notification, $user = null, array $options = [])
     {
-        $limitTimes = $options['limit_times'] ?? false;
-        if ($limitTimes) { //是否限制发送频率
-            $key = $mobile . '|' . get_class($message);
-            $this->checkKeyAttempts(
-                $key,
-                config('core::system.notification_mobile_maxAttempts', 3),
-                config('core::system.notification_mobile_decaySeconds', 600)
-            );
+        if ($user) {
+            $user = with_user($user);
+            $user->notify($notification);
+        } else {
+            /** @var AnonymousNotifiable $notifiable */
+            $notifiable = resolve(AnonymousNotifiable::class);
+            $notifiable->notify($notification);
         }
-
-        /** @var AnonymousNotifiable $notifiable */
-        $notifiable = resolve(AnonymousNotifiable::class);
-        $notifiable->notify($message);
 
         return true;
     }
-
-
-    /**
-     * 发送非验证码通知邮件
-     * 具体实现类需继承Notification类
-     * 没有相关的专项服务类，请自行后续扩展
-     * @param $email
-     * @param MailMessage $message
-     * @param array $options
-     * @return bool
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function sendEmailMsgNotification($email, MailMessage $message, array $options = [])
-    {
-        $limitTimes = $options['limit_times'] ?? false;
-        if ($limitTimes) { //是否限制发送频率
-            $key = $email . '|' . get_class($message);
-            $this->checkKeyAttempts(
-                $key,
-                config('core::system.notification_email_maxAttempts', 3),
-                config('core::system.notification_email_decaySeconds', 600)
-            );
-        }
-
-
-        /** @var AnonymousNotifiable $notifiable */
-        $notifiable = resolve(AnonymousNotifiable::class);
-        $notifiable->notify($message); //邮件一般由队列发送
-        return true;
-    }
-
-
 }
