@@ -77,6 +77,7 @@ class NotificationService
             config('core::system.notification_email_decaySeconds', 600)
         );
 
+
         $userVerifyService = resolve(UserVerifyService::class);
 
         if ($user) {
