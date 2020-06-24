@@ -94,23 +94,4 @@ class NotificationService
 
         return true;
     }
-
-    /**
-     * @param Notification $notification
-     * @param null $user
-     * @param array $options
-     */
-    public function sendNotification(Notification $notification, $user = null, array $options = [])
-    {
-        if ($user) {
-            $user = with_user($user);
-            $user->notify($notification);
-        } else {
-            /** @var AnonymousNotifiable $notifiable */
-            $notifiable = resolve(AnonymousNotifiable::class);
-            $notifiable->notify($notification);
-        }
-
-        return true;
-    }
 }
