@@ -48,15 +48,23 @@ trait HasConfigQuery
     protected function withCollectionOptions(Collection $data, array $options)
     {
         if ($where = $options['where'] ?? false) {
-            $data->where($where);
+            foreach ((array) $where as $key => $value) {
+                $data = $data->where($key, $value);
+            }
+        }
+
+        if ($whereIn = $options['whereIn'] ?? false) {
+            foreach((array) $whereIn as $key => $values) {
+                $data = $data->whereIn($key, $values);
+            }
         }
 
         if ($sortBy = $options['sortBy'] ?? false) {
-            call_user_func_array([$data, 'sortBy'], ! is_array($sortBy) ? [$sortBy] : $sortBy);
+            $data = call_user_func_array([$data, 'sortBy'], ! is_array($sortBy) ? [$sortBy] : $sortBy);
         }
 
         if ($callback = $options['collectionCallback'] ?? false) {
-            $callback($data);
+            $data = $callback($data);
         }
 
         return $data;
