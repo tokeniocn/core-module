@@ -67,7 +67,7 @@ class AdminMenuTableSeeder extends Seeder
             'title' => '代码生成',
             'parent_id' => $system->id,
             'icon' => '',
-            'url' => route('admin.generators', [], false),
+            'url' => route('admin.generator.index', [], false),
             'status' => 1,
         ]);
 
