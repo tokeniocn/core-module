@@ -27,7 +27,7 @@
     /* Require.js assignment replace */
     
     "use strict";
-    
+
     var $ = (typeof (jQuery) !== "undefined") ? jQuery : Zepto;
 
 	if (typeof ($) === "undefined") {

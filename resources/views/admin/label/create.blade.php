@@ -47,19 +47,21 @@
 @endsection
 
 @push('after-scripts')
-    <script src="/vendor/zepto/zepto-1.2.0.js"></script>
-    <script src="/vendor/editormd/js/editormd.js"></script>
     <script>
         layui.use(['form'], function () {
             let $ = layui.$
                 , form = layui.form;
-            let editor = editormd("markdown_box", {
-                height: 250,
-                toolbarIcons: function () {
-                    return ["undo", "redo", "|", "bold", "del", "italic", "quote", "uppercase", "|", "h1", "h2", "h3", "h4", "h5", "h6", "|", "preview", "watch"]
-                },
-                watch: false,
-                path: "/vendor/editormd/lib/"
+
+
+            $.getScript("/vendor/editormd/js/editormd.js", function() {
+                let editor = editormd("markdown_box", {
+                    height: 250,
+                    toolbarIcons: function () {
+                        return ["undo", "redo", "|", "bold", "del", "italic", "quote", "uppercase", "|", "h1", "h2", "h3", "h4", "h5", "h6", "|", "preview", "watch"]
+                    },
+                    watch: false,
+                    path: "/vendor/editormd/lib/"
+                });
             });
 
             form.on('submit(add)', function(data){
