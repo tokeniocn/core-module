@@ -9,6 +9,10 @@
                        placeholder="表ID">
             </div>
             <div class="layui-inline">
+                <input type="text" name="user_info" value="{{isset($user_info)?$user_info:''}}" class="layui-input" id="user_info"
+                       placeholder="会员UID|会员名">
+            </div>
+            <div class="layui-inline">
                 <input type="text" name="keyword" value="{{isset($keyword)?$keyword:''}}" class="layui-input"
                        id="keyword" placeholder="搜索用户真实姓名">
             </div>
@@ -73,7 +77,13 @@
                 },
                 id: "dataTable",
                 cols: [[
+                    {
+                        field: 'right',
+                        title: '操作',
+                        toolbar: '#toolColumn'
+                    },
                     {field: 'id', title: 'ID'},
+                    {field: 'user_id', title: 'UID'},
                     {field: 'user_name', title: '账户名',templet: function (res) {
                             return res.user.username
                         }
@@ -83,7 +93,7 @@
                         }
                     },
                     {field: 'name', title: '姓名'},
-                    {field: 'certify_type', title: '证件类型'},
+                    {field: 'certify_type_text', title: '证件类型'},
                     {field: 'number', title: '证件号码', width: 200},
                     , {
                         field: 'obverse', title: '身份证正面', width: 110, event: 'show_obverse', templet: function (res) {
@@ -109,12 +119,8 @@
                     {field: 'created_at', title: '提交时间', templet: function (res) {
                             return moment(res.created_at).format("YYYY-MM-DD HH:mm:ss")
                         }
-                    },
-                    {
-                        field: 'right',
-                        title: '操作',
-                        toolbar: '#toolColumn'
                     }
+
                 ]],
                 text: {
                     none: '没有可用数据'
@@ -126,6 +132,7 @@
                     let keyword = $('#keyword');
                     let id = $('#id');
                     let status = $('#status');
+                    let user_info = $('#user_info');
                     //执行重载
                     table.reload('dataTable', {
                         page: {
@@ -134,7 +141,8 @@
                         , where: {
                             id: id.val(),
                             keyword: keyword.val(),
-                            status: status.val()
+                            status: status.val(),
+                            user_info:user_info.val()
                         }
                     }, 'data');
                 }
