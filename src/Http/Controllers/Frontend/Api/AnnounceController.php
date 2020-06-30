@@ -12,7 +12,7 @@ class AnnounceController extends Controller
 {
     public function index(Request $request, AnnounceService $announceService)
     {
-        return $announceService->all([], ['paginate' => true]);
+        return $announceService->all([], ['paginate' => true, 'orderBy' => ['created_at', 'desc']]);
     }
 
     public function info(Request $request, AnnounceService $announceService)
