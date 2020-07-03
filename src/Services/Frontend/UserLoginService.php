@@ -3,6 +3,7 @@
 namespace Modules\Core\Services\Frontend;
 
 use App\Models\User;
+use Modules\Core\Events\Frontend\UserBeforeLogin;
 use Modules\Core\Events\Frontend\UserLoggedIn;
 use Modules\Core\Exceptions\Frontend\Auth\UserEmailVerifyException;
 use Modules\Core\Exceptions\Frontend\Auth\UserMobileVerifyException;
@@ -32,6 +33,8 @@ class UserLoginService
             'isMobile' => $isMobile,
             'user' => $user
         ] = $userService->getByGuessString($string);
+
+        event(new UserBeforeLogin($user, User::LOGIN_TYPE_PASSWORD));
 
         $userService->checkPassword($user, $password);
 
@@ -67,6 +70,8 @@ class UserLoginService
         $userVerifyService->getByKeyToken($mobile, $code, UserVerify::TYPE_MOBILE_LOGIN, array_merge([
             'setExpired' => true
         ], $options['userVerifyOptions'] ?? []));
+
+        event(new UserBeforeLogin($user, User::LOGIN_TYPE_MOBILE));
 
         $isEmail && $user->isEmailVerified();
 

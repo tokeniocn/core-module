@@ -39,6 +39,9 @@ abstract class BaseUser extends Authenticatable
         UserRelationship,
         UserNotification;
 
+    const LOGIN_TYPE_PASSWORD = 'password';
+    const LOGIN_TYPE_MOBILE = 'mobile';
+
     /**
      * The attributes that are mass assignable.
      *
