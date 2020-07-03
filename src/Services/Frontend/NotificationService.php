@@ -79,14 +79,16 @@ class NotificationService
 
 
         $userVerifyService = resolve(UserVerifyService::class);
-
+        $token = $userVerifyService->generateUniqueToken($email, function () {
+            return random_int(100000, 999999);
+        });
         if ($user) {
             $user = with_user($user);
-            $verify = $userVerifyService->createWithUser($user, $email, $type, null, null, $options['createOptions'] ?? []);
+            $verify = $userVerifyService->createWithUser($user, $email, $type, $token, null, $options['createOptions'] ?? []);
 
             $user->sendEmailVerifyNotification($verify);
         } else {
-            $verify = $userVerifyService->createWithKey($email, $type, null, null, $options['createOptions'] ?? []);
+            $verify = $userVerifyService->createWithKey($email, $type, $token, null, $options['createOptions'] ?? []);
 
             /** @var AnonymousNotifiable $notifiable */
             $notifiable = resolve(AnonymousNotifiable::class);
