@@ -3,6 +3,7 @@
 namespace Modules\Core\Http\Controllers\Frontend\Api\Auth;
 
 use Illuminate\Http\Request;
+use Modules\Core\Events\Frontend\UserInfoShow;
 use Modules\Core\Http\Controllers\Controller;
 use Modules\Core\Http\Requests\Frontend\Auth\ResetMobileByOldMobileRequest;
 use Modules\Core\Services\Frontend\UserResetService;
@@ -26,6 +27,7 @@ class UserController extends Controller
     public function info(Request $request)
     {
         $user = $request->user();
+        event(new UserInfoShow($user));
         $user->load('userInfo');
         return $user;
     }

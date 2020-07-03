@@ -180,14 +180,8 @@ trait UserMethod
      *
      * @return bool
      */
-    public function checkPayPassword($payPassword, $exception = false)
+    public function checkPayPassword($payPassword)
     {
-        $verified = Hash::check($payPassword, $this->pay_password);
-
-        if (!$verified && $exception) {
-            throw new UserPayPasswordException(trans('支付密码错误'));
-        }
-
-        return $verified;
+        return Hash::check($payPassword, $this->pay_password);
     }
 }
