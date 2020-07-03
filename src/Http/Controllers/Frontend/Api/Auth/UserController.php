@@ -14,6 +14,7 @@ use Modules\Core\Http\Requests\Frontend\Auth\SetPayPasswordRequest;
 use Modules\Core\Http\Requests\Frontend\Auth\ResetPayPasswordRequest;
 use Modules\Core\Http\Requests\Frontend\Auth\ResetPasswordByOldPasswordRequest;
 use Modules\Core\Http\Requests\Frontend\Auth\ResetPayPasswordByOldPasswordRequest;
+use Modules\Core\Http\Requests\Frontend\Auth\ResetEmailByOldEmailRequest;
 
 class UserController extends Controller
 {
@@ -58,6 +59,21 @@ class UserController extends Controller
     public function resetMobileByOldMobile(ResetMobileByOldMobileRequest $request, UserResetService $userResetService)
     {
         $userResetService->resetMobileByOldMobile($request->new_mobile, $request->new_code, $request->code);
+
+        return [];
+    }
+
+    /**
+     * 修改邮箱（通过旧邮箱验证码）
+     *
+     * @param ResetEmailByOldEmailRequest $request
+     * @param UserResetService $userResetService
+     *
+     * @return array
+     */
+    public function resetEmailByOldEmail(ResetEmailByOldEmailRequest $request, UserResetService $userResetService)
+    {
+        $userResetService->resetEmailByOldEmail($request->new_email, $request->new_code, $request->code);
 
         return [];
     }
@@ -132,6 +148,20 @@ class UserController extends Controller
     public function resetPayPassword(ResetPayPasswordRequest $request, UserResetService $userResetService)
     {
         $userResetService->resetPayPassword($request->user(), $request->code, $request->password);
+
+        return [];
+    }
+
+    /**
+     * 修改交易密码（通过邮箱验证码）
+     *
+     * @param ResetPayPasswordRequest $request
+     * @param UserResetService $userResetService
+     * @return array
+     */
+    public function resetPayPasswordByEmail(ResetPayPasswordRequest $request, UserResetService $userResetService)
+    {
+        $userResetService->resetPayPasswordByEmail($request->user(), $request->code, $request->password);
 
         return [];
     }

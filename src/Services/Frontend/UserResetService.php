@@ -89,6 +89,31 @@ class UserResetService
     }
 
     /**
+     * @param $newEmail
+     * @param $newEmailToken
+     * @param $token
+     * @param array $options
+     */
+    public function resetEmailByOldEmail($newEmail, $newEmailToken, $token, array $options = [])
+    {
+        $userVerify = $this->userVerifyService->getByKeyToken($newEmail, $newEmailToken, UserVerify::TYPE_EMAIL_RESET, array_merge([
+            'with' => ['user'],
+        ], $options));
+
+        $user = $userVerify->user;
+
+        $userVerifyOld = $this->userVerifyService->getByKeyToken($user->email, $token, UserVerify::TYPE_EMAIL_RESET_BY_OLD, $options);
+
+        $userVerify->user->email = $newEmail;
+        $userVerify->user->saveIfFail();
+
+        $userVerify->setExpired()->save();
+        $userVerifyOld->setExpired()->save();
+
+        return true;
+    }
+
+    /**
      * @param $mobile
      * @param $token
      * @param $password
@@ -149,6 +174,20 @@ class UserResetService
     public function resetPayPassword($user, $token, $password, array $options = [])
     {
         $userVerify = $this->userVerifyService->getByKeyToken($user->mobile, $token, UserVerify::TYPE_PAY_PASSWORD_RESET, array_merge([
+            'with' => ['user'],
+        ], $options));
+
+        $userVerify->user->pay_password = $password;
+        $userVerify->user->saveIfFail();
+
+        $userVerify->setExpired()->save();
+
+        return true;
+    }
+
+    public function resetPayPasswordByEmail($user, $token, $password, array $options = [])
+    {
+        $userVerify = $this->userVerifyService->getByKeyToken($user->email, $token, UserVerify::TYPE_PAY_PASSWORD_RESET, array_merge([
             'with' => ['user'],
         ], $options));
 

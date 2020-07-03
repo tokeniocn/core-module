@@ -41,9 +41,11 @@ Route::group([
         Route::post('pay_password', [UserController::class, 'setPayPassword'])->name('set.pay_password'); // 设置支付密码
         Route::post('reset/pay_password', [UserController::class, 'resetPayPassword'])->name('reset.pay_password'); // 重置支付密码(短信验证码)
         Route::post('reset/pay_password_by_old', [UserController::class, 'resetPayPasswordByOldPassword'])->name('reset.pay_password_by_old'); // 修改支付密码(旧支付密码)
+        Route::post('reset/pay_password_by_email', [UserController::class, 'resetPayPasswordByEmail'])->name('reset.pay_password_by_email'); // 修改支付密码(邮箱验证码)
 
 //        Route::post('reset/email', [UserController::class, 'resetEmail'])->name('verify.email'); // 修改邮箱
         Route::post('reset/mobile', [UserController::class, 'resetMobile'])->name('verify.mobile'); // 修改手机号
         Route::post('reset/mobile_by_old', [UserController::class, 'resetMobileByOldMobile'])->name('verify.mobile_by_old'); // 修改手机号(通过旧手机验证码)
+        Route::post('reset/email_by_old', [UserController::class, 'resetEmailByOldEmail'])->name('verify.email_by_old'); // 修改邮箱(通过邮箱验证码)
     });
 });
