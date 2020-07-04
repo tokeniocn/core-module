@@ -23,9 +23,12 @@ class AnnounceController extends Controller
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create()
+    public function create(AnnounceService $announceService)
     {
-        return view('core::admin.announce.create');
+
+        return view('core::admin.announce.update', [
+            'announce' => $announceService->query()->newModelInstance()
+        ]);
     }
 
     public function store(AnnounceRequest $request, AnnounceService $announceService)

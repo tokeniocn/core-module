@@ -3,30 +3,50 @@
 @section('content')
     <div class="layui-card">
         <div class="layui-card-body">
-            <form method="post" class="layui-form" action="{{route('admin.announce.update',['id'=>$announce['id']])}}">
+            <form method="post" class="layui-form"
+                  action="{{$announce->exists ? route('admin.announce.update',['id'=> $announce['id']]) : route('admin.announce.store')}}">
                 {{csrf_field()}}
-                <div class="layui-form-item">
-                    <label class="layui-form-label">标题</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="title" value="{{$announce['value']['title']}}"
-                               placeholder="请输入标题" autocomplete="off" class="layui-input">
+                <div class="layui-tab" lay-filter="locale">
+                    <ul class="layui-tab-title">
+                        @foreach (config('app.supported_locales') as $key => $locale)
+                            <li @if($loop->first)class="layui-this"@endif>{{$locale['name']}}</li>
+                        @endforeach
+                    </ul>
+                    <div class="layui-tab-content">
+                        @foreach (config('app.supported_locales') as $key => $locale)
+                            <div
+                                @if($loop->first)
+                                 class="layui-tab-item layui-show"
+                                @else
+                                 class="layui-tab-item"
+                                @endif>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">标题</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="title[{{$key}}]" value="{{$announce['value']['title'][$key] ?? ''}}"
+                                               placeholder="请输入标题" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">内容</label>
+                                    <div class="layui-input-inline">
+                                    <textarea type="text" name="content[{{$key}}]"
+                                              placeholder="请输入公告内容" autocomplete="off" class="content layui-textarea">
+                                        {{$announce['value']['content'][$key] ?? ''}}
+                                    </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">内容</label>
-                    <div class="layui-input-inline">
-                        <textarea type="text" id="content" name="content"
-                                  placeholder="请输入公告内容" autocomplete="off" class="layui-textarea">
-                            {{$announce['value']['content']}}
-                        </textarea>
-                    </div>
-                </div>
-                <div class="layui-form-item">
                     <label class="layui-form-label"></label>
                     <div class="layui-input-inline">
                         <button type="submit" class="layui-btn" lay-submit="" lay-filter="lay-announce">立即提交</button>
-                        <a  href="{{route('admin.announce.index')}}" class="layui-btn layui-btn-primary" >返回</a>
+                        <a href="{{route('admin.announce.index')}}" class="layui-btn layui-btn-primary">返回</a>
                     </div>
                 </div>
             </form>
@@ -38,26 +58,30 @@
 
 @push('after-scripts')
     <script>
-        layui.use(['form', 'table', 'layedit'], function () {
+        layui.use(['form', 'table', 'layedit', 'element'], function () {
             var $ = layui.$
                 , layedit = layui.layedit
                 , form = layui.form
-                , table = layui.table;
-            layedit.build('content',{
-                height: 320,
-                tool: [
-                    'strong' //加粗
-                    ,'italic' //斜体
-                    ,'underline' //下划线
-                    ,'del' //删除线
-                    ,'|' //分割线
-                    ,'left' //左对齐
-                    ,'center' //居中对齐
-                    ,'right' //右对齐
-                    ,'link' //超链接
-                    ,'unlink' //清除链接
-                    ,'face' //表情
-                ]
+                , table = layui.table
+                , element = layui.element;
+
+            $('textarea.content').each(function() {
+                layedit.build(this, {
+                    height: 320,
+                    tool: [
+                        'strong' //加粗
+                        , 'italic' //斜体
+                        , 'underline' //下划线
+                        , 'del' //删除线
+                        , '|' //分割线
+                        , 'left' //左对齐
+                        , 'center' //居中对齐
+                        , 'right' //右对齐
+                        , 'link' //超链接
+                        , 'unlink' //清除链接
+                        , 'face' //表情
+                    ]
+                })
             });
         })
     </script>

@@ -42,7 +42,10 @@
                     title: 'ID',
                 }, {
                     field: 'title',
-                    title: '标题'
+                    title: '标题',
+                    templet: function (res) {
+                        return Object.values(res.title)[0];
+                    }
                 }, {
                     field: 'created_at',
                     title: '创建时间'
