@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Http\Middleware;
 
-class LangLocale
+class ResolveLocale
 {
     public function handle($request, $next)
     {
@@ -21,7 +21,7 @@ class LangLocale
             $locale = config('app.locale');
         }
         // check the languages defined is supported
-        if ( ! in_array($locale, config('app.supported_locales', ['zh_CN', 'en']))) {
+        if ( ! array_key_exists($locale, config('app.supported_locales', []))) {
             // respond with error
             $locale = config('app.fallback_locale');
         }
