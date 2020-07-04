@@ -95,7 +95,8 @@
                             window.location.href = '{{ route('admin.dashboard') }}';
                         }
                     })
-                }
+                },
+                complete: updateCaptcha
             })
         })
 
