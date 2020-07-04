@@ -19,7 +19,7 @@ class CreateOperateLogTable extends Migration
             $table->string('scene', 20)->default('')->comment('操作场景: admin=后台 ');
             $table->string('category', 100)->default('')->comment('操作分类');
             $table->string('operate', 100)->default('')->comment('操作类型');
-            $table->text('log')->default('')->comment('操作内容');
+            $table->text('log')->comment('操作内容');
             $table->json('data')->nullable()->comment('附加记录数据');
             $table->json('context')->nullable()->comment('操作上下文记录, 用于记录调试信息');
             $table->dateTimeTz('created_at')->nullable();
