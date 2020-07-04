@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAdminOperateLogTable extends Migration
+class CreateOperateLogTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateAdminOperateLogTable extends Migration
      */
     public function up()
     {
-        Schema::create('admin_operate_log', function (Blueprint $table) {
+        Schema::create('operate_log', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->default(0)->comment('关联用户ID');
+            $table->string('scene', 20)->default('')->comment('操作场景: admin=后台 ');
             $table->string('category', 100)->default('')->comment('操作分类');
             $table->string('operate', 100)->default('')->comment('操作类型');
             $table->text('log')->default('')->comment('操作内容');
@@ -35,6 +36,6 @@ class CreateAdminOperateLogTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('admin_operate_log');
+        Schema::dropIfExists('operate_log');
     }
 }

@@ -1,10 +1,27 @@
 <?php
 
-use App\Models\AdminUser;
 use App\Models\User;
-use Modules\Core\Services\Frontend\UserService;
-use Modules\Core\Services\Admin\AdminOperateLogService;
+use App\Models\AdminUser;
 use Illuminate\Support\Facades\Auth;
+use Modules\Core\Models\Admin\OperateLog;
+use Modules\Core\Services\Frontend\UserService;
+use Modules\Core\Services\Admin\OperateLogService;
+
+if (! function_exists('with_user')) {
+    /**
+     * @param $userIdOrUser
+     *
+     * @return User
+     */
+    function with_user($userIdOrUser)
+    {
+        if ($userIdOrUser instanceof User) {
+            return $userIdOrUser;
+        }
+
+        return resolve(UserService::class)->getById($userIdOrUser);
+    }
+}
 
 if (! function_exists('with_admin_user')) {
     /**
@@ -19,6 +36,25 @@ if (! function_exists('with_admin_user')) {
         }
 
         return AdminUser::first($userIdOrUser);
+    }
+}
+
+if (! function_exists('with_user_id')) {
+    /**
+     * @param $userIdOrUser
+     *
+     * @return int
+     * @throws InvalidArgumentException
+     */
+    function with_user_id($userIdOrUser)
+    {
+        if (is_numeric($userIdOrUser)) {
+            return $userIdOrUser;
+        } elseif ($userIdOrUser instanceof User) {
+            return $userIdOrUser->id;
+        }
+
+        throw new InvalidArgumentException('The argument must be instance of User or user id.');
     }
 }
 
@@ -41,39 +77,50 @@ if (! function_exists('with_admin_user_id')) {
     }
 }
 
-if (! function_exists('with_user')) {
+if (! function_exists('operate_log')) {
     /**
-     * @param $userIdOrUser
+     * @param string $categoryDotOperate
+     * @param string $log
+     * @param array $options
      *
-     * @return User
+     * @return bool|\Illuminate\Database\Eloquent\Model
+     * @throws \Modules\Core\Exceptions\ModelSaveException
      */
-    function with_user($userIdOrUser)
+    function operate_log($categoryDotOperate, $log, array $options = [])
     {
-        if ($userIdOrUser instanceof User) {
-            return $userIdOrUser;
-        }
+        [$category, $operate] = explode('.', $categoryDotOperate, 1);
 
-        return resolve(UserService::class)->getById($userIdOrUser);
+        $createOptions = $options['createOptions'] ?? [];
+        unset($options['createOptions']);
+
+        return resolve(OperateLogService::class)
+            ->create(array_merge([
+                'user_id' => $options['user_id'] ?? with_user_id(Auth::id()),
+                'scene' => OperateLog::SCENE_FRONTEND,
+                'category' => $category,
+                'operate' => $operate,
+                'log' => $log,
+                'data' => [],
+                'context' => [],
+            ], $options), $createOptions);
     }
 }
 
-
-if (! function_exists('with_user_id')) {
+if (! function_exists('admin_operate_log')) {
     /**
-     * @param $userIdOrUser
+     * @param string $categoryDotOperate
+     * @param string $log
+     * @param array $options
      *
-     * @return int
-     * @throws InvalidArgumentException
+     * @return bool|\Illuminate\Database\Eloquent\Model
+     * @throws \Modules\Core\Exceptions\ModelSaveException
      */
-    function with_user_id($userIdOrUser)
+    function admin_operate_log($categoryDotOperate, $log, array $options = [])
     {
-        if (is_numeric($userIdOrUser)) {
-            return $userIdOrUser;
-        } elseif ($userIdOrUser instanceof User) {
-            return $userIdOrUser->id;
-        }
-
-        throw new InvalidArgumentException('The argument must be instance of User or user id.');
+        return operate_log($categoryDotOperate, $log, array_merge([
+            'user_id' => with_admin_user_id(Auth::id()),
+            'scene' => OperateLog::SCENE_ADMIN
+        ], $options));
     }
 }
 
@@ -90,27 +137,3 @@ if (! function_exists('store_config')) {
         return config()->store($key, $value, $options);
     }
 }
-
-if (! function_exists('admin_opearte_log')) {
-    /**
-     * @param string $key
-     * @param mixed $value
-     * @param array $options
-     *
-     * @return mixed
-     */
-    function admin_opearte_log($category, $opearte, $log, array $options = [])
-    {
-        return resolve(AdminOperateLogService::class)
-            ->create(array_merge([
-                'user_id' => with_admin_user_id(Auth::id()),
-                'category' => $category,
-                'operate' => $opearte,
-                'log' => $log,
-                'data' => $options['data'] ?? [],
-                'context' => $opearte['context'] ?? [],
-            ]), $options['createOptions'] ?? []);
-    }
-}
-
-
