@@ -12,11 +12,26 @@ class AnnounceController extends Controller
 {
     public function index(Request $request, AnnounceService $announceService)
     {
-        return $announceService->all([], ['paginate' => true, 'orderBy' => ['created_at', 'desc']]);
+        $locale = app()->getLocale();
+        return $announceService->paginate([], ['orderBy' => ['created_at', 'desc']])->map(function($announce) use ($locale) {
+            $value = $announce->value;
+            $value['title'] =  $value['title'][$locale] ?? '';
+            $value['content'] = $value['content'][$locale] ?? '';
+            $announce->value = $value;
+            return $announce;
+        });
     }
 
     public function info(Request $request, AnnounceService $announceService)
     {
-        return $announceService->getById($request->id);
+        $announce = $announceService->getById($request->id);
+
+        $locale = app()->getLocale();
+        $value = $announce->value;
+        $value['title'] =  $value['title'][$locale] ?? '';
+        $value['content'] = $value['content'][$locale] ?? '';
+        $announce->value = $value;
+
+        return $announce;
     }
 }
