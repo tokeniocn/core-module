@@ -35,7 +35,7 @@ class UserService
     {
         return $this->queryOne($where, array_merge([
             'exception' => function () {
-                return new UserNotFoundException(trans('用户数据未找到'));
+                return new UserNotFoundException(trans('core::exception.用户数据未找到'));
             }
         ], $options));
     }
@@ -102,7 +102,7 @@ class UserService
 
             if ($exception) {
                 throw is_callable($exception) ? $exception() : ValidationException::withMessages([
-                    trans('密码验证失败')
+                    trans('core::exception.密码验证失败')
                 ]);
             }
 
@@ -128,7 +128,7 @@ class UserService
 
             if ($exception) {
                 throw is_callable($exception) ? $exception() : ValidationException::withMessages([
-                    trans('支付密码验证失败')
+                    trans('core::exception.支付密码验证失败')
                 ]);;
             }
 
@@ -137,6 +137,4 @@ class UserService
 
         return true;
     }
-
-
 }

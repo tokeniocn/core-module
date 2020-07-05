@@ -117,11 +117,11 @@ class UserInvitationService
         if ($available) {
             if ($invitation->isExpired()) {
                 throw ValidationException::withMessages([
-                    'mobile' => [trans('邀请码已过期')],
+                    'mobile' => [trans('core::exception.邀请码已过期')],
                 ]);
             } elseif ($invitation->isUsed()) {
                 throw ValidationException::withMessages([
-                    'mobile' => [trans('邀请码已经被使用')],
+                    'mobile' => [trans('core::exception.邀请码已经被使用')],
                 ]);
             }
         }
@@ -139,7 +139,7 @@ class UserInvitationService
     {
         return $this->queryOne($where, array_merge([
             'exception' => function () {
-                return new ModelNotFoundException(trans('邀请码未找到'));
+                return new ModelNotFoundException(trans('core::exception.邀请码未找到'));
             },
         ], $options));
     }
@@ -232,7 +232,7 @@ class UserInvitationService
             $mandatoryInvitation = $options['invitationMandatory'] ?? config('core::system.register_invitation_mandatory', 0);
 
             if ($mandatoryInvitation) {
-                throw new InvalidArgumentException(trans('请输入邀请码'));
+                throw new InvalidArgumentException(trans('core::exception.请输入邀请码'));
             }
 
             return;

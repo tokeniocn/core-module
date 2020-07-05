@@ -144,7 +144,7 @@ class UserBankService
         ], $options);
         if (empty($has)) {
             if ($options['exception']) {
-                throw new UserBankException(trans('未设置收付款账户'));
+                throw new UserBankException(trans('core::exception.未设置收付款账户'));
             }
             return false;
         }
@@ -189,7 +189,7 @@ class UserBankService
         $has = isset($value) ? $has->whereJsonContains('value', $value) : $has;
         $has = $has->exists();
         if (!$has && $options['exception']) {
-            throw new UserBankException(trans('收付款账户不存在'));
+            throw new UserBankException(trans('core::exception.收付款账户不存在'));
         }
         return $has;
     }

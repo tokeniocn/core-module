@@ -62,7 +62,7 @@ class UserVerifyService
             'type' => $type,
         ], array_merge([
             'exception' => function () {
-                return new UserVerifyNotFundException(trans('验证码错误'));
+                return new UserVerifyNotFundException(trans('core::exception.验证码错误'));
             },
         ], $options));
 
@@ -143,7 +143,7 @@ class UserVerifyService
             if (!$verify) {
                 return $token;
             } elseif ($i > $max) {
-                throw new UnexpectedValueException(trans('超出唯一Token生成次数(:max)', ['max' => $max]));
+                throw new UnexpectedValueException(trans('core::exception.超出唯一Token生成次数', ['max' => $max]));
             }
 
             $i++;

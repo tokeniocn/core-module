@@ -223,7 +223,7 @@ class UserResetService
 
         if ($user->isPayPasswordSet(false)) {
             throw ValidationException::withMessages([
-                'password' => [trans('支付密码已设置')]
+                'password' => [trans('core::exception.支付密码已设置')]
             ]);
         }
 

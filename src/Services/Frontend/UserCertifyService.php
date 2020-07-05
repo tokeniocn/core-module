@@ -32,7 +32,7 @@ class UserCertifyService
     {
         $user = with_user($user);
         if ($user->isAuthVerified(false)) {
-            throw new UserCertifyException(trans('您已经通过实名认证，请勿重复提交。'));
+            throw new UserCertifyException(trans('core::exception.您已经通过实名认证'));
         }
         //检查是否有提交未审核的
         $certify = $this->one([
@@ -42,7 +42,7 @@ class UserCertifyService
 
         if (!empty($certify)) {
             if ($certify->status === UserCertify::STATUS_SUCCESS) {
-                throw new UserCertifyException(trans('您已经的实名认证正在审核中，请勿重复提交。'));
+                throw new UserCertifyException(trans('core::exception.您提交的实名认证正在审核中'));
             } else {
                 $certify->status = intval(UserCertify::STATUS_WAITING);
                 $certify->obverse = $data['obverse'];

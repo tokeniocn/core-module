@@ -51,10 +51,10 @@ class CoreServiceProvider extends ServiceProvider
         $this->registerModelObservers();
         $this->registerCaptcha();
         $this->registerValidators();
-//        $this->registerTranslations();
+        $this->registerTranslations();
         $this->registerViews();
-//        $this->registerFactories();
-//        $this->registerModelRelations();
+        //        $this->registerFactories();
+        //        $this->registerModelRelations();
         $this->registerBlade();;
         $this->loadMigrationsFrom($this->modulePath . '/Database/Migrations');
     }
@@ -295,5 +295,4 @@ class CoreServiceProvider extends ServiceProvider
     {
         return [];
     }
-
 }
