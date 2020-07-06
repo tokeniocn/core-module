@@ -47,7 +47,9 @@ layui
   .config({
     base: "/vendor/layui/", // 静态资源所在路径
   })
-  .extend({})
+  .extend({
+      editormd: '../editormd/editormd.min'
+  })
   .use(["jquery"], function() {
     const $ = layui.$;
     window.jQuery || (window.jQuery = $);
