@@ -60,7 +60,7 @@ trait UserMethod
         $verified = $this->auth_verified_at != null;
 
         if (!$verified && $exception) {
-            throw new UserAuthVerifyException(trans('未实名认证'));
+            throw new UserAuthVerifyException(trans('core::exception.未实名认证'));
         }
 
         return $verified;
@@ -76,7 +76,7 @@ trait UserMethod
         $verified = $this->email_verified_at != null;
 
         if (!$verified && $exception) {
-            throw new UserEmailVerifyException(trans('邮箱未验证'));
+            throw new UserEmailVerifyException(trans('core::exception.邮箱未验证'));
         }
 
         return $verified;
@@ -92,7 +92,7 @@ trait UserMethod
         $verified = $this->mobile_verified_at != null;
 
         if (!$verified && $exception) {
-            throw new UserMobileVerifyException(trans('手机号未验证'));
+            throw new UserMobileVerifyException(trans('core::exception.手机号未验证'));
         }
 
         return $verified;
@@ -111,7 +111,7 @@ trait UserMethod
         $set = !empty($this->pay_password);
 
         if (!$set && $exception) {
-            throw new UserPayPasswordEmptyException(trans('未设置支付密码'));
+            throw new UserPayPasswordEmptyException(trans('core::exception.未设置支付密码'));
         }
 
         return $set;
@@ -180,8 +180,12 @@ trait UserMethod
      *
      * @return bool
      */
-    public function checkPayPassword($payPassword)
+    public function checkPayPassword($payPassword,$exception = false)
     {
-        return Hash::check($payPassword, $this->pay_password);
+        $check = Hash::check($payPassword, $this->pay_password);
+        if(!$check && $exception){
+            throw new UserPayPasswordException(trans('core::exception.支付密码验证失败'));
+        }
+        return $check;
     }
 }
