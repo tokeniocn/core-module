@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Core\Services\Admin;
+namespace Modules\Core\Services;
 
 
-use Modules\Core\Models\Admin\OperateLog;
+use Modules\Core\Models\OperateLog;
 use Modules\Core\Services\Traits\HasQuery;
 
 class OperateLogService
