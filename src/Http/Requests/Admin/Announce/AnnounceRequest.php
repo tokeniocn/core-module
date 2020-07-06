@@ -24,8 +24,7 @@ class AnnounceRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => "required",
-            "content" => "required"
+            'value' => "required",
         ];
     }
 }

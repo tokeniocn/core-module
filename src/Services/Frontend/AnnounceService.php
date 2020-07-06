@@ -2,9 +2,9 @@
 
 namespace Modules\Core\Services\Frontend;
 
+use Modules\Core\Models\Frontend\Announce;
 use PascalDeVink\ShortUuid\ShortUuid;
 use UnexpectedValueException;
-use Modules\Core\Models\ListData;
 use Modules\Core\Services\Traits\HasListData;
 use Illuminate\Support\Str;
 
@@ -15,7 +15,7 @@ class AnnounceService
     }
 
     /**
-     * @var ListData
+     * @var Announce
      */
     protected $model;
 
@@ -24,21 +24,17 @@ class AnnounceService
      */
     protected $type = 'announce';
 
-    public function __construct(ListData $model)
+    public function __construct(Announce $model)
     {
         $this->model = $model;
     }
-
 
     public function store(array $data)
     {
         return $this->model::create([
             'key' => ShortUuid::uuid1(),
             'type' => $this->type,
-            'value' => [
-                'title' => $data['title'],
-                'content' => $data['content']
-            ],
+            'value' => $data['value'],
             'module' => '*'
         ]);
     }
@@ -46,10 +42,7 @@ class AnnounceService
     public function update(string $id, array $data, $options = [])
     {
         $announce = $this->getById($id);
-        $announce->value = [
-            'title' => $data['title'],
-            'content' => $data['content']
-        ];
+        $announce->setTranslations('value', $data['value']);
         $announce->saveIfFail();
         return $announce;
     }

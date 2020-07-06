@@ -23,7 +23,7 @@
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">标题</label>
                                     <div class="layui-input-inline">
-                                        <input type="text" name="title[{{$key}}]" value="{{$announce['value']['title'][$key] ?? ''}}"
+                                        <input type="text" name="value[{{$key}}][title]" value="{{$announce['value']['title'][$key] ?? ''}}"
                                                placeholder="请输入标题" autocomplete="off" class="layui-input">
                                     </div>
                                 </div>
@@ -31,7 +31,7 @@
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">内容</label>
                                     <div class="layui-input-inline">
-                                    <textarea type="text" name="content[{{$key}}]"
+                                    <textarea type="text" name="value[{{$key}}][content]"
                                               placeholder="请输入公告内容" autocomplete="off" class="content layui-textarea">
                                         {{$announce['value']['content'][$key] ?? ''}}
                                     </textarea>

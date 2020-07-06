@@ -12,15 +12,15 @@ class AnnounceController extends Controller
 {
     public function index(Request $request, AnnounceService $announceService)
     {
-        $locale = app()->getLocale();
+//        $locale = app()->getLocale();
         $data = $announceService->paginate([], ['orderBy' => ['created_at', 'desc']]);
-        $data->each(function($announce) use ($locale) {
-            $value = $announce->value;
-            $value['title'] =  $value['title'][$locale] ?? '';
-            $value['content'] = $value['content'][$locale] ?? '';
-            $value['description'] = mb_substr($value['content'], 0, 50);
-            $announce->value = $value;
-        });
+//        $data->each(function($announce) use ($locale) {
+//            $value = $announce->value;
+//            $value['title'] =  $value['title'][$locale] ?? '';
+//            $value['content'] = $value['content'][$locale] ?? '';
+//            $value['description'] = mb_substr($value['content'], 0, 50);
+//            $announce->value = $value;
+//        });
         return $data;
     }
 
@@ -28,12 +28,12 @@ class AnnounceController extends Controller
     {
         $announce = $announceService->getById($request->id);
 
-        $locale = app()->getLocale();
-        $value = $announce->value;
-        $value['title'] =  $value['title'][$locale] ?? '';
-        $value['content'] = $value['content'][$locale] ?? '';
-        $value['description'] = mb_substr($value['content'], 0, 50);
-        $announce->value = $value;
+//        $locale = app()->getLocale();
+//        $value = $announce->value;
+//        $value['title'] =  $value['title'][$locale] ?? '';
+//        $value['content'] = $value['content'][$locale] ?? '';
+//        $value['description'] = mb_substr($value['content'], 0, 50);
+//        $announce->value = $value;
 
         return $announce;
     }

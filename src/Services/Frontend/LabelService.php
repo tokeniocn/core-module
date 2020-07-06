@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Services\Frontend;
 
-use Modules\Core\Models\ListData;
+use Modules\Core\Models\Frontend\Label;
 use Modules\Core\Services\Traits\HasListData;
 
 class LabelService
@@ -10,7 +10,7 @@ class LabelService
     use HasListData;
 
     /**
-     * @var ListData
+     * @var Label
      */
     protected $model;
 
@@ -19,7 +19,7 @@ class LabelService
      */
     protected $type = 'label';
 
-    public function __construct(ListData $model)
+    public function __construct(Label $model)
     {
         $this->model = $model;
     }
