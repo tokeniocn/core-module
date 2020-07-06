@@ -24,26 +24,35 @@ class LabelService
         $this->model = $model;
     }
 
-    /**
-     * @param array $data
-     * @param array $options
-     */
-    public function update(array $data, array $options = [])
+    public function update(string $id, array $data, $options = [])
     {
-
-        $columns = $this->all(['type' => $this->type])->pluck('key')->toArray();
-        $columns = array_map(function ($item) {
-            return str_replace('.', '_', $item);
-        }, $columns);
-        $data = array_intersect_key($data, array_flip($columns));
-        foreach ($data as $key => $value) {
-            $key = str_replace('_', '.', $key);
-            $label = $this->one(['type' => $this->type, 'key' => $key]);
-            $label->value = strval($value);
-            $label->saveIfFail();
-        }
-
+        $label = $this->getById($id);
+        $label->fill($data);
+        $label->setTranslations('value', $data['value']);
+        $label->saveIfFail();
+        return $label;
     }
+
+//    /**
+//     * @param array $data
+//     * @param array $options
+//     */
+//    public function update(array $data, array $options = [])
+//    {
+//
+//        $columns = $this->all(['type' => $this->type])->pluck('key')->toArray();
+//        $columns = array_map(function ($item) {
+//            return str_replace('.', '_', $item);
+//        }, $columns);
+//        $data = array_intersect_key($data, array_flip($columns));
+//        foreach ($data as $key => $value) {
+//            $key = str_replace('_', '.', $key);
+//            $label = $this->one(['type' => $this->type, 'key' => $key]);
+//            $label->value = strval($value);
+//            $label->saveIfFail();
+//        }
+//
+//    }
 
     /**
      * @param $label

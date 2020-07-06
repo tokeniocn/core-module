@@ -37,25 +37,25 @@ class LabelController extends Controller
         return $data;
     }
 
-    public function create()
+    public function create(LabelService $labelService)
     {
-        return view('core::admin.label.create');
+        return view('core::admin.label.update', [
+            'label' => $labelService->query()->newModelInstance()
+        ]);
     }
 
     public function store(LabelRequest $request, LabelService $labelService)
     {
-        return $labelService->store($request->all());
-        //return response()->redirectTo(route('admin.label.index'));
+        $data = $request->validationData();
+        $id = $request->id;
+        return $id ? $labelService->update($id, $data) : $labelService->store($data);
     }
 
     public function update(Request $request, LabelService $labelService)
     {
-
         $id = $request->input('id');
-        $info = $labelService->getById($id);
         return view('core::admin.label.update', [
-            'info' => $info
+            'label' => $labelService->getById($id)
         ]);
     }
-
 }
