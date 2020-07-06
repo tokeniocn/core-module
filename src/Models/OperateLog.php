@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Models\Admin;
+namespace Modules\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Models\Traits\HasFail;

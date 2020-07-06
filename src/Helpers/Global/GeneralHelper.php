@@ -3,9 +3,9 @@
 use App\Models\User;
 use App\Models\AdminUser;
 use Illuminate\Support\Facades\Auth;
-use Modules\Core\Models\Admin\OperateLog;
+use Modules\Core\Models\OperateLog;
 use Modules\Core\Services\Frontend\UserService;
-use Modules\Core\Services\Admin\OperateLogService;
+use Modules\Core\Services\OperateLogService;
 
 if (! function_exists('with_user')) {
     /**

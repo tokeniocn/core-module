@@ -24,6 +24,7 @@
         "plank/laravel-mediable": "^4.2",
         "simplesoftwareio/simple-qrcode": "^2.0",
         "spatie/laravel-permission": "^3.11",
+        "spatie/laravel-translatable": "^4.3.2",
         "symfony/psr-http-message-bridge": "^2.0",
         "torann/geoip": "^1.0",
         "pascaldevink/shortuuid": "^2.3.0"
