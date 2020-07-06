@@ -16,8 +16,8 @@ class AnnounceController extends Controller
         $data = $announceService->paginate([], ['orderBy' => ['created_at', 'desc']]);
         $data->each(function($announce) use ($locale) {
             $value = $announce->value;
-            $value['title'] =  $value['title'][$locale] ?? '';
-            $value['content'] = $value['content'][$locale] ?? '';
+            $value['title'] =  $value['title'] ?? '';
+            $value['content'] = $value['content'] ?? '';
             $value['description'] = mb_substr($value['content'], 0, 50);
             $announce->value = $value;
         });
