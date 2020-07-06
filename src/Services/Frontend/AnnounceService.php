@@ -10,9 +10,7 @@ use Illuminate\Support\Str;
 
 class AnnounceService
 {
-    use HasListData {
-        all as queryAll;
-    }
+    use HasListData;
 
     /**
      * @var Announce
@@ -68,26 +66,5 @@ class AnnounceService
     public function getByKey($key, array $options = [])
     {
         return $this->one(['key' => $key, 'type' => $this->type], $options);
-    }
-
-    public function all($where = null, array $options = [])
-    {
-        $announceList = $this->queryAll($where, $options);
-        $announceList = $announceList->toArray();
-        $announceList['data'] = $this->normalizeAnnounce($announceList['data']);
-        return $announceList;
-    }
-
-    public function normalizeAnnounce(array $data)
-    {
-        return array_map(function ($item) {
-//            $item = array_merge($item, $item['value']);
-            $item['title'] = $item['value']['title'];
-            foreach ($item['value']['content'] as $key => $val) {
-                $item['description'][$key] = mb_substr($val, 0, 50);
-            }
-            unset($item['value']);
-            return $item;
-        }, $data);
     }
 }

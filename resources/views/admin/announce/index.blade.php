@@ -44,7 +44,7 @@
                     field: 'title',
                     title: '标题',
                     templet: function (res) {
-                        return Object.values(res.title)[0];
+                        return res.value.title;
                     }
                 }, {
                     field: 'created_at',
