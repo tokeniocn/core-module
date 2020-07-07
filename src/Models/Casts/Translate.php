@@ -44,16 +44,20 @@ class Translate implements CastsAttributes
     public function set($model, $key, $value, $attributes)
     {
         $return = [
-            'key' => $value->getKey(),
-            'params' => $value->getParams()
+            'key' => '',
+            'params' => []
         ];
 
-        if (! $value instanceof TranslateExpression) {
-            throw new UnexpectedValueException('The cast of type "translate" value must an instance of ' . TranslateExpression::class);
+        if (is_string($value)) {
+            $return['key'] = $value;
+        } elseif ($value instanceof TranslateExpression) {
+            $return['key'] = $value->getKey();
+            $return['value'] = $value->getParams();
+        } else {
+            throw new UnexpectedValueException(
+                'The cast of type "translate" value must an instance of ' . TranslateExpression::class . ' or string (trans key).'
+            );
         }
-
-        $return['key'] = $value->getKey();
-        $return['value'] = $value->getParams();
 
         return json_encode($return, JSON_UNESCAPED_UNICODE);
     }
