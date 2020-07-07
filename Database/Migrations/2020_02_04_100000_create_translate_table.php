@@ -15,14 +15,14 @@ class CreateTranslateTable extends Migration
     {
         Schema::create('translates', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('translatable_model', 200)->comment('关联翻译类');
+            $table->string('translatable_type', 200)->comment('关联翻译类');
             $table->bigInteger('translatable_id')->comment('关联翻译类ID');
             $table->string('key')->comment('翻译关键字');
             $table->json('params')->nullable()->comment('翻译参数');
             $table->dateTimeTz('created_at')->nullable();
             $table->dateTimeTz('updated_at')->nullable();
 
-            $table->index(['translatable_model', 'translatable_id'], 'translatable');
+            $table->index(['translatable_type', 'translatable_id'], 'translatable');
         });
     }
 

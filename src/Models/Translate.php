@@ -3,15 +3,17 @@
 namespace Modules\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Models\Traits\DynamicRelationship;
+use Modules\Core\Models\Traits\HasFail;
 
 class Translate extends Model
 {
+    use HasFail,
+        DynamicRelationship;
     /**
      * @var array
      */
     protected $fillable = [
-        'translatable_model',
-        'translatable_id',
         'key',
         'params',
     ];
@@ -21,7 +23,7 @@ class Translate extends Model
     ];
 
     protected $hidden = [
-        'translatable_model',
+        'translatable_type',
         'translatable_id',
     ];
 
