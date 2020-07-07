@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Models\Casts;
 
+use UnexpectedValueException;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Modules\Core\Translate\TranslateExpression;
 
@@ -43,20 +44,16 @@ class Translate implements CastsAttributes
     public function set($model, $key, $value, $attributes)
     {
         $return = [
-            'key' => '',
-            'params' => []
+            'key' => $value->getKey(),
+            'params' => $value->getParams()
         ];
 
-        if (is_string($value)) {
-            $return['key'] = $value;
-        } elseif (isset($value['key'])) {
-            $return['key'] = $value['key'];
-        } elseif ($value instanceof TranslateExpression) {
-            $return['key'] = $value->getKey();
-            $return['value'] = $value->getParams();
-        } else {
-            $return = null;
+        if (! $value instanceof TranslateExpression) {
+            throw new UnexpectedValueException('The cast of type "translate" value must an instance of ' . TranslateExpression::class);
         }
+
+        $return['key'] = $value->getKey();
+        $return['value'] = $value->getParams();
 
         return json_encode($return, JSON_UNESCAPED_UNICODE);
     }
