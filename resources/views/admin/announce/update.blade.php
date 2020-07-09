@@ -27,7 +27,30 @@
                                                placeholder="请输入标题" autocomplete="off" class="layui-input">
                                     </div>
                                 </div>
-
+                                <div class="layui-form-item upload" data-locale="{{$key}}">
+                                    <label class="layui-form-label">封面图</label>
+                                    <div class="layui-input-inline">
+                                        <div class="layui-upload">
+                                            <button type="button" class="layui-btn" id="covers_btn">
+                                                上传封面图</button>
+                                            <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                                                预览图：
+                                                <div class="layui-upload-list" id="covers_image">
+                                                    @foreach($announce->getTranslation('value', $key)['covers'] ?? [] as $image)
+                                                        <div class="image-preview-box">
+                                                            <img src="{{$image}}" class="layui-upload-img">
+                                                            <input type="hidden" name="value[{{$key}}][covers][]"
+                                                                   value="{{$image}}"/>
+                                                            <button type="button"
+                                                                    class="layui-btn layui-btn-danger layui-btn-xs covers_remove">删除
+                                                            </button>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </blockquote>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">内容</label>
                                     <div class="layui-input-inline">
@@ -58,12 +81,39 @@
 
 @push('after-scripts')
     <script>
-        layui.use(['form', 'table', 'layedit', 'element'], function () {
+        layui.use(['form', 'table', 'layedit', 'element', 'upload'], function () {
             var $ = layui.$
                 , layedit = layui.layedit
                 , form = layui.form
                 , table = layui.table
+                , upload = layui.upload
                 , element = layui.element;
+
+            $(document).on('click', '.covers_remove', function () {
+                $(this).parent().remove();
+            });
+            $('.upload').each(function() {
+                console.log(1);
+                var $this = $(this);
+                const $btn =  $('#covers_btn', $this);
+                const $images = $('#covers_image', $this);
+                const locale = $this.data('locale');
+                //多图片上传
+                upload.render({
+                    elem: $btn
+                    , url: '{{route('admin.api.media.upload')}}'
+                    , multiple: true
+                    , done: function (res) {
+                        if (res.message === undefined) {
+                            //上传成功
+                            $images.append('<div class="image-preview-box"><img src="' + res.url + '" class="layui-upload-img"><input type="hidden" name="value['+  locale +'][covers][]" value="' + res.path + '"/><button type="button" class="layui-btn layui-btn-danger layui-btn-xs covers_remove">删除</button></div>')
+                        } else {
+                            layer.msg('上传失败');
+                        }
+                    }
+                });
+
+            });
 
             $('textarea.content').each(function() {
                 layedit.build(this, {
