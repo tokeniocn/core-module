@@ -33,9 +33,15 @@ trait HasConfigQuery
         return $this->config->all();
     }
 
+    protected function refreshConfig()
+    {
+        $this->config = null;
+    }
+
     protected function storeConfig($data, array $options = [])
     {
-        return store_config($this->key, $data, $options);
+        store_config($this->key, $data, $options);
+        $this->refreshConfig();
     }
 
 
@@ -136,8 +142,8 @@ trait HasConfigQuery
 
         if ((is_array($where) && Arr::isAssoc($where)) || is_callable($where)) { // where查询或者回调方法查询
             return $this->withCollectionOptions($config, array_merge($options, [
-                'where' => $where,
-            ]))->count() > 0;
+                    'where' => $where,
+                ]))->count() > 0;
         }
 
         return $config->has($where); // key 或者 [key, key1] 查询
