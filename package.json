@@ -17,7 +17,7 @@
     "moment": "^2.24.0",
     "laravel-mix": "^5.0.1",
     "laravel-mix-merge-manifest": "^0.1.2",
-    "lodash-es": "^4.17.13",
+    "lodash": "^4.17.19",
     "quasar": "^1.9.10",
     "resolve-url-loader": "^3.1.0",
     "sass": "^1.15.2",
@@ -26,7 +26,10 @@
     "vue-clipboard2": "^0.3.1",
     "vue-moment": "^4.1.0",
     "vue-template-compiler": "^2.6.11",
-    "vuex": "^3.1.3"
+    "vuex": "^3.1.3",
+    "jquery": "^3.5.1",
+    "layui-src": "^2.5.5",
+    "@chenfengyuan/vue-qrcode": "^1.0.2"
   },
   "browserslist": {
     "development": "last 1 version",

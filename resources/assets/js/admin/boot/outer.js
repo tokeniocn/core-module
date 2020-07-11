@@ -1,18 +1,22 @@
-import $config from "./config";
-import $http from "./boot/http";
 import _ from "lodash";
 import Vue from "vue";
+import clipboard from "clipboard";
 import axios from "axios";
 import moment from "moment";
-import { errorHandler } from "./boot/handler";
+
+import $config from "../config";
+import $http from "./http";
+import { errorHandler } from "./handler";
 
 window._ = _;
 window.Vue = Vue;
 window.axios = axios;
 window.moment = moment;
+window.clipboard = clipboard;
 
 window.$config = $config;
 window.$http = $http;
+window.$errorHandler = errorHandler;
 const headers = {
   "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
 };
@@ -37,42 +41,3 @@ $http.defaults.headers.common = {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
-
-/**
- * layui-admin
- */
-
-// 初始化设置
-layui
-  .config({
-    base: "/vendor/layui/", // 静态资源所在路径
-  })
-  .extend({
-      editormd: '../editormd/editormd.min'
-  })
-  .use(["jquery"], function() {
-    const $ = layui.$;
-    window.jQuery || (window.jQuery = $);
-
-    // iframe 下隐藏
-    if (top == window) {
-      $("[lay-iframe-hide]").show();
-    }
-
-    // ajax 基础设定
-    $.ajaxSetup({
-      headers,
-      // dataFilter: function(data, type) {
-      //   console.log('dataFilter', arguments);
-      //   return data;
-      // },
-      error: function(jqXHR, textStatus, errorMsg) {
-        // 模拟 axios错误
-        errorHandler({
-          response: {
-            data: jqXHR.responseJSON,
-          },
-        });
-      },
-    });
-  });

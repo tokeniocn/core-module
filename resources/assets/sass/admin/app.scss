@@ -1,7 +1,7 @@
-@import "~@quasar/extras/roboto-font/roboto-font.css";
-@import "~@quasar/extras/material-icons/material-icons.css";
-@import "~quasar/dist/quasar.sass";
-
-@import "./common";
-@import "./outer";
+@import "./_common";
 @import "./views/login";
+
+/* 全局样式 */
+body {
+  background-color: #f8f8f8;
+}

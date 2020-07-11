@@ -1,20 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', app_name())</title>
-    <meta name="description" content="@yield('meta_description', 'Admin Dashboard')">
-    <meta name="author" content="@yield('meta_author', 'tokenio.cn')">
-    @yield('meta')
+@extends('core::admin.layouts.app')
 
-    {{ style('vendor/layui/css/layui.css') }}
-    {{ style(mix('css/admin.css')) }}
-</head>
-<body class="layui-layout-body">
-<div id="LAY_app">
+@section('body_class', 'layui-layout-body')
+@section('wrapper_class', '')
 
+@section('content')
     <layout-main>
         <template v-slot:toolbar-right>
             <q-btn-dropdown stretch flat label="{{ $logged_in_user->username }}">
@@ -29,7 +18,7 @@
             </q-btn-dropdown>
         </template>
     </layout-main>
-</div>
+
     {{--<div id="LAY_app">--}}
         {{--<div class="layui-layout layui-layout-admin">--}}
 
@@ -175,11 +164,9 @@
             {{--<div class="layadmin-body-shade" layadmin-event="shade"></div>--}}
         {{--</div>--}}
     {{--</div>--}}
+@endsection
 
-    {!! script('vendor/layui/layui.js') !!}
-    {!! script(mix('js/manifest.js')) !!}
-    {!! script(mix('js/vendor.js')) !!}
-    {!! script(mix('js/admin.js')) !!}
+@push('after-scripts')
     <script>
         layui.use(['layer', 'util'], function() {
             var $ = layui.$;
@@ -227,7 +214,6 @@
             util.event('lay-event', events);
         });
     </script>
-</body>
-</html>
+@endpush
 
 
