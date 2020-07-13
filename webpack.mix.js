@@ -12,6 +12,11 @@ if (__dirname.indexOf("/modules/") >= 0) {
 mix.setPublicPath(publicPath).mergeManifest();
 
 mix
+  .webpackConfig({
+    externals: {
+      jquery: "jQuery",
+    },
+  })
 
   .copy("resources/assets/vendor", publicPath + "/vendor")
   .copy("resources/assets/images", publicPath + "/images")
@@ -31,6 +36,9 @@ mix
     "vue-moment",
     "clipboard",
     "vue-clipboard2",
+    "qrcode",
+    "@chenfengyuan/vue-qrcode",
+    "mavon-editor",
     "quasar",
   ])
   .version();

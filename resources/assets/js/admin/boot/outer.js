@@ -3,6 +3,7 @@ import Vue from "vue";
 import clipboard from "clipboard";
 import axios from "axios";
 import moment from "moment";
+import qrcode from "qrcode";
 
 import $config from "../config";
 import $http from "./http";
@@ -12,6 +13,7 @@ window._ = _;
 window.Vue = Vue;
 window.axios = axios;
 window.moment = moment;
+window.qrcode = qrcode;
 window.clipboard = clipboard;
 
 window.$config = $config;
