@@ -1,3 +1,4 @@
+import { isPlainObject } from "lodash";
 import Vue from "vue";
 import "./config";
 import "./boot/quasar";
@@ -8,9 +9,25 @@ import "./boot/component";
 import store from "./store";
 import "./boot/outer";
 
-const app = new Vue({
-  el: "#app",
-  store,
+let inited = false;
+const Init = (window.Init = (options) => {
+  let instance = options;
+  if (typeof options === "function") {
+    instance = options();
+  } else if (isPlainObject(options)) {
+    instance = new Vue({
+      el: "#app",
+      ...options,
+      store,
+    });
+  }
+
+  if (!instance instanceof Vue) {
+    throw new Error("Page init failed");
+  }
+  inited = true;
+  return instance;
 });
 
-export default app;
+// 在js加载完之后处理
+setTimeout(() => inited || Init());
