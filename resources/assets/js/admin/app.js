@@ -10,7 +10,7 @@ import store from "./store";
 import "./boot/outer";
 
 let inited = false;
-const Init = (window.Init = (options) => {
+const Init = (window.Init = (options = {}) => {
   let instance = options;
   if (typeof options === "function") {
     instance = options();
@@ -22,7 +22,7 @@ const Init = (window.Init = (options) => {
     });
   }
 
-  if (!instance instanceof Vue) {
+  if (!(instance instanceof Vue)) {
     throw new Error("Page init failed");
   }
   inited = true;
