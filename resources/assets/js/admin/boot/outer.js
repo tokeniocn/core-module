@@ -4,6 +4,7 @@ import clipboard from "clipboard";
 import axios from "axios";
 import moment from "moment";
 import qrcode from "qrcode";
+import quasar from "quasar";
 
 import $config from "../config";
 import $http from "./http";
@@ -11,6 +12,7 @@ import { errorHandler } from "./handler";
 
 window._ = _;
 window.Vue = Vue;
+window.quasar = quasar;
 window.axios = axios;
 window.moment = moment;
 window.qrcode = qrcode;

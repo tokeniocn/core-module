@@ -3,6 +3,7 @@ import { mapGetters, mapActions } from "vuex";
 import { Notify } from "quasar";
 import $config from "../config";
 import $store from "../store";
+import $http from "./http";
 import { errorHandler } from "./handler";
 
 // 全局监控store, 并响应
@@ -26,6 +27,7 @@ Vue.mixin({
 
     // 全局配置
     $config: () => $config,
+    $http: () => $http,
   },
 
   methods: {
