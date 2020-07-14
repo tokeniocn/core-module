@@ -9,25 +9,20 @@ import "./boot/component";
 import store from "./store";
 import "./boot/outer";
 
-let inited = false;
-const Init = (window.Init = (options = {}) => {
-  let instance = options;
-  if (typeof options === "function") {
-    instance = options();
-  } else if (isPlainObject(options)) {
-    instance = new Vue({
+let initOptions;
+window.Init = (options = {}) => {
+  if (!isPlainObject(options)) {
+    throw new Error("Please input valid vue init options");
+  }
+  initOptions = options;
+};
+
+// 异步执行. 当所有同步js加载完毕后初始化
+setTimeout(
+  () =>
+    new Vue({
+      ...initOptions,
       el: "#app",
-      ...options,
       store,
-    });
-  }
-
-  if (!(instance instanceof Vue)) {
-    throw new Error("Page init failed");
-  }
-  inited = true;
-  return instance;
-});
-
-// 在js加载完之后处理
-setTimeout(() => inited || Init());
+    })
+);

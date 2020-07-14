@@ -30,7 +30,7 @@
                                 <div
                                     v-for="(locale, index) in supported_locales" :key="index"
                                     :class="{'layui-tab-item': true, 'layui-show': current_locale == index}">
-                                    <mavon-editor v-model="form.value[index]"/>
+                                    <markdown-editor v-model="form.value[index]" />
                                 </div>
                             </div>
                         </div>
@@ -43,6 +43,7 @@
                                placeholder="请输入备注内容" autocomplete="off" class="layui-input">
                     </div>
                 </div>
+
                 <div class="layui-form-item">
                     <label class="layui-form-label"></label>
                     <div class="layui-input-inline">

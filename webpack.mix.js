@@ -38,7 +38,8 @@ mix
     "vue-clipboard2",
     "qrcode",
     "@chenfengyuan/vue-qrcode",
-    "mavon-editor",
+    "@toast-ui/editor",
+    "@toast-ui/vue-editor",
     "quasar",
   ])
   .version();
