@@ -10,15 +10,18 @@
     "production": "cross-env NODE_ENV=production webpack --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "devDependencies": {
+    "@chenfengyuan/vue-qrcode": "^1.0.2",
     "@quasar/extras": "^1.0.0",
+    "@toast-ui/vue-editor": "^2.2.0",
     "axios": "^0.19",
     "cross-env": "^7.0",
     "cross-var": "^1.1.0",
-    "moment": "^2.24.0",
     "laravel-mix": "^5.0.1",
     "laravel-mix-merge-manifest": "^0.1.2",
-    "lodash-es": "^4.17.13",
-    "quasar": "^1.9.10",
+    "layui-src": "^2.5.5",
+    "lodash": "^4.17.19",
+    "moment": "^2.24.0",
+    "quasar": "^1.12.9",
     "resolve-url-loader": "^3.1.0",
     "sass": "^1.15.2",
     "sass-loader": "^8.0.0",
@@ -33,6 +36,6 @@
     "production": ">2%, Firefox ESR"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=10.0.0"
   }
 }

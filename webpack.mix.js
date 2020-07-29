@@ -12,11 +12,38 @@ if (__dirname.indexOf("/modules/") >= 0) {
 mix.setPublicPath(publicPath).mergeManifest();
 
 mix
+  .webpackConfig({
+    externals: {
+      jquery: "jQuery",
+    },
+  })
+
   .copy("resources/assets/vendor", publicPath + "/vendor")
   .copy("resources/assets/images", publicPath + "/images")
+
   .js(__dirname + "/resources/assets/js/admin/app.js", "js/admin.js")
   .sass(__dirname + "/resources/assets/sass/admin/app.scss", "css/admin.css")
 
-  .extract(["vue", "vuex", "axios", "lodash-es", "moment", "quasar"])
-  .version()
-  .sourceMaps();
+  .js(__dirname + "/resources/assets/js/layui.js", "js/layui.js")
+  .sass(__dirname + "/resources/assets/sass/layui.scss", "css/layui.css")
+
+  .extract([
+    "vue",
+    "vuex",
+    "axios",
+    "lodash",
+    "moment",
+    "vue-moment",
+    "clipboard",
+    "vue-clipboard2",
+    "qrcode",
+    "@chenfengyuan/vue-qrcode",
+    "@toast-ui/editor",
+    "@toast-ui/vue-editor",
+    "quasar",
+  ])
+  .version();
+
+if (!mix.inProduction()) {
+  mix.sourceMaps();
+}

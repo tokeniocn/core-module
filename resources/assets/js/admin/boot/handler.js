@@ -5,7 +5,10 @@ export function errorHandler(e, vm) {
   if (process.env.NODE_ENV == "development") console.error(e);
 
   let message = "服务器开小差了，请联系管理员！";
-  if (e.errors) {
+  if (typeof e === "string") {
+    // error错误
+    message = e;
+  } else if (e.errors) {
     //async-validate 错误
     message = e.errors[0].message || "验证失败";
   } else if (e.message && !e.response) {

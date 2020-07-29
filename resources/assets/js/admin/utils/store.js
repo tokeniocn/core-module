@@ -26,7 +26,7 @@
  * }
  * ```
  */
-import { upperFirst, isEqual } from "lodash-es";
+import { upperFirst, isEqual } from "lodash";
 import $config from "../config";
 import $http from "../boot/http";
 

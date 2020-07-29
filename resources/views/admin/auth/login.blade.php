@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>@yield('title', app_name())</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    {{ style('vendor/layui/css/layui.css') }}
-    {{ style(mix('css/admin.css')) }}
-</head>
-<body>
+@extends('core::admin.layouts.app')
 
-<div id="LAY_app" class="user-login">
+@section('wrapper_class', 'user-login')
+
+@section('content')
 
     <div class="user-login-main">
         <div class="user-login-box user-login-header">
@@ -54,12 +46,9 @@
         </div>
     </div>
 
-</div>
+@endsection
 
-{!! script('vendor/layui/layui.js') !!}
-{!! script(mix('js/manifest.js')) !!}
-{!! script(mix('js/vendor.js')) !!}
-{!! script(mix('js/admin.js')) !!}
+@push('after-scripts')
 <script>
     layui.use(['form'], function () {
         // 强制父窗口跳转登录界面
@@ -107,5 +96,4 @@
         }
     })
 </script>
-</body>
-</html>
+@endpush
