@@ -11,7 +11,7 @@ class VerifiesController extends Controller
 
     public function index(){
 
-        return view('core::admin.user.index');
+        return view('core::admin.user.verifies.index');
     }
 
 }

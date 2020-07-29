@@ -30,11 +30,19 @@ class AdminMenuTableSeeder extends Seeder
             'status' => 1,
         ]);
 
-        $system_config = AdminMenu::create([
+        AdminMenu::create([
             'title' => '注册设置',
             'parent_id' => $user->id,
             'icon' => '',
             'url' => route('admin.system.settings.index', [], false),
+            'status' => 1,
+        ]);
+
+        AdminMenu::create([
+            'title' => '验证码列表',
+            'parent_id' => $user->id,
+            'icon' => '',
+            'url' => route('admin.api.verifies.index', [], false),
             'status' => 1,
         ]);
 

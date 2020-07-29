@@ -14,7 +14,9 @@ class VerifiesController extends Controller
     {
         $result = $userVerifyService->all([], [
             'orderBy' => ['id', 'desc'],
-            'paginate' => true
+            'paginate' => true,
+            'whereNotExpired' => false,
+            'exception' => false
         ]);
 
         return $result;
