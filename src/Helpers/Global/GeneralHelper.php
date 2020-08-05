@@ -88,7 +88,7 @@ if (! function_exists('operate_log')) {
      */
     function operate_log($categoryDotOperate, $log, array $options = [])
     {
-        [$category, $operate] = explode('.', $categoryDotOperate, 1);
+        [$category, $operate] = explode('.', $categoryDotOperate, 2);
 
         $createOptions = $options['createOptions'] ?? [];
         unset($options['createOptions']);

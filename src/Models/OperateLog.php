@@ -16,7 +16,7 @@ class OperateLog extends Model
     /**
      * 不记录更新时间
      */
-    const UPDATED_AT = false;
+    //const UPDATED_AT = false;
     /**
      * 后台操作
      */
