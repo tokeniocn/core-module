@@ -58,4 +58,17 @@ class OperateLog extends Model
         'data' => 'json',
         'context' => 'json',
     ];
+
+
+    public static $sceneMap = [
+        self::SCENE_ADMIN => '后台操作',
+        self::SCENE_FRONTEND => '接口操作'
+    ];
+
+    public function getSceneTextAttribute()
+    {
+
+        return self::$sceneMap[$this->attributes['scene']] ?? $this->attributes['scene'];
+    }
+
 }

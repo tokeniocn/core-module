@@ -110,6 +110,14 @@ class AdminMenuTableSeeder extends Seeder
             'status' => 1,
         ]);
 
+        AdminMenu::create([
+            'title' => '操作日志',
+            'parent_id' => $app->id,
+            'icon' => '',
+            'url' => route('admin.operate.index', [], false),
+            'status' => 1,
+        ]);
+
 //        $queue = AdminMenu::create([
 //            'title' => '队列监控',
 //            'parent_id' => $system->id,
