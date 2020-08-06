@@ -79,6 +79,14 @@ class AdminMenuTableSeeder extends Seeder
             'status' => 1,
         ]);
 
+        AdminMenu::create([
+            'title' => '操作日志',
+            'parent_id' => $system->id,
+            'icon' => '',
+            'url' => route('admin.operate.index', [], false),
+            'status' => 1,
+        ]);
+
         // APP设置
         $app = AdminMenu::create([
             'title' => 'App配置',
