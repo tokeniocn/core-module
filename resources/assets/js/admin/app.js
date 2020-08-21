@@ -17,12 +17,8 @@ window.Init = (options = {}) => {
   initOptions = options;
 };
 
-// 异步执行. 当所有同步js加载完毕后初始化
-setTimeout(
-  () =>
-    new Vue({
-      ...initOptions,
-      el: "#app",
-      store,
-    })
-);
+new Vue({
+  ...initOptions,
+  el: "#app",
+  store,
+});
