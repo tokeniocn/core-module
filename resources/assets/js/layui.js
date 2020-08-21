@@ -12,11 +12,14 @@ const loadedCss = [
   "modules/code.css",
 ];
 const { addcss, use } = layui;
-layui.addcss = function(filename, ...args) {
-  // 核心模块css已在外部加载, 内部做已加载处理
-  return loadedCss.find((file) => filename.indexOf(file) == 0)
-    ? this
-    : addcss.apply(this, [filename, ...args]);
+layui.addcss = function(filename, fn, ...args) {
+    // 核心模块css已在外部加载, 内部做已加载处理
+  if (loadedCss.find((file) => filename.indexOf(file) == 0)) {
+      typeof fn === 'function' && setTimeout(fn, 100);
+      return this;
+  }
+
+  return addcss.apply(this, [filename, fn, ...args]);
 };
 
 // 排除mobile和jquery两个模块
