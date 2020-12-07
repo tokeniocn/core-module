@@ -6,51 +6,47 @@
             <form method="post"  class="layui-form" lay-filter="test1">
                 {{csrf_field()}}
 
+
                 <div class="layui-form-item">
-                    <label class="layui-form-label">角色名称</label>
+                    <label class="layui-form-label">管理员登录名称</label>
                     <div class="layui-input-inline">
-                        <input class="layui-input" lay-verify="required" type="text" name="title" value="{{$info->title}}" placeholder="请输入角色名称" />
+                        <input type="text" name="username" value="{{$info->username}}" required autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">登录密码</label>
+                    <div class="layui-input-inline">
+                        <input type="password" name="password" required placeholder="至少6位" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">角色关键字</label>
+                    <label class="layui-form-label">确定密码</label>
                     <div class="layui-input-inline">
-                        <input class="layui-input" lay-verify="required" type="text" name="name" value="{{$info->name}}" placeholder="请输入角色关键字,纯英文" />
+                        <input type="password" name="re_password" required placeholder="至少6位" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="active" value="1" title="启用" @if($info->active==1)  checked @endif>
+                        <input type="radio" name="active" value="0" title="禁用" @if($info->active==0)  checked @endif>
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">排序</label>
+                    <label class="layui-form-label">权限角色</label>
                     <div class="layui-input-inline">
-                        <input class="layui-input" type="number" value="0" name="sort" value="{{$info->sort}}"  />
+                        <select name="rules_id" lay-verify="required">
+                            @foreach ($rules as $key=> $vo)
+                                <option value="{{ $vo->id }}" @if($info->rules_id== $vo->id ) selected @endif>{{ $vo->title }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label">角色权限：</label>
-                </div>
-                <div style="border: 2px solid #d2d2d2;width: 80%;margin-left: 10%;">
-                    @foreach ($menu as $vo)
-                        <div class="layui-form-item" style="border-bottom: 1px solid #ccc;">
-
-                            <p>
-                                <input type="checkbox" style="" name="rule[]" value="{{$vo->id}}" title="{{$vo->title}}" @if(in_array($vo->id,$rules))  checked @endif >
-                            </p>
-                            <div class="layui-input-inline">
-
-                                <div class="layui-col-md12" style="margin-left:40px;">
-                                    @if ($vo->sons)
-                                        @foreach ($vo->sons as $v2)
-                                            <li style="float: left;">
-                                                <input  type="checkbox" name="rule[]" value="{{$v2->id}}" title="{{$v2->title}}" @if(in_array($v2->id,$rules))  checked @endif>
-                                            </li>
-                                        @endforeach
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
                 </div>
 
 
@@ -82,7 +78,7 @@
 
             form.on('submit(add)', function(data){
 
-                var url = '{{ route('admin.api.auth.role.update') }}';
+                var url = '{{ route('admin.api.admin_users.update') }}';
                 $.post(url,data.field,function(res){
 
                     console.log(res);
@@ -114,6 +110,4 @@
         box-sizing: initial;
         width: 200px !important;
     }
-
 </style>
-

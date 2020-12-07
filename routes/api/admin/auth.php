@@ -39,5 +39,12 @@ Route::group([
             Route::put('/', [RoleController::class, 'update'])->name('role.update');
             Route::delete('/', [RoleController::class, 'destroy'])->name('role.destroy');
         });
+
+        Route::group(['prefix' => 'role', 'as'=>'role.'], function () {
+            Route::post('create', [RoleController::class, 'create'])->name('create');
+            Route::post('update', [RoleController::class, 'update'])->name('update');
+            Route::post('del', [RoleController::class, 'del'])->name('del');
+        });
+
     });
 });

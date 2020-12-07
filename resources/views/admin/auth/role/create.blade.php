@@ -9,21 +9,21 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">角色名称</label>
                     <div class="layui-input-inline">
-                        <input class="layui-input" lay-verify="required" type="text" name="title" value="{{$info->title}}" placeholder="请输入角色名称" />
+                        <input class="layui-input" lay-verify="required" type="text" name="title"  placeholder="请输入角色名称" />
                     </div>
                 </div>
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">角色关键字</label>
                     <div class="layui-input-inline">
-                        <input class="layui-input" lay-verify="required" type="text" name="name" value="{{$info->name}}" placeholder="请输入角色关键字,纯英文" />
+                        <input class="layui-input" lay-verify="required" type="text" name="name"  placeholder="请输入角色关键字,纯英文" />
                     </div>
                 </div>
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">排序</label>
                     <div class="layui-input-inline">
-                        <input class="layui-input" type="number" value="0" name="sort" value="{{$info->sort}}"  />
+                        <input class="layui-input" type="number" value="0" name="sort"   />
                     </div>
                 </div>
 
@@ -35,7 +35,7 @@
                         <div class="layui-form-item" style="border-bottom: 1px solid #ccc;">
 
                             <p>
-                                <input type="checkbox" style="" name="rule[]" value="{{$vo->id}}" title="{{$vo->title}}" @if(in_array($vo->id,$rules))  checked @endif >
+                                <input type="checkbox" style="" name="rule[]" value="{{$vo->id}}" title="{{$vo->title}}" >
                             </p>
                             <div class="layui-input-inline">
 
@@ -43,7 +43,7 @@
                                     @if ($vo->sons)
                                         @foreach ($vo->sons as $v2)
                                             <li style="float: left;">
-                                                <input  type="checkbox" name="rule[]" value="{{$v2->id}}" title="{{$v2->title}}" @if(in_array($v2->id,$rules))  checked @endif>
+                                                <input  type="checkbox" name="rule[]" value="{{$v2->id}}" title="{{$v2->title}}" >
                                             </li>
                                         @endforeach
                                     @endif
@@ -57,7 +57,6 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label"></label>
                     <div class="layui-input-inline">
-                        <input type="hidden" name="id" value="{{$info->id}}">
                         <button class="layui-btn" lay-submit lay-filter="add">立即提交</button>
                     </div>
                 </div>
@@ -82,7 +81,7 @@
 
             form.on('submit(add)', function(data){
 
-                var url = '{{ route('admin.api.auth.role.update') }}';
+                var url = '{{ route('admin.api.auth.role.create') }}';
                 $.post(url,data.field,function(res){
 
                     console.log(res);

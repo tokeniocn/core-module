@@ -17,7 +17,7 @@
 @push('after-scripts')
     <script type="text/html" id="tableToolbar">
         <div class="layui-btn-container">
-            <button class="layui-btn layuiadmin-btn-role" lay-event="add">添加角色</button>
+            <button class="layui-btn layuiadmin-btn-role" data-type="create">添加角色</button>
         </div>
     </script>
     <script>
@@ -28,10 +28,10 @@
                 , form = layui.form
                 , table = layui.table;
 
-            var events = {
+            /*var events = {
                 del: function (data) {
                     layer.confirm('确定删除吗？', function () {
-                        var url = '{{ route('admin.api.auth.role.destroy', ['role' => '!role!']) }}'.replace('!role!', data.name);
+                        var url = '{{ route('admin.api.auth.role.del', ['role' => '!role!']) }}'.replace('!role!', data.name);
                         $.ajax({
                             url: url,
                             type: 'delete',
@@ -44,34 +44,15 @@
                         });
                     });
                 },
-                add: function () {
-                    events.edit();
-                },
+
                 edit: function(data) {
-                    var url = data ? '{{ route('admin.auth.role.edit', ['role' => '!role!']) }}'.replace('!role!', data.name) :
-                        '{{ route('admin.auth.role.create') }}';
-                    layer.open({
-                        type: 2
-                        , title: '添加新角色'
-                        , content: url
-                        , area: ['500px', '480px']
-                        , btn: ['确定', '取消']
-                        , yes: function (index, layero) {
-                            var iframeWindow = window['layui-layer-iframe' + index]
-                                submit = layero.find('iframe').contents().find('#LAY-auth-role-submit');
 
-                            //监听提交
-                            iframeWindow.layui.onevent('submitted', 'form', function (data) {
-                                console.log(data);
-                                table.reload('LAY-user-back-role')
-                                layer.close(index) //关闭弹层
-                            })
+                    console.log(data.id);
+                    var url = '{{ route('admin.auth.role.create') }}?id='+data.id;
 
-                            submit.trigger('click')
-                        }
-                    })
+
                 }
-            };
+            };*/
 
             table.render({
                 elem: '#LAY-user-back-role',
@@ -107,12 +88,59 @@
                 },
                 page: true
             });
+
+            let active = {
+
+                create:function(){
+
+                    var url = '{{ route('admin.auth.role.create') }}';
+                    layer.open({
+                        type: 2
+                        , title: '添加角色'
+                        , content: url
+                        , area: ['90%', '90%']
+                    })
+                },
+            };
+
             table.on("tool(LAY-user-back-role)", function(e) {
-                if (events[e.event]) {
+                /*if (events[e.event]) {
                     events[e.event].call(this, e.data);
+                }*/
+                var data = e.data;
+
+                if(e.event ==='edit'){
+
+                    var url = '{{ route('admin.auth.role.edit') }}?id='+data.id;
+                    layer.open({
+                        type: 2
+                        , title: '修改角色'
+                        , content: url
+                        , area: ['90%', '90%']
+                    })
+                }
+
+                if(e.event ==='del'){
+                    layer.confirm('确定删除吗？', function () {
+                        var url = '{{ route('admin.api.auth.role.del') }}?id='+data.id;
+                        $.ajax({
+                            url: url,
+                            type: 'post',
+                            success: function() {
+                                table.reload('LAY-user-back-role')
+                                layer.msg('删除成功', {
+                                    offset: '15px',
+                                });
+                            }
+                        });
+                    });
                 }
             });
-            util.event('lay-event', events);
+            $('.layui-btn').on('click', function(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+            //util.event('lay-event', events);
         })
     </script>
 @endpush

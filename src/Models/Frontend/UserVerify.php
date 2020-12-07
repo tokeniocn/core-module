@@ -31,6 +31,8 @@ class UserVerify extends Model
     const TYPE_EMAIL_REGISTER = 'email_register';
     const TYPE_EMAIL_RESET = 'email_reset';
     const TYPE_EMAIL_RESET_BY_OLD = 'email_reset_by_old';
+    const TYPE_COIN_WITHDRAW = 'coin_withdraw'; //币种提现
+    const TYPE_COIN_TRANSFER = 'coin_transfer'; //币种内部转账
     const UPDATED_AT = null;
 
     /**

@@ -28,7 +28,9 @@ class StoreRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', Rule::unique('roles')],
+            'title' => ['required'],
+            'name' => ['required','alpha'],
+            'rule' => ['array']
         ];
     }
 }

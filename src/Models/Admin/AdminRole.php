@@ -15,6 +15,9 @@ class AdminRole extends Role
         RolePermission,
         RoleMethod;
 
+    protected $casts = [
+        'rules' => 'array',
+    ];
 
     /**
      * Get the route key for the model.

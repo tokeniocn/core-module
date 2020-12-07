@@ -7,6 +7,7 @@ use Modules\Core\Http\Controllers\Controller;
 use Modules\Core\Http\Requests\Admin\Auth\Role\ManageRoleRequest;
 use Modules\Core\Http\Requests\Admin\Auth\Role\StoreRoleRequest;
 use Modules\Core\Http\Requests\Admin\Auth\Role\UpdateRoleRequest;
+use Modules\Core\Models\Admin\AdminMenu;
 use Modules\Core\Models\Admin\AdminRole;
 use Modules\Core\Repositories\Admin\Auth\RoleRepository;
 
@@ -32,38 +33,52 @@ class RoleController extends Controller
      */
     public function create(ManageRoleRequest $request)
     {
-        return view('core::admin.auth.role.edit');
-    }
 
-    /**
-     * @param ManageRoleRequest $request
-     * @param Role              $role
-     *
-     * @return mixed
-     */
-    public function edit(ManageRoleRequest $request, AdminRole $role)
-    {
-        return view('core::admin.auth.role.edit')
-            ->withRole($role);
-    }
-
-    /**
-     * @param ManageRoleRequest $request
-     * @param Role              $role
-     *
-     * @throws \Exception
-     * @return mixed
-     */
-    public function destroy(ManageRoleRequest $request, Role $role, RoleRepository $roleRepository)
-    {
-        if ($role->isAdmin()) {
-            return redirect()->route('admin.auth.roles')->withFlashDanger(__('exceptions.admin.access.roles.cant_delete_admin'));
+        $menu = AdminMenu::query()->where('parent_id', 0)
+            ->where('status', 1)
+            ->select("id", 'parent_id', 'title', 'url', 'status', 'sort')
+            ->orderBy('sort', 'desc')
+            ->get();
+        foreach ($menu as $item) {
+            $sonsMenu = AdminMenu::query()->where('parent_id', $item->id)
+                ->where('status', 1)
+                ->select("id", 'parent_id', 'title', 'url', 'status', 'sort')
+                ->orderBy('sort', 'desc')
+                ->get();
+            $item->sons = $sonsMenu;
         }
 
-        $roleRepository->deleteById($role->id);
+        return view('core::admin.auth.role.create', [
+            'menu' => $menu
+        ]);
+    }
 
-        event(new RoleDeleted($role));
 
-        return redirect()->route('admin.auth.roles')->withFlashSuccess(__('alerts.admin.roles.deleted'));
+    public function edit(ManageRoleRequest $request)
+    {
+
+        $id = $request->input('id');
+        $info = AdminRole::query()->where('id', $id)->first();
+        $rules = $info->rules ?? [];
+
+        $menu = AdminMenu::query()->where('parent_id', 0)
+            ->where('status', 1)
+            ->select("id", 'parent_id', 'title', 'url', 'status', 'sort')
+            ->orderBy('sort', 'desc')
+            ->get();
+        foreach ($menu as $item) {
+            $sonsMenu = AdminMenu::query()->where('parent_id', $item->id)
+                ->where('status', 1)
+                ->select("id", 'parent_id', 'title', 'url', 'status', 'sort')
+                ->orderBy('sort', 'desc')
+                ->get();
+            $item->sons = $sonsMenu;
+        }
+
+        return view('core::admin.auth.role.edit', [
+            'info' => $info,
+            'rules' => $rules,
+            'menu' => $menu
+        ]);
     }
 }
