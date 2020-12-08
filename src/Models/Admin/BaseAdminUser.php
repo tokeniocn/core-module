@@ -40,6 +40,21 @@ abstract class BaseAdminUser extends Authenticatable
         'remember_token',
     ];
 
+    public $guarded = [];
+
+    public static $activeMap = [
+        0=>'禁用',
+        1=>'启用'
+    ];
+
+    public function getActiveTextAttribute(){
+        return self::$activeMap[$this->active] ?? '';
+    }
+
+    public function rules(){
+        return $this->hasOne(AdminRole::class,'id','rules_id');
+    }
+
     /**
      * @return AdminRole
      */
