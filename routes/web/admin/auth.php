@@ -22,7 +22,7 @@ Route::group([
             Route::get('roles', [RoleController::class, 'index'])->name('roles');
             Route::get('roles/create', [RoleController::class, 'create'])->name('role.create');
             Route::get('roles/edit', [RoleController::class, 'edit'])->name('role.edit');
-            Route::get('roles/{role}/edit', [RoleController::class, 'edit'])->name('role.edit');
+            /*Route::get('roles/{role}/edit', [RoleController::class, 'edit'])->name('role.edit');*/
         });
     });
 });

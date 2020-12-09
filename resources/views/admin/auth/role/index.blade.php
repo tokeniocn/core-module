@@ -28,31 +28,6 @@
                 , form = layui.form
                 , table = layui.table;
 
-            /*var events = {
-                del: function (data) {
-                    layer.confirm('确定删除吗？', function () {
-                        var url = '{{ route('admin.api.auth.role.del', ['role' => '!role!']) }}'.replace('!role!', data.name);
-                        $.ajax({
-                            url: url,
-                            type: 'delete',
-                            success: function() {
-                                table.reload('LAY-user-back-role')
-                                layer.msg('删除成功', {
-                                    offset: '15px',
-                                });
-                            }
-                        });
-                    });
-                },
-
-                edit: function(data) {
-
-                    console.log(data.id);
-                    var url = '{{ route('admin.auth.role.create') }}?id='+data.id;
-
-
-                }
-            };*/
 
             table.render({
                 elem: '#LAY-user-back-role',

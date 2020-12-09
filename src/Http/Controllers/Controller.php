@@ -5,6 +5,7 @@ namespace Modules\Core\Http\Controllers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
@@ -15,11 +16,9 @@ class Controller extends BaseController
      * 在这统一验证后台权限
      * Controller constructor.
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        //echo "<script>alert('没有权限');</script>";
-        //throw new \Exception('权限不够');
-        $this->getPath();
+
     }
 
     private function getPath()

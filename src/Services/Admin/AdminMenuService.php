@@ -4,7 +4,9 @@ namespace Modules\Core\Services\Admin;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Modules\Core\Models\Admin\AdminMenu;
+use Modules\Core\Models\Admin\AdminRole;
 use Modules\Core\Services\Traits\HasQuery;
 
 class AdminMenuService
@@ -45,7 +47,22 @@ class AdminMenuService
      */
     public function getMenuTree(array $options = [])
     {
-        return $this->normalizeMenu($this->all(null, $options));
+
+        $adminUser = \request()->user();
+        $rulesId = $adminUser->rules_id;
+        if($rulesId==0){
+            //超级管理员，不限制菜单
+            return $this->normalizeMenu($this->all(null, $options));
+        }else{
+            //普通管理员，根据角色权限选择的菜单显示
+            $rules = AdminRole::query()->where('id',$rulesId)->value('rules');
+            $menuData = $this->query()->whereIn('id',$rules)->get();
+            if($menuData){
+                return $this->normalizeMenu($menuData);
+            }else{
+                return [];
+            }
+        }
     }
 
     /**
