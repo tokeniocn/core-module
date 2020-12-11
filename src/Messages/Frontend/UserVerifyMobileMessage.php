@@ -21,7 +21,11 @@ class UserVerifyMobileMessage extends Message
     // 定义直接使用内容发送平台的内容
     public function getContent(GatewayInterface $gateway = null)
     {
-        return strtr('您正在验证手机号 验证码为: [code]', $this->getData());
+        $sign = env('SMS_SIGN','');
+        if (empty($sign)) {
+            $sign = env('APP_NAME', '');
+        }
+        return strtr('【'.$sign.'】您正在验证手机号 验证码为: [code]', $this->getData());
     }
 
     // 模板参数
