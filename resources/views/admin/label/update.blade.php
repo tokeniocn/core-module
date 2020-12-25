@@ -56,7 +56,7 @@
 @endsection
 
 
-@push('after-scripts')
+@push('before-scripts')
     @php
         $_supportedLocales = config('app.supported_locales');
         $_data = [
@@ -74,7 +74,7 @@
     @endphp
 
     <script>
-        Init({
+        window.initOptions = {
             data() {
                 return @json($_data, JSON_UNESCAPED_UNICODE);
             },
@@ -85,7 +85,7 @@
                     window.parent.location.reload();
                 }
             }
-        });
+        };
     </script>
 @endpush
 
