@@ -12,4 +12,5 @@ Route::group([
     //Route::post('/', [LabelController::class, 'index'])->name('update');
     Route::post('/', [LabelController::class, 'index'])->name('index');
     Route::post('/update', [LabelController::class, 'update'])->name('update');
+    Route::post('/delete', [LabelController::class, 'delete'])->name('delete');
 });

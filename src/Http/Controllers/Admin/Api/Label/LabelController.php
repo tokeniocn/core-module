@@ -43,4 +43,9 @@ class LabelController extends Controller
         $label->save();
         return $label;
     }
+
+    public function delete(Request $request, LabelService $labelService)
+    {
+        return $labelService->deleteById((int) $request->id);
+    }
 }

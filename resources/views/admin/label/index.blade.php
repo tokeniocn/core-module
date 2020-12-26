@@ -18,7 +18,7 @@
     <script type="text/html" id="table-useradmin-admin">
 
         <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
-
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
     </script>
 
     <script>
@@ -79,6 +79,22 @@
                         , content: url
                         , area: ['90%', '90%']
                     })
+                } else if  (e.event == 'delete') {
+                    layer.confirm('真的删除行么', function(index){
+                        $.ajax({
+                            url: '{{ route('admin.api.label.delete') }}',
+                            type: 'post',
+                            data: data,
+                            success: function(res) {
+                                layer.msg('删除成功', {
+                                    offset: '15px',
+                                    time: 2000,
+                                });
+                                table.reload('LAY-user-back-role');
+                            },
+                        })
+                        layer.close(index);
+                    });
                 }
 
             });

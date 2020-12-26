@@ -8,7 +8,7 @@
     </div>
     <script type="text/html" id="action-box">
         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-{{--        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>--}}
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
 
 @endsection
@@ -76,7 +76,18 @@
                 var data = obj.data;
                 if(obj.event === 'del'){
                     layer.confirm('真的删除行么', function(index){
-                        obj.del();
+                        $.ajax({
+                            url: '{{ route('admin.api.announce.delete') }}',
+                            type: 'post',
+                            data: data,
+                            success: function(res) {
+                                layer.msg('删除成功', {
+                                    offset: '15px',
+                                    time: 2000,
+                                });
+                                table.reload('lay-announce');
+                            },
+                        })
                         layer.close(index);
                     });
                 } else if(obj.event === 'edit'){

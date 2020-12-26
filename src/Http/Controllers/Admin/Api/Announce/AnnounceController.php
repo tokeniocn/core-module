@@ -28,6 +28,11 @@ class AnnounceController extends Controller
 
     public function update(AnnounceRequest $request, AnnounceService $announceService)
     {
-        $announceService->update($request->id, $request->all());
+        return $announceService->update($request->id, $request->all());
+    }
+
+    public function delete(AnnounceRequest $request, AnnounceService $announceService)
+    {
+        return $announceService->deleteById((int)$request->id);
     }
 }
