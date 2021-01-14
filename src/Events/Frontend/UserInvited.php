@@ -10,7 +10,7 @@ class UserInvited
     use SerializesModels;
 
     /**
-     * @var
+     * @var UserInvitation
      */
     public $invitation;
 

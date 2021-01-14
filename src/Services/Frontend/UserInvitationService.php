@@ -164,6 +164,11 @@ class UserInvitationService
             $data = array_slice($data, 0, $level);
         }
 
+        // 附带当前用户
+        if ($options['attachUser'] ?? false) {
+            $data[] = $user->id;
+        }
+
         /** @var UserService $userService */
         $userService = resolve(UserService::class);
 
