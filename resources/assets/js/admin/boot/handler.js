@@ -2,7 +2,7 @@ import Vue from "vue";
 import $store from "../store";
 
 export function errorHandler(e, vm) {
-  if (process.env.NODE_ENV == "development") console.error(e);
+  console.error(e);
 
   let message = "服务器开小差了，请联系管理员！";
   if (typeof e === "string") {
