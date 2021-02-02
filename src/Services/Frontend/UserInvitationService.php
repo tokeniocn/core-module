@@ -64,7 +64,7 @@ class UserInvitationService
             if (config('core::system.register_invitation', 0) == 2) { // 一码多人默认99年有效期
                 $expiredAt = config('core::user.invitation.any_expires', 86400 * 365 * 99);
             } else {
-                $expiredAt = config('core::user.invitation.one_expires', 86400 * 7); // 默认7天
+                $expiredAt = config('core::user.invitation.one_expires', 86400 * 30); // 默认30天
             }
             $expiredAt = date('Y-m-d H:i:s', (time() + $expiredAt));
         }
@@ -157,11 +157,10 @@ class UserInvitationService
         $user = with_user($user);
 
         $data = $user->invitationTree ? $user->invitationTree->data : [];
-
         $level = $options['level'] ?? false;
 
         if ($level > 0) { // 取出指定代数数据
-            $data = array_slice($data, 0, $level);
+            $data = array_slice($data, $level);
         }
 
         // 附带当前用户
