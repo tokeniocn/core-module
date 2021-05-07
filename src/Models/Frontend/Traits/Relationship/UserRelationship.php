@@ -1,6 +1,6 @@
 <?php
 
-use Modules\Core\Models\Frontend\UserCertify;
+
 
 namespace Modules\Core\Models\Frontend\Traits\Relationship;
 
