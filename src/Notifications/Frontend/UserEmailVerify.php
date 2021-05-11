@@ -28,6 +28,7 @@ class UserEmailVerify extends Notification implements ShouldQueue
     public function __construct(UserVerify $userVerify)
     {
         $this->userVerify = $userVerify;
+        $this->onQueue('high');
     }
 
     public function middleware()
