@@ -27,7 +27,8 @@ class NotificationController extends Controller
      */
     public function sendMobileVerifyNotification(NotifyMobileRequest $request,  NotificationService $notificationService)
     {
-        $notificationService->sendMobileVerifyNotification($request->mobile, $request->type, $request->user());
+        $user = $request->type == 'mobile_register' ? null : $request->user();
+        $notificationService->sendMobileVerifyNotification($request->mobile, $request->type, $user);
 
         return [];
     }
@@ -42,7 +43,8 @@ class NotificationController extends Controller
      */
     public function sendEmailVerifyNotification(NotifyEmailRequest $request,  NotificationService $notificationService)
     {
-        $notificationService->sendEmailVerifyNotification($request->email, $request->type, $request->user());
+        $user = $request->type == 'email_register' ? null : $request->user();
+        $notificationService->sendEmailVerifyNotification($request->email, $request->type, $user);
 
         return [];
     }
